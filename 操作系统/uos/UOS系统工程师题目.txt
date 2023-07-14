@@ -1,0 +1,776 @@
+﻿1、下面哪个是apache的全局配置文件：/etc/apache2/apache2.conf。
+2、安装完KVm虚拟机后、如何通过命令只查看正在运行的虚拟机：virsh list
+3、在UOS操作系统上面安装apache、需要安装的软件包名是：apache2
+4、使用apache搭建web虚拟主机、支持的虚拟机类型有：
+基于端口/域名/IP的虚拟主机（没有基于系统的）
+5、DNS使用的端口号是：53
+6、设置范围chronyd开机自启的命令为：systemctl enable chronyd
+7、在Liunx系统中利用find工具按文件名字查找选项是：name
+8、sshd使用的端口是：22
+9、容器退出后，通过下列哪些选项无法查到：
+docker run、docker ps\docker start（docker ps -a 可以查到）
+10、下面关于ansible描述正确的是：
+支持自定义模板、支持对windows进行自动化管理、基于ssh架构
+11、杀死一个进程的命令有：pkill、killall、kill（allkill不是）
+12、在ansible基本中可以通过哪些关键词定义变量：
+vars_prompt、vars、Parameter（par_prompt不可以）
+13、网络储存结构大致分为三种：DAS、NAS、SAN
+14、做安全的web主机、用下列哪个命令可以生产私钥和证书文件：openssl
+15、KVM虚拟机的守护进程是：libvirtd
+16、如果手动添加一台新的NTP服务器：add server
+17、DNS的主配置文件是：/etc/bind/name.conf
+18、DNS服务主要的作用是：域名解析
+19、安装源码包时需要安装编译工具有：make、gcc
+20、Ansible创建卷组和逻辑卷的模块是：lvg、lvol（vg和Lv不是）
+21、在Liunx系统中配置httpd服务器时，设置项ServerName用来指定该Web服务
+22、sshd配置文件使用什么语句可以禁止tom远程登录：DenyUsers tom
+### 1 修改主机名称
+  .请务必严格按照要求操作
+  .修改主机名称为：uos-exam-1-26  （注意，这个26代表考生座位号，每个不一样，不要直接照抄）
+  .修改root密码为： uos@exam123
+  @参考答案： ```
+            方法一：
+            编辑文件 /etc/hostname
+            <需要的主机名>
+            终端输入  bash 生效
+            
+            方法二：
+            hostnamectl set-hostname xxx
+            ```
+            
+### 2 DNS服务器指定
+  .设置DNS服务器地址为：主 114.114.114.114 备选：202.106.0.20
+  @参考答案：```
+           编辑文件 /etc/resolv.conf
+           注释或删除掉其他的内容
+           nameserver
+           nameserver <第二dns服务器地址>
+           ```
+
+### 3 软件源修改
+  .备份默认软件源配置文件到同级目录，名称为：26.list.bak
+  .修改默认软件源配置文件，源为：deb http://mirrorsxxxx
+   @参考答案：```
+    cp /etc/apt/sources.list /etc/apt/26.list.bak   
+    echo "deb http://mirrorsxxxx" > /etc/apt/sources.list
+    ```
+
+### 4 使用管理器安装软件
+   .使用apt安装unbound
+   @参考答案：```
+    apt update
+    apt install unbound
+    ```
+### 5 设置NTP时间同步
+   .安装ntpdate
+   .使用ntpdate同步cn.pool.ntp.org时间服务器
+   .把输出的结果保存在/opt/date.txt
+   @参考答案：```
+   apt install ntpdate
+   ntpdate cn.pool.ntp.org > /opt/date.txt
+   ```
+### 6 用户管理  xxx
+   .建立uos-exam组，添加用户uoskeeper26和uosmaster26,指定uos-exam组为属组（基本组），指定并创建各自目录为/home/uoskeeper26和/home/uosmaster26
+   .添加uosnologin用户并设置不能交互式登陆
+   .修改uosnologin的UID为：2020
+
+   @参考答案：```
+    # 添加组uos-exam
+    groupadd uos-exam
+    # 添加用户uoskeeper26到组uos_exam并且创建主目录
+    useradd -m -d /home/uoskeeper26 -g uos-exam uoskeeper26
+    # 添加用户uosmaster26到组uos_exam并且创建主目录
+    useradd -m -d /home/uosmaster26 -g uos-exam uosmaster26
+    # 将用户uoskeeper26添加到组uos-exam
+    gpasswd -a uoskeeper26 uos-exam
+    # 将用户uomasterper26添加到组uos-exam  
+    gpasswd -a uosmaster26 uos-exam
+    # 添加uosnolongin用户能交互式登陆，不创建用户主目录
+    useradd -M uosnologin
+    # 修改uosnologin的uid为2020
+    usermod -u 2020 -s /usr/sbin/nologin uosnologin
+    
+    记得命令cat /etc/passwd查看结果是否正确
+    ```
+### 7 文件操作
+   .复制/etc/apt/26.list.bak 到/opt目录下
+   .修改/opt/26.list.bak文件权限
+   .该文件属主组为root
+   .uoskeeper26只有读权限
+   .uosmaster26只有执行权限
+   @参考答案：```
+    sudo cp /etc/apt/26.list.bak /opt/                #复制文件
+    sudo chown root:root /opt/26.list.bak             #修改文件属主属组
+    setfacl -m u:uoskeeper26:r-- /opt/26.list.bak        # 修改用户uoskeeper26只读权限
+    setfacl -m u:uosmaster26:--x /opt/26.list.bak        # 修改用户uosmaster26只执行权限
+    getfacl /opt/26.list.bak                             #查看文件访问控制列表，检验步骤
+    ```
+
+
+## 7 密码管理   
+```shell
+cat /etc/shadow
+chage -l uos1
+chage 修改帐号和密码的有效期限
+        -m：密码可更改的最小天数。为零时代表任何时候都可以更改密码。min
+        -M：密码保持有效的最大天数。Max
+        -w：用户密码到期前，提前收到警告信息的天数。
+        -E：帐号到期的日期。过了这天，此帐号将不可用。
+        -d：上一次更改的日期。
+        -i：停滞时期。如果一个密码已过期这些天，那么此帐号将不可用。
+        -l：例出当前的设置。由非特权用户来确定他们的密码或帐号何时过期。
+密码到期提醒
+强制用户下次登陆时修改密码，并且设置密码最低有效期0和最高有限期90，提前15天发警报提示
+
+      chage -d 0 -m 7 -M 90 -w 15 uosmaster26
+      确认下-w
+```
+
+### 8 设置计划任务  xxxx;
+   .对uosmaster26 设置计划任务，每天23点59分，执行、/bin/echo "UOS is the best system"
+   @参考答案：```
+    crontab -u uosmaster26  -e   #回车键； 添加任务计划，添加如下内容，5个星号分别对应（分时日月周）
+    59 23 * * * /bin/echo "UOS is best system"  
+
+    #查看任务
+        crontab -l -u uosmaster
+    #重启服务
+        sudo systemctl restart cron.service
+
+    ```
+### 9 文件查找
+   .查找名为"exam-uos-file.conf"的文件，并把此文件的绝对路径写入/opt/pwdin.txt中
+   @参考答案：```
+    find / -name exam-uos-file.conf > /opt/pwdin.txt
+    ```
+### 10 字符串的查找
+   .查找/usr目录下的所有文件中包含"happyexam" 的字符串，并把查找到的行号写入到/opt/findcode.txt（注意只写行号）
+   @参考答案：```
+   grep "happyexam" /usr/ -nr | awk -F : '{print $2}' > /opt/findcode.txt
+   ```
+### 11 磁盘分区   xxx
+   .对已添加的/dev/sbd磁盘设备。进行分区为 /dev/sdb2,使用全部空间
+   .对新增加的分区/dev/sdb2进行文件系统格式化为“ext4”
+   @参考答案：```
+    fdisk -l  #查看系统硬盘分区状况
+    fdisk /dev/sdb    #处理指定硬盘的分区
+    n p 2 回车     #n 新建主分区  p是主分区  2（数字）分区号   
+    存储空间：+5G；  K，M，G，T，P；
+    w  #写入  
+    ```
+### 12 开机自动挂载  xxx
+   .创建目录/opt/data
+   .将/dev/sdb2 挂载到 /opt/data目录
+   .将fstab配置文件，使用/dev/sdb2的uuid配置开机自动挂载
+   @参考答案：```
+    mkdir /opt/data #创建/opt/data目录
+    mount /dev/sdb2 /opt/data #将/dev/sdb2 挂载到 /opt/data目录
+    #查看分区uuid号 和type类型
+    blkid
+    # 修改  vi /etc/fstab，按固定要求修改即可，按照实际情况填写下面是例子，不可照搬
+    # /dev/md5
+    UUID=844419c4-f376-4f64-afe8-23ba050da701    /opt/data/    ext4    defaults    0 0
+    注意中间为tab间隙
+    ```
+### 13 文件的打包与拆解  xxx
+   .对/Packages目录下Fire-latest-x86.tar.bz2进行解压
+   .解压后的目录移动到/opt/data目录下
+   .对/opt/data 目录进行打包，打包完的名称为 “data.tar.gz” 存放位置在/opt目录下
+
+   @参考答案：```
+    tar xjvf /Packages/Firefox-latest-x86_64.tar.bz2
+    mv ...   /opt/data/
+    tar czvf data.tar.gz /opt/data
+    mv data.tar.gz /opt/
+    ```
+### 14 gcc的使用
+   ./opt/exam14目录下C源码hello.c，实现打印输出 “Hello UOS！”
+   .使用gcc命令，编译并连接，直接生成可执行文件hello1,执行hello1,查看结果
+   .使用gcc命令，先编译hello.c源文件，生成后缀为hello2.0的目标文件，通过目标文件的连接，再生成可执行文件hello2,执行hello2,查看结果
+   @参考答案：```
+    gcc hello.c -o hello1 # 生成可执行文件hello1,执行hello1
+    gcc -c hello.c -o hello2.o #生成后缀为hello2.0的目标文件
+    gcc hello2.o -o hello2 #生成可执行文件hello2
+    ```
+### 15 gdb 调试
+   ./opt/exam15目录下将test.c文件编译成包含标准调试信息文件test
+   .运行生成的可执行文件，观察运行结果
+   .使用gdb调试程序，通过设置断点，单步调试
+   .修改源程序，输出结果第一行为：The original string is linux UOS
+   .修改源程序，输出结果第二行为：The string afterward is SOU xunil
+   @参考答案：```
+    gcc -g test.c #生成a.out，用于调试
+    gdb 调试可以学习一下
+    这里的代码需要修改display2 的功能linux UOS倒序输出   SOU xunil
+    只需要将 test中display2函数的
+        string2[size-i]=string1[i];
+    改为 string2[size-i-1]=string1[i];
+    
+    ```
+
+### 16 制作静态库编译main.c
+   ./opt/exam16目录下有main.cpp head.h add.cpp sub.cpp 文件
+   .为add.cpp sub.cpp 文件都生成add.o，sub.o文件，制作静态库libhead.a（生成文件均在/opt/exam16目录下）
+   .编译main.cpp生成main可执行文件
+   @参考答案：```
+    g++ -c add.cpp sub.cpp #生成add.o sub.o
+    ar crv libhead.a add.o sub.o #生成静态库libhead.a
+    g++ main.cpp -o main -static libhead.a #生成可执行文件main     
+    ```
+
+### 17 制作动态库编译main.c  xxx
+   ./opt/exam17目录下有main.cpp，head.h，add.cpp，sub.cpp
+   .为add.cpp sub.cpp 文件生成add.o，sub.o文件
+   .用add.o，sub.o文件制作动态库libhead.so文件，编译main.cpp（生成文件均在/opt/exam17目录下）
+   @参考答案：```
+    g++ -c add.cpp sub.cpp #生成add.o sub.o
+    g++ -shared -fpic libhead.so add.o sub.o #生成动态库libhead.so
+    g++ main.cpp -o main -shared libhead.so #生成可执行文件main   xxx;
+    g++ main.cpp -o main ./libhead.so #生成可执行文件main     
+    ldconfig  /opt/exam18 #添加动态库路径  
+    ```
+ 
+### 18 编写Makefile
+   ./opt/exam18目录下，编写Makefile文件进行编译，输出test可执行文件
+   .test文件由目录/opt/exam18下main.c文件，func.h文件和test*.c...文件组成
+   .要求在源码/opt/exam18目录下执行make成功可执行文件test，执行test输出对应内容，执行make clean删除所有make生成的文件
+   @参考答案：```
+    touch Makefile #创建Makefile
+    内容如下：
+    test: *.c *.h
+       gcc -o $@ $^
+
+    clean:
+       rm  test
+   注意事项，需要用vi编辑，缩进要用tab，不能用空格代替
+   $@  表示目标文件
+   $^  表示所有的依赖文件
+   ```
+### 19 git 本地仓库管理
+   .进入/opt/exam19 目录设置本地git仓库
+   .设置全局用户名为：“UOS
+   .设置全局邮箱名为： “UOS26@.com“
+   .在/opt/exam19 目录下，创建git本地仓库
+   .在/opt/exam19 目录下，创建文本文件test.txt，编辑文件内容为”UOS is the best system.“
+   .将test.txt提交到git仓库
+   @参考答案：```
+    git init #创建git本地仓库
+    git config --global user.name “UOS” #设置全局用户名为：“UOS
+    git config --global user.email “UOS26@.com” #设置全局邮箱名为： “UOS26@.com“
+    touch test.txt #创建文本文件test.txt
+    echo "UOS is the best system." > test.txt  #编辑文件内容为”UOS is the best system.“
+    git add -A #添加修改记录
+    git commit -m "exam" #提交
+   ```
+
+### 20 使用systemctl命令设置服务的开机自启动
+   .配置ssh允许root登陆并重启ssh服务
+   .添加ssh服务并开启自启动
+   .该题影响自动判分，请认真检查，否则分数为0
+   @参考答案： ```
+             启动ssh服务：sudo /etc/init.d/ssh start
+             设置开机自启动：sudo systemctl enable sshd
+             配置sshd允许root用户登陆：编辑文件 /etc/ssh/sshd_config
+             调整 PermitRootLogin的参数为yes
+             设置好重启sshd服务：systemctl restart sshd
+             ```
+1 在 linux 系统中,以文件的方式访问设备。 
+2 连接分为 : 软连接(符号链接)和硬链接。 
+3 某文件的权限为 d-rw-_r--_r--,用数值形式表示该权限,则该 8 进制数位 644,该 文件的属性为目录。 
+4 编写 shell 程序之前必须赋予该脚本可执行的权限。 
+5 系统管理的主要任务是能够在分布式环境中实现 对程序和数据的安全保护、备份、 恢复、更新。 
+6内核分为进程管理、内存管理、I/O系统管理、文件系统管理四个子系统7 唯一标识每一个用户的是用户的id 和用户名。 
+8 远程连接 mysql 数据库的命令是什么 mysql -h ip -u (用户) -p (密码) 
+9如果nginx.pid的目录在'/usr/nginx/logs/nginx.pid'下,那么平滑重启的命令为 kill-HUP /usr/nginx/logs/nginx.pid_。 
+10在超级用户下显示linux系统中正在运行的全部进程,应使用的命令和参数是 ps -aux 
+二 选择题 
+1. Linux 文件权限一共 10 位长度,分成四段,第三段表示的内容是。(D) 
+A 文件类型 C 文件所有者所在组的权限 B 文件所有者的权限 D 其他用户的权限
+2. 终止一个前台进程可能用到的命令和操作。B
+A skill B、 ctrl+c C.shutdown D、halt 3. 在使用 mkdir 
+3. 命令创建新的目录时,在其父目录不存在时先创建父目录的选项是。D
+A -m B -d C. -f D.-p
+4. 一个文件名字为rr.z,可以用来解压缩的命令是 : B
+A、tar B、gzip C、compress D. uncompress 
+5.文件exer1的访问权限为rw-r------现要增加所有用户的执行权限和同组用户的写 权限,下列命令正确的是。 A
+A chmod a+x g+w exer1 
+6.关闭 linux 系统(不重新启动)可使用命令。 B
+A Ctrl+Alt+Del B halt 
+9. Samba 服务器的配置文件是。 smb.conf
+7. 在日常管理中,通常 CPU 会影响系统性能的情况是 : A
+A CPU 已满负荷地运转 B CPU 的运行效率为30% C CPU 的运行效率为50% D CPU 的运行效率为80% 
+8. 若一台计算机的内存为128MB,则交换分区的大小通常是。 C
+A 64MB B 128MB C 256MB D 512MB 
+11. 建立动态路由需要用到的文件有。 
+10.有三个查看文件的命令若希望在查看文件内容过程中可以用光标上下移动 来查看文件内容,应使用 命令。 B、
+A cat B more 
+12. 下面对 www 和 ftp 的端口描述正确的是 80,20 21 
+13.下面对liunx下mysqldump备份目录即参数描述正确的是：mysqldump -h ip -u -p DBNAME > bck.sql
+14、将/home/stud1/wang目录做归档压缩，生成wang.tar.gz文件，并保存到/home目录下，实现此任务的tar格式为：tar zcvf /home/stud1/wang.tar.gz /home/wang
+15、shell不仅仅是用户命令解释器，同时是一种强大的编程语言，liunx缺省的shell是：bash
+16、为脚本程序指定执行权限命令的参数为：chmod +x filename.sh
+17、当内网没有条件建立dns服务器，又不想用IP访问网络，应配置hosts文件
+18、在liunx系统中，用来存放系统所需要的配置文件和子目录的是：/etc
+1 在linux 系统中，以文件的方式访问设备。
+2 连接分为：软连接（符号链接）和硬链接。
+3 某文件的权限为d-rw-_r--_r-- ，用数值形式表示该权限，则该8 进制数位644，该
+文件的属性为目录。
+4 编写shell 程序之前必须赋予该脚本可执行的权限。
+5 系统管理的主要任务是能够在分布式环境中实现对程序和数据的安全保护、备份、
+恢复、更新。
+6 内核分为进程管理、内存管理、I/O 系统管理、文件系统管理四个子系统。
+7 唯一标识每一个用户的是用户的id和用户名。
+8 远程连接mysql数据库的命令是什么mysql –h ip –u （用户）-p（密码）
+9 如果nginx.pid的目录在'/usr/nginx/logs/nginx.pid'下，那么平滑重启的命令为kill –HUP 
+/usr/nginx/logs/nginx.pid。
+10 在超级用户下显示linux 系统中正在运行的全部进程，应使用的命令和参数是ps -
+aux 。
+二选择题
+1. Linux文件权限一共10 位长度，分成四段，第三段表示的内容是。D
+A 文件类型B 文件所有者的权限
+C 文件所有者所在组的权限D 其他用户的权限
+2. 终止一个前台进程可能用到的命令和操作。B
+A 、killB、ctrl+c C 、shut down D 、halt 
+3．在使用mkdir 命令创建新的目录时，在其父目录不存在时先创建父目录的选项是。D
+A 、-m B 、-d C、-f D、-p 
+4. 一个文件名字为rr.Z ，可以用来解压缩的命令是：B
+A 、tarB 、gzip C 、compress D、uncompress 
+5. 文件exer1 的访问权限为rw-r--r-- ，现要增加所有用户的执行权限和同组用户的写
+权限，下列命令正确的是。A
+A chmod a+x g+w exer1 B chmod 765 exer1 
+C chmod o+x exer1 D chmod g+w exer1 
+6. .关闭linux 系统（不重新启动）可使用命令。B
+A Ctrl+Alt+DelB haltC shutdown -r now D reboot
+7．在日常管理中，通常CPU 会影响系统性能的情况是：A
+A CPU已满负荷地运转B CPU 的运行效率为30% 
+C CPU的运行效率为50% D CPU 的运行效率为80% 
+8．若一台计算机的内存为128MB ，则交换分区的大小通常是。C
+A 64MB B 128MB C 256MB D 512MB
+9．Samba 服务器的配置文件是。D
+A httpd.conf B inetd.conf C rc.sambaD smb.conf
+10．Linux 有三个查看文件的命令，若希望在查看文件内容过程中可以用光标上下移动
+来查看文件内容，应使用命令。B
+A catB more C less D menu
+11. 建立动态路由需要用到的文件有。D
+A /etc/hosts B /etc/HOSTNAME C /etc/resolv.conf D /etc/gateways
+12. 下面对www 和ftp的端口描述正确的是 D
+A、20 21 B、80 20 C、80 21 D、80,20 21 
+13. 下面对linux下mysqldump备份命令及参数描述正确的是 A
+A mysqldump -h ip -u -p DBNAME &gt;bck.sql B mysqldump -P ip -h DBNAME &gt; bck.sql 
+C mysqldump -u ip -P DBNAME &gt; bck.sql D mysqldump -h ip -u DBNAME &gt; bck.sql
+14. 将/home/stud1/wang 目录做归档压缩，压缩后生成wang.tar.gz 文件，并将此文件
+保存到/home 目录下，实现此任务的tar 格式为 A
+A tar zcvf /home/stud1/wang.tar.gz /home/wang
+B tar xcvf /home/stud1/wang /home/wang
+C tar zcv /home/stud1/wang /home/wang
+Dtar zcvf /home/stud1/wang /home/wang.tar.gz
+15. shell不仅仅是用户命令解释器，同时一种强大的编程语言，linux 缺省的shell是 A
+什么。
+A 、bashB、ruby C、PHP D、perl
+16.增加一个用户的命令是什么 A
+A、useradd B、usermod C、groupadd D、userdel
+17. 为脚本程序指定执行权限命令的参数为 A
+A chmod +x filename.sh B chown +x filename.sh 
+C chmod +w filename.sh D chown +r filename.sh
+18. 当内网内没有条件建立dns 服务器，又不想用IP访问网站，应配置什么文件。 A
+A、hostsB 、sysconfig C 、network D、hostname
+19. 在linux 系统中，用来存放系统所需要的配置文件和子目录是 A
+A /etc B /var C /root D /home
+UOS运维工程师考试
+1.sshd配置文件使用什么语句可以禁止tom远程登陆？ (D) 
+A. AllowUsers tom 
+B. AllowUser tom  
+C. DenyUser tom  
+D. DenyUsers tom  
+2. MariaDB数据库备份文件为／opt/uos.sql,如何将数据导入／恢复到数据库nsd中，
+数据库的密码为＂txuox" (C) 
+A.mysql -u root -ptxuox nsd &lt; /opt/uos.sql 
+B.mysql -u root -p txuox nsd &gt; /opt/uos.sql  
+C.mysql -u root -p txuox nsd &lt; /opt/uos.sql  
+D.mysql -u root -ptxuox nsd &gt; /opt/uos.sql 
+3. 下面哪个是apache的全局配置文件（D）
+A. /var/www/html/index.html  
+B. /etc/apache2/ports.conf 
+C. /etc/httpd/httpd.conf 
+D. /etc/apache2/apache2.conf 
+4. 在UOS操作系统上面安装apache、需要安装的软件包名是？（C 
+A.http  
+B.httpd 
+C.apache2  
+D.apache 
+5. DNS的主配置文件是？ (这题没有正确答案非要给答案那就A，A少了一个d) 
+A. /etc/bind/name.conf  
+B. /etc/bind/name.conf.local 
+C. /etc/bind/db.local  
+D. /etc/resolv.conf  
+6.sshd使用的端口是？ (D) 
+A. 8080  
+B. 53 
+C. 69 
+D. 22
+7. 在Linux系统中配置httpd服务器时，设置项（B）用来指定该Web服务器的站点名
+A. DocumentRoot 
+B. ServerName  
+C. ServerAdmin  
+D. ServerRoot 
+8. 如何手动添加一台新的NTP服务器？（A）
+A.add server  
+B. Clients  
+C. Accheck  
+D. Tracking  
+9. 在Linux系统中利用find工具按文件名字查找选项是（A）
+A.name  
+B.size  
+C.type  
+D.user  
+10. DNS使用的端口号是？ (C) 
+A. 80  
+B. 69 
+C. 53 
+D. 22  
+11. 安装完KVm虚拟机后、如何通过命令只查看当前正在运行的虚拟机？ (B) 
+A.virsh list--all  
+B.virsh list 
+C.virsh start server1
+单选题
+1，使用apt命令、可以使用下面哪个选项搜索到软件包
+
+A.search 
+
+B.reinstall 
+
+C.remove 
+
+D.purge
+
+2，()命令可以创建组（d）
+
+A.user add 
+
+B.user mod 
+
+C.passwd 
+
+D.group add
+
+3，用ls-al命令列出下面的文件列表，文件是符号连接文件。
+
+A.-rw-rw-rw-2hel-susers56Sep 09 11： 05 hello 
+
+B.-rwxrwxrwx 2hel-susers56Sep 0911：05goodbey 
+
+C.drwxr-r-1helusers1024Sep 10 08：10zhang
+
+D.I rwxr-r-1helusers2024Sep 12 08：12cheng
+
+4，() 命令可以显示/etc/passwd文件中以root开头的行（d）
+A.grep root/etc/passwd 
+
+B.grep root$/etc/passwd 
+
+C.grep-i root/etc/passwd 
+
+D.grep^ root/etc/passwd
+
+5，在uos中为yan wj用户非交互设置密码txu os， 命令正确的是()
+
+A.echo"yanwj：txuos"|chpasswd 
+
+B.echo txu os|passwd yan wj 
+
+C.echo txu os|passwd--stdin yan wj 
+
+D.echo"yan wj：txu os">ch passwd
+
+6，使用cp命令时以下说法正确的是（c）
+
+A.cp-r可以拷贝文件，但不能拷贝目 
+
+B.cp-f可以拷贝目录 
+
+C.cp-r可以拷贝文件和目录
+
+D.cp-f不可以拷贝文件
+
+7，find查找使用下面哪个选项可以以文件名来查找（a）
+
+A.-name 
+
+B.-size 
+
+C.-type
+
+D.-user
+
+8，UOS中编写周期性计划任务， 时间的格式（a）
+A.分时日月周
+
+B. 时分日月周
+
+C.分时月日周
+D.分时周月
+
+9，()命令可以创建用户
+
+A.user add 
+
+B.user mod 
+
+C.passwd 
+
+D.group add 
+
+10.查看cpu信息命令是() 
+
+A.Is cpu
+
+B，
+
+C，
+
+D其他选项暂未获取到
+
+多选题
+11，dpkg使用下列哪个选项可以卸载软件包（cd）【Multiple】
+
+A.-i 
+
+B.-L 
+
+C.-r 
+
+D.-P
+
+12，vim命令模式下可以进行哪些操作（bcd）【Multiple】
+A.不能做任何操作 
+
+B.复制
+
+C.粘贴
+
+D.删除 
+
+13，哪些命令可以修改权限（ab）【Multiple】 
+
+A.chmod 
+
+B.setfacl 
+
+C.get facl 
+
+D.Vim
+
+14，下面那些命令可以查看文件的内容（abc） 【Multiple】
+
+A.cat 
+
+B.tail 
+
+C.more 
+
+D.Less
+
+15，下列那些指令可以用来重启系统（ac）【Multiple】
+A.reboot 
+
+B.shutdown-r now  
+
+C.init 6
+
+D.init 0
+
+16，如何验证一个用户是否存在（）【Multiple】
+
+A.id命令
+
+B.查看/home内容 
+
+C.查询/etc/passwd内容 
+
+D.查询/etc/default/user add内容 
+
+17，vim模式中() 可以进行保存并退出（ab）【Multiple】
+
+A.末行模式 
+
+B.命令模式
+
+C.输入模式
+
+D.可视模式
+
+18，卷组与逻辑卷创建的命令格式（ac） 【Multiple】
+
+A.vg create卷组名物理设备 
+
+B.vg create物理设备 
+
+C.Iv create-L大小-n逻辑卷名卷组名 
+
+D.Iv create-L大小-n逻辑卷名
+
+19，LINUX文件系统有哪些（abd）【Multiple】
+A. Ext 4
+
+B. Ext 3
+
+C. ntfs
+
+D. Swap
+
+20，在命令行终端使用快捷键（）可以粘贴上一个命令的参数（ac）【Multiple】
+
+A.Esc +
+
+B.Alt +
+
+C.Ctrl + c
+
+D.Ctrl + l
+
+填空题
+1， 在 linux 系统中，以文件的方式访问设备。
+
+2， 连接分为：软连接（符号链接）和硬链接 。
+
+3， 某文件的权限为 d-rw-_r--_r-- ，用数值形式表示该权限，则该 8 进制数位 644 ，该
+
+文件的属性为目录 。
+
+4， 编写 shell 程序之前必须赋予该脚本可执行 的权限 。
+
+5， 系统管理的主要任务是能够在分布式  环境中实现 对程序和数据的安全保护、备份、
+
+恢复、更新。
+
+6， 内核分为进程管理、内存管理、I/O 系统管理、文件系统管理四个子系统。
+
+7， 唯一标识每一个用户的是用户的 id 和用户名。
+
+8， 远程连接 mysql 数据库的命令是什么 mysql –h ip –u （用户）-p（密码）
+
+9， 如果 nginx.pid 的目录在'/usr/nginx/logs/nginx.pid'下，那么平滑重启的命令为 kill –HUP /usr/nginx/logs/nginx.pid 。
+
+10， 在超级用户下显示 linux 系统中正在运行的全部进程，应使用的命令和参数是 ps -aux
+
+11，在命令行终端使用快捷键()可以粘贴上一个命令的参数【Multiple】
+
+12，user add-m zorro可以实现什么功能()
+
+13，/test目录的属主和属组都是root， 访问权限是700， 使用ACL功能赋予user 01/test目录的rwx权限，使用的命令是()
+
+14，UOS系统查看当前目录() 。
+
+15，建立一个新文件可以使用的命令为()
+
+16，使用apt安装vsftpd的命令是()
+
+17，编写shell程序之前须赋予该脚本() 权限。
+
+18，改变文件所有者的命令为 ()
+
+19，使用dpkg安装vsftpd的命令是()
+
+20，从后台启动进程，应在命令的结尾加上()符号。
+
+21，vi编辑器的有三种工作模式：()、插入模式、末行模式。
+
+3，在使用 mkdir 命令创建新的目录时，在其父目录不存在时先创建父目录的选项是。D
+
+A 、-m 
+
+B 、-d
+
+C、 -f
+
+D、 -p
+
+4，一个文件名字为 rr.Z ，可以用来解压缩的命令是：B
+
+A 、tar 
+
+B 、gzip 
+
+C 、compress 
+
+D、 uncompress
+
+9，Samba 服务器的配置文件是。D
+
+A httpd.conf 
+
+B inetd.conf
+
+C rc.samba
+
+D smb.conf
+
+11，建立动态路由需要用到的文件有。D
+
+A /etc/hosts 
+
+B /etc/HOSTNAME
+
+C /etc/resolv.conf
+
+D /etc/gateways
+
+12，下面对 www 和 ftp 的端口描述正确的是 D
+
+A、 20 21 
+
+B、 80 20 
+
+C、 80 21
+
+D、 80,20 21
+
+1、Linux文件权限一共10位长度，分成四段，第三段表示的内容是（）C.文件所有者所在组的权限
+2、使用apt命令、可以使用下面哪个选项重新安装软件包 B.reinstall
+3、若一台计算机的内存为128MB，则交换分区的大小通常是（）C.256MB
+4、对名为fido的文件用chmod 551fido进行了修改，则它的许可权是（）D.-r-xr-x-
+5、UOS中编写周期性计划任务，时间的格式（）A.分 时 日 月 周
+6、关于重定向输出，以下说法正确的是（）C.>>当文件不存在时会自动创建
+7、dpkg的错误状态如果是“h”，那说明？A.软件包被强制保持
+8、开机自动挂载配置文件为（）D./etc/fstab
+9、（）命令可以创建组 D.groupadd
+10、mkdir命令如果想要递归创建那么需要加下列哪个选项？C.-p
+11、利用find查找/boot目录下大于300k并且必须是文件，拷贝到/bot，该如何操作（） D find /boot -size +300k -type f -exec cp -r{} /opt \;
+12、命令可以创建用户 A. useradd
+13、find查找使用下面哪个选项可以以文件名来查找 A.-name
+14、使用apt命令、可以使用下面哪个选项搜索到软件包 A.search
+15、（）命令可以显示/etc/passwd文件中以root开头的行 a. grep ^root /etc/passwd
+16、用ls-al命令列出下面的文件列表，文件是符号连接文件。D.lrwxr-r-
+17、在uos中为yanwj用户非交互设置密码txuos，命令正确的是（）c. echo txuos | passwd -stdin yanwj
+18、使用cp命令时以下说法正确的是（）C.cp-r可以拷贝文件和目录
+19、关于apt、客户端配置文件是？ D./etc/apt/sources.list
+20、开放w权限的目录利用（）权限可以禁止操作别人的文档？ C.Sticky Bit
+21、如何添加用户uos到组tongxi中？C. gpasswd -a uos tongxi
+多选：
+1.dpkg使用下列哪个选项可以卸载软件包【Multiple】C.-r D.-P
+2.下面那些命令可以查看文件的内容（）【Multiple] A.cat B.tail C.more D.Less
+3.编译安装源码软件包、都需要用到下面哪些选项【Multiple】A.make B.make install
+4.下列那些指令可以用来重启系统（）[Multiple] A.reboot B.shutdown-r now C.init 6
+5.在命令行终端使用快捷键（）可以粘贴上一个命令的参数（Multiple] A.Esc+. B.Alt+.
+6.vim命令模式下可以进行哪些操作（）【Multiple] B.复制 C.粘贴 D.删除
+7.哪些命令可以修改权限（）[Multiple】A.chmod B.setfacl
+8.LINUX文件系统有哪些（）【Multiple】A.Ext4 B.Ext3 D.Swap
+9.如何验证一个用户是否存在（）【Multiple】A.id命令 C.查询/etc/passwd内容
+10.卷组与逻辑卷创建的命令格式（）【Multiple] A.vgcreate 卷组名 物理设备 C.lvcreate-L大小-n逻辑卷名 卷组名
+11、vim模式中（）可以进行保存并退出 【Multiple】A.末行模式 B.命令模式
+12、如何验证一个用户是否存在 【Multiple】A。 ID命令 C。查询/etc/passwd内容
+13、下列那些命令可以用来查看帮助信息（）【Multiple】a. MAN B.Help
+填空：
+1.在Linux系统中root用户的UID号是（）。 填空内容： 0
+2.使用apt安装vsftpd的命令是（）。填空内容： apt install vsftpd
+3.改变文件所有者的命令为（）。 填空内容： chown
+4.建立一个新文件可以使用的命令为（）。填空内容： touch
+5.useradd-m zorro可以实现什么功能（）。填空内容： 创建新用户zorro，并创建家目录
+6.链接文件分为（）和（）。填空内容： 硬链接 软链接
+7.使用dpkg安装vsftpd的命令是（）。填空内容： dpkg -i vsftpd
+8./test目录的属主和属组都是root，访问权限是700，使用ACL功能赋予user01/test目录的rwx权限，使用的命令是（）。填空内容： setfacl -m u:user01:rwx -R /test
+9.从后台启动进程，应在命令的结尾加上（）符号。填空内容： &
+10.vi编辑器的有三种工作模式：（）、插入模式、末行模式。填空内容： 命令模式
+11、编写shell程序之前须赋予该脚本（）权限。 读写
+12、UOs系统查看当前目录 pwd
+13、查看CPU信息命令是（） lscpu

@@ -1,0 +1,62 @@
+﻿
+一、数据库原理、现状和SQL语句
+	1、数据库的四个基本概念
+		（1）数据
+			●定义：描述事物的符号记录，是数据库中储存的基本对象。
+			●种类：数字、文字、图形、图像、音频、视频、学生的档案记录等。
+			●含义：数据的含义即数据的语义，数据与其语义是不可分的。
+			●一个记录也被称为一个数据，这样的数据被称为有结构数据。
+		（2）数据库（DataBase，简称DB）
+			●定义：是长期储存在计算机内、有组织的、可共享的大量数据的集合。
+			●基本特点：永久存储、有组织、可共享。
+		（3）数据库管理系统（DataBase Management System，简称DBMS）
+			●定义：位于用户与操作系统之间的一层数据管理软件；是基础软件，是一个大型复杂的软件系统
+			●用途：能科学地组织和存储数据、高效地获取和维护数据。
+			●功能：数据定义功能(DDL)、数据操纵功能(DML,DQL)、数据库的事务管理和运行管理(TCL,DCL)
+		（4）数据库系统（DataBase System，简称DBS）
+			●定义：是由数据库、数据库管理系统(及其应用开发工具)、应用程序和数据库管理员(DataBase 		Administrator，简称DBA)组成的存储、管理、处理和维护数据的系统。
+			●特点：数据结构化；数据的共享性高、冗余度低且易扩充；数据独立性高、数据由数据库管理系统统一管理和控制。
+	2、数据库的现状
+	3、SQL
+		（1）概述：SQL(Sturctured Query Language)，用来与数据库打交道，完成和数据库的通信，是一套标准。
+		（2）SQL的分类
+			●DQL(Data Query Language)，代表关键字：select
+			●DML(Data Manipulation Language)，代表关键字：insert、delete、update
+			●DDL(Data Definition Language)，代表关键字：create、drop、alter
+			●TCL(Transactional Control Language)，代表关键字：commit、rollback
+			●DCL(Data Control Language)，代表关键字：grant、revoke
+			
+二、达梦数据库运维
+	1、达梦数据库的安装
+		（1）下载麒麟10操作系统的镜像，并通过vmware等软件创建虚拟机，安装操作系统。
+		（2）在麒麟操作系统上下载达梦8的镜像，或在原操作系统下好镜像好通过Xshell工具传输到麒麟操作系统；然后加载镜像：mount 镜像文件路径 /mnt	（只能用root用户挂载到/mnt目录下）
+		（3）创建用户组dinstall和用户dmdba，并设置dmdba的密码
+			groupadd  dinsatll
+			useradd -g dinstall dmdba
+			passwd dmdba
+		（4）修改文件打开最大数（重启服务器后永久生效）
+			vim /etc/security/limits.conf（在里面添这四条语句）
+			dmdba hard nofile 65536
+			dmdba soft nofile 65536
+			dmdba hard stack 32768
+			dmdba soft stack 16384
+			切换到dmdba用户，用 ulimit -a 查看是否生效
+		（5）到挂载镜像的文件下，在dmdba用户下用 ./文件名 进行安装
+			●若显示没有图形界面（报错：No protocol specified）
+				先用root用户：xhost +
+				在切换dmdba用户：xhost + ，然后：echo $DISPLAY ，最后：export DISPLAY=显示的参数
+			●若显示权限不够，可以用：chmod -R 775 该文件名路径
+			●若显示内存不够
+				法1，扩展/tmp目录空间：mount -t tmpfs -o size=2G tmpfs /tmp 
+				法2，在dmdba用户下指定程序安装的临时目录：
+					mkdir -p 指定目录
+					DM_INSTALL_TMPDIR=指定目录
+					export DM_INSTALL_
+				DM数据库安装要求/tmp文件夹大小不小于2G，这里为避免安装过程中出现/tmp不足的情况，临时修改/tmp大小为2G，查看命令：df -hl 或 df -h /tmp
+			●配置disql和其它tool：在dmdba用户下，打开.bash_profile，并添加：export PATH="$PATH:$DM_HOME/bin:$DM_HOME/tool"
+			
+四、实操
+	1、xshell问题和数据迁移连不上问题，将网络连接该为DHCP自动。
+	2、储存定义在source表中。
+			
+			

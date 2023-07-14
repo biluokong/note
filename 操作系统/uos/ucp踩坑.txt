@@ -1,0 +1,15 @@
+1、shell.sh 访问无用：cp /etc/apache2/mod-available/cgi.* /etc/apache2/mods-enabled/
+
+2、python.py 访问无用： Python 3 默认使用 UTF-8，需要将字符串转换：
+html = bytes(html, encoding= 'utf-8')
+
+3、启动nginx失败，显示端口被占用：
+	apt-get install net-tools
+	netstat -nlp | grep 80
+	kill -9 pid
+	
+4、No system certificates available. Try installing ca-certificates.证书错误
+	先把源从https换为http，然后重新安装两个组件(支持https的和证书的)
+	apt reinstall apt-transport-https ca-certificates
+	然后在把http改换https，最后 apt update 即可
+	
