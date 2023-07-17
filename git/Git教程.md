@@ -933,6 +933,7 @@ git push [remote-name] [branch-name]
 git push --set-upstream [remote-name] [branch-name]
 # 将本地仓库推送至远程仓库的某个分支，并建立起关联关系(快捷方式)
 git push -u [remote-name] [branch-name]
+# 推送失败，HTTP 413 curl 22 The requested URL returned error，http推送文件有大小限制，解决方法：添加远程仓库是用ssh方式，使用ssh方式推送。
 ```
 
 ## 11.4 删除远程仓库的文件
@@ -956,8 +957,10 @@ git push （origin master）
 ## 11.5 从远程仓库获取代码
 
 ```shell
-# 从远程仓库克隆
+# 从远程仓库克隆，用ssh方式不能指定用户，需要用http方式
 git clone <url> 
+# 通过代理克隆仓库
+git clone https://github.com/flutter/flutter.git --config "http.proxy=192.168.0.105:7890"
 # 从远程仓库拉取 (拉取到.git 目录,不会合并到工作区,工作区发生变化)
 git fetch  <shortname>  <分支名称>
 # 手动合并  把某个版本的某个分支合并到当前工作区
@@ -974,6 +977,30 @@ git pull  <shortname>  <分支名称>  --allow-unrelated-histories  #  强制拉
 ```shell
 git config --global credential.helper store
 # 然后再输入一次账号密码就会保存，以后就不用输入了
+```
+
+## 11.7 为远程仓库设置代理
+
+```shell
+# 通过代理克隆仓库
+git clone https://github.com/flutter/flutter.git --config "http.proxy=192.168.0.105:7890"
+
+# 针对所有域名的 Git 仓库
+# HTTP/HTTPS 协议，port 需与代理软件设置的一致
+git config –-global http.proxy http://127.0.0.1:port  # 注意修改 port
+# SOCKS5 协议，port 需与代理软件设置的一致
+git config --global http.proxy socks5://127.0.0.1:port  # 注意修改 port
+
+# 针对特定域名的 Git 仓库
+# HTTP/HTTPS 协议
+git config -–global http.url.proxy http://127.0.0.1:port
+# 以 Github 为例
+git config –-global http.https://github.com.proxy http://127.0.0.1:port
+# SOCKS5 协议
+git config –-global http.url.proxy socks5://127.0.0.1:port
+# 以 Github 为例
+git config –-global http.https://github.com.proxy socks5://127.0.0.1:port
+# ssh方式参考：https://www.cnblogs.com/cscshi/p/15705045.html
 ```
 
 
