@@ -2763,7 +2763,7 @@ MKSTREAM：队列不存在时自动创建队列
  **删除指定的消费者组**
 
 ```java
-XGROUP DESTORY key groupName
+XGROUP DESTROY key groupName
 ```
 
  **给指定的消费者组添加消费者**
@@ -2799,6 +2799,10 @@ XREADGROUP GROUP group consumer [COUNT count] [BLOCK milliseconds] [NOACK] STREA
 
 ```bash
 XACT key group ID [ID ...]
+# 删除消息（不是真正删除，只是标记删除，确认了的才会真正删除）
+XDEL key ID	
+# 查看真正的消息个数（可以看到没有被真正删除的消息）
+XLEN key
 ```
 
 查看pending-list中的消息

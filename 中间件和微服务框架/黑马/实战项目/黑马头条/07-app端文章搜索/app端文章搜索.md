@@ -40,13 +40,61 @@
 
 ```shell
 docker pull elasticsearch:7.4.0
+docker pull elasticsearch:7.12.1
 ```
 
 ### 2.2) 创建容器
 
 ```shell
-docker run -id --name elasticsearch -d --restart=always -p 9200:9200 -p 9300:9300 -v /usr/share/elasticsearch/plugins:/usr/share/elasticsearch/plugins -e "discovery.type=single-node" elasticsearch:7.4.0
+docker run -id --name es -d --restart=always -p 9200:9200 -p 9300:9300 -v /root/es/plugins:/usr/share/elasticsearch/plugins -e "discovery.type=single-node" elasticsearch:7.4.0
+
+docker run -d \
+	--name es \
+    -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" \
+    -e "discovery.type=single-node" \
+    -v es-data:/usr/share/elasticsearch/data \
+    -v es-plugins:/usr/share/elasticsearch/plugins \
+    --privileged \
+    -p 9200:9200 \
+    -p 9300:9300 \
+elasticsearch:7.12.1
 ```
+
+如果报错：OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release，显示内存不够
+
+解决方法：
+
+```sh
+find /var/lib/docker/overlay2/ -name jvm.options
+# 打开这个文件后，把-Xms和Xmx的内存改为512m
+-Xms512m
+-Xmx512m
+#还不够，可以建立交换内存，并设置交换内存的使用优先级
+fallocate -l 1G /swapfile	#创建新的交换文件
+chmod 600 /swapfile
+mkswap /swapfile	#将新文件标记为交换空间
+swapon /swapfile	#启用交换文件
+swapon --show	#查看
+#让改变持久化，可以先用临时
+cp /etc/fstab /etc/fstab.back
+#将以下内容添加到 /etc/fstab 文件的末尾
+/swapfile none swap sw 0 0
+#或用以下命令
+echo ‘/swapfile none swap sw 0 0’ | sudo tee -a /etc/fstab
+
+#查看当前swappiness值，swappiness值的范围从0到100
+#swappiness 参数决定了交换空间的使用频率
+cat /proc/sys/vm/swappiness
+#修改swappiness值为10（临时修改，重启后即还原为默认值）
+sysctl vm.swappiness=60
+#永久修改swappiness默认值（重启生效），可以先备份一份
+vi /etc/sysctl.conf
+#在文档的最后加上:
+vm.swappiness=60
+#保存重启，搞定收工，该值越大，越优先使用交换内存
+```
+
+
 
 ### 2.3) 配置中文分词器 ik
 
@@ -788,13 +836,13 @@ public class SyncArticleListener {
 拉取镜像
 
 ```
-docker pull mongo
+docker pull mongo:4.2.1
 ```
 
 创建容器
 
 ```
-docker run -di --name mongo-service --restart=always -p 27017:27017 -v ~/data/mongodata:/data mongo
+docker run -di --name mongo --restart=always -p 27017:27017 -v ~/data/mongodata:/data mongo:4.2.1
 ```
 
 #### 4.3.2)导入资料中的mongo-demo项目到heima-leadnews-test中

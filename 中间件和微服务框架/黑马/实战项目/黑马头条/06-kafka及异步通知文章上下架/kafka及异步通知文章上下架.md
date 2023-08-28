@@ -64,6 +64,8 @@ docker pull zookeeper:3.4.14
 
 ```shell
 docker run -d --name zookeeper -p 2181:2181 zookeeper:3.4.14
+
+docker run -d --name zookeeper -p 2181:2181 -v /root/zookeeper/data:/data -v /root/zookeeper/log:/datalog zookeeper:3.4.14
 ```
 
 - Docker安装kafka
@@ -78,12 +80,23 @@ docker pull wurstmeister/kafka:2.12-2.3.1
 
 ```shell
 docker run -d --name kafka \
---env KAFKA_ADVERTISED_HOST_NAME=192.168.200.130 \
---env KAFKA_ZOOKEEPER_CONNECT=192.168.200.130:2181 \
---env KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://192.168.200.130:9092 \
+--env KAFKA_ADVERTISED_HOST_NAME=111.67.198.232 \
+--env KAFKA_ZOOKEEPER_CONNECT=111.67.198.232:2181 \
+--env KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://111.67.198.232:9092 \
 --env KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 \
 --env KAFKA_HEAP_OPTS="-Xmx256M -Xms256M" \
 --net=host wurstmeister/kafka:2.12-2.3.1
+
+# 这个能执行
+docker run -d --name kafka --publish 9092:9092 \
+--link zookeeper:zookeeper -e KAFKA_BROKER_ID=1  \
+-e HOST_IP=111.67.198.232  \
+-e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 \
+-e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://111.67.198.232:9092 \
+-e KAFKA_ADVERTISED_HOST_NAME=111.67.198.232 \
+-e KAFKA_ADVERTISED_PORT=9082 --restart=always \
+#-v /root/kafka/config:/opt/kafka/config \
+-t  wurstmeister/kafka:2.12-2.3.1
 ```
 
 ### 4)kafka入门
