@@ -7,7 +7,7 @@
 
 ## 1，配置文件实现CRUD
 
-![image-20210729111159534](mybatisimgimage-20210729111159534.png)
+![image-20210729111159534](mybatisimg/image-20210729111159534.png)
 
 如上图所示产品原型，里面包含了品牌数据的 `查询` 、`按条件查询`、`添加`、`删除`、`批量删除`、`修改` 等功能，而这些功能其实就是对数据库表中的数据进行CRUD操作。接下来我们就使用Mybatis完成品牌数据的增删改查操作。以下是我们要完成功能列表：
 
@@ -82,7 +82,7 @@
 
   测试代码需要在 `test/java` 目录下创建包及测试用例。项目结构如下：
 
-  <img src="mybatisimgimage-20210729112907106.png" alt="image-20210729112907106" style="zoom:80%;" />
+  <img src="mybatisimg/image-20210729112907106.png" alt="image-20210729112907106" style="zoom:80%;" />
 
 * 安装 MyBatisX 插件
 
@@ -97,21 +97,21 @@
 
     点击 `file` ，选择 `settings` ，就能看到如下图所示界面
 
-    <img src="mybatisimgimage-20210729113304743.png" alt="image-20210729113304743" style="zoom:80%;" />
+    <img src="mybatisimg/image-20210729113304743.png" alt="image-20210729113304743" style="zoom:80%;" />
 
     > 注意：安装完毕后需要重启IDEA
 
   * 插件效果
 
-    <img src="mybatisimgimage-20210729164450524.png" alt="image-20210729164450524" style="zoom:70%;" />
+    <img src="mybatisimg/image-20210729164450524.png" alt="image-20210729164450524" style="zoom:70%;" />
 
     红色头绳的表示映射配置文件，蓝色头绳的表示mapper接口。在mapper接口点击红色头绳的小鸟图标会自动跳转到对应的映射配置文件，在映射配置文件中点击蓝色头绳的小鸟图标会自动跳转到对应的mapper接口。也可以在mapper接口中定义方法，自动生成映射配置文件中的 `statement` ，如图所示
 
-    ![image-20210729165337223](mybatisimgimage-20210729165337223.png)
+    ![image-20210729165337223](mybatisimg/image-20210729165337223.png)
 
 ### 1.2  查询所有数据
 
-<img src="mybatisimgimage-20210729165724838.png" alt="image-20210729165724838" style="zoom:80%;" />
+<img src="mybatisimg/image-20210729165724838.png" alt="image-20210729165724838" style="zoom:80%;" />
 
 如上图所示就页面上展示的数据，而这些数据需要从数据库进行查询。接下来我们就来讲查询所有数据功能，而实现该功能我们分以下步骤进行实现：
 
@@ -121,13 +121,13 @@
 
     查询所有数据功能是不需要根据任何条件进行查询的，所以此方法不需要参数。
 
-    <img src="mybatisimgimage-20210729171208737.png" alt="image-20210729171208737" style="zoom:80%;" />
+    <img src="mybatisimg/image-20210729171208737.png" alt="image-20210729171208737" style="zoom:80%;" />
 
   * 结果：List<Brand>
 
     我们会将查询出来的每一条数据封装成一个 `Brand` 对象，而多条数据封装多个 `Brand` 对象，需要将这些对象封装到List集合中返回。
 
-    <img src="mybatisimgimage-20210729171146911.png" alt="image-20210729171146911" style="zoom:80%;" />
+    <img src="mybatisimg/image-20210729171146911.png" alt="image-20210729171146911" style="zoom:80%;" />
 
   * 执行方法、测试
 
@@ -195,7 +195,7 @@ public void testSelectAll() throws IOException {
 
 执行测试方法结果如下：
 
-![image-20210729172544230](mybatisimgimage-20210729172544230.png)
+![image-20210729172544230](mybatisimg/image-20210729172544230.png)
 
 从上面结果我们看到了问题，有些数据封装成功了，而有些数据并没有封装成功。为什么这样呢？
 
@@ -208,7 +208,7 @@ public void testSelectAll() throws IOException {
 
 从上面结果可以看到 `brandName` 和 `companyName` 这两个属性的数据没有封装成功，查询 实体类 和 表中的字段 发现，在实体类中属性名是 `brandName` 和 `companyName` ，而表中的字段名为 `brand_name` 和 `company_name`，如下图所示 。那么我们只需要保持这两部分的名称一致这个问题就迎刃而解。
 
-<img src="mybatisimgimage-20210729173210433.png" alt="image-20210729173210433" style="zoom:80%;" />
+<img src="mybatisimg/image-20210729173210433.png" alt="image-20210729173210433" style="zoom:80%;" />
 
 我们可以在写sql语句时给这两个字段起别名，将别名定义成和属性名一致即可。
 
@@ -316,7 +316,7 @@ public void testSelectAll() throws IOException {
 
 ### 1.3  查询详情
 
-<img src="mybatisimgimage-20210729180118287.png" alt="image-20210729180118287" style="zoom:80%;" />
+<img src="mybatisimg/image-20210729180118287.png" alt="image-20210729180118287" style="zoom:80%;" />
 
 有些数据的属性比较多，在页面表格中无法全部实现，而只会显示部分，而其他属性数据的查询可以通过 `查看详情` 来进行查询，如上图所示。
 
@@ -324,7 +324,7 @@ public void testSelectAll() throws IOException {
 
 * 编写接口方法：Mapper接口
 
-  <img src="mybatisimgimage-20210729180604529.png" alt="image-20210729180604529" style="zoom:80%;" />
+  <img src="mybatisimg/image-20210729180604529.png" alt="image-20210729180604529" style="zoom:80%;" />
 
   * 参数：id
 
@@ -336,7 +336,7 @@ public void testSelectAll() throws IOException {
 
 * 编写SQL语句：SQL映射文件
 
-  <img src="mybatisimgimage-20210729180709318.png" alt="image-20210729180709318" style="zoom:80%;" />
+  <img src="mybatisimg/image-20210729180709318.png" alt="image-20210729180709318" style="zoom:80%;" />
 
 * 执行方法、进行测试
 
@@ -396,7 +396,7 @@ public void testSelectById() throws IOException {
 
 执行测试方法结果如下：
 
-<img src="mybatisimgimage-20210729182223137.png" alt="image-20210729182223137" style="zoom:70%;" />
+<img src="mybatisimg/image-20210729182223137.png" alt="image-20210729182223137" style="zoom:70%;" />
 
 #### 1.3.4  参数占位符
 
@@ -417,7 +417,7 @@ mybatis提供了两种参数占位符：
 
   重新运行查看结果如下：
 
-  <img src="mybatisimgimage-20210729184156019.png" alt="image-20210729184156019" style="zoom:70%;" />
+  <img src="mybatisimg/image-20210729184156019.png" alt="image-20210729184156019" style="zoom:70%;" />
 
 > ==注意：==从上面两个例子可以看出，以后开发我们使用 #{} 参数占位符。
 
@@ -436,7 +436,7 @@ mybatis提供了两种参数占位符：
 
 以后肯定会在SQL语句中写一下特殊字符，比如某一个字段大于某个值，如下图
 
-<img src="mybatisimgimage-20210729184756094.png" alt="image-20210729184756094" style="zoom:80%;" />
+<img src="mybatisimg/image-20210729184756094.png" alt="image-20210729184756094" style="zoom:80%;" />
 
 可以看出报错了，因为映射配置文件是xml类型的问题，而 > < 等这些字符在xml中有特殊含义，所以此时我们需要将这些符号进行转义，可以使用以下两种方式进行转义
 
@@ -444,15 +444,15 @@ mybatis提供了两种参数占位符：
 
   下图的 `&lt;` 就是 `<` 的转义字符。
 
-  <img src="mybatisimgimage-20210729185128686.png" alt="image-20210729185128686" style="zoom:60%;" />
+  <img src="mybatisimg/image-20210729185128686.png" alt="image-20210729185128686" style="zoom:60%;" />
 
 * <![CDATA[内容]]>
 
-  <img src="mybatisimgimage-20210729185030318.png" alt="image-20210729185030318" style="zoom:60%;" />
+  <img src="mybatisimg/image-20210729185030318.png" alt="image-20210729185030318" style="zoom:60%;" />
 
 ### 1.4  多条件查询
 
-![image-20210729203804276](mybatisimgimage-20210729203804276.png)
+![image-20210729203804276](mybatisimg/image-20210729203804276.png)
 
 我们经常会遇到如上图所示的多条件查询，将多条件查询的结果展示在下方的数据列表中。而我们做这个功能需要分析最终的SQL语句应该是什么样，思考两个问题
 
@@ -461,7 +461,7 @@ mybatis提供了两种参数占位符：
 
 条件字段 `企业名称`  和 `品牌名称` 需要进行模糊查询，所以条件应该是：
 
-<img src="mybatisimgimage-20210729204458815.png" alt="image-20210729204458815" style="zoom:70%;" />
+<img src="mybatisimg/image-20210729204458815.png" alt="image-20210729204458815" style="zoom:70%;" />
 
 简单的分析后，我们来看功能实现的步骤：
 
@@ -619,7 +619,7 @@ select * from tb_brand where status = #{status} and company_name like #{companNa
 
   执行结果如下：
 
-  ![image-20210729212510291](mybatisimgimage-20210729212510291.png)
+  ![image-20210729212510291](mybatisimg/image-20210729212510291.png)
 
   但是它也存在问题，如果此时给的参数值是
 
@@ -667,7 +667,7 @@ select * from tb_brand where status = #{status} and company_name like #{companNa
 
 ### 1.5 单个条件（动态SQL）
 
-<img src="mybatisimgimage-20210729213613029.png" alt="image-20210729213613029" style="zoom:80%;" />
+<img src="mybatisimg/image-20210729213613029.png" alt="image-20210729213613029" style="zoom:80%;" />
 
 如上图所示，在查询时只能选择 `品牌名称`、`当前状态`、`企业名称` 这三个条件中的一个，但是用户到底选择哪儿一个，我们并不能确定。这种就属于单个条件的动态SQL语句。 
 
@@ -753,23 +753,23 @@ public void testSelectByConditionSingle() throws IOException {
 
 执行测试方法结果如下：
 
-<img src="mybatisimgimage-20210729214548756.png" alt="image-20210729214548756" style="zoom:70%;" />
+<img src="mybatisimg/image-20210729214548756.png" alt="image-20210729214548756" style="zoom:70%;" />
 
 ### 1.6  添加数据
 
-<img src="mybatisimgimage-20210729214917317.png" alt="image-20210729214917317" style="zoom:70%;" />
+<img src="mybatisimg/image-20210729214917317.png" alt="image-20210729214917317" style="zoom:70%;" />
 
 如上图是我们平时在添加数据时展示的页面，而我们在该页面输入想要的数据后添加 `提交` 按钮，就会将这些数据添加到数据库中。接下来我们就来实现添加数据的操作。
 
 * 编写接口方法
 
-  <img src="mybatisimgimage-20210729215351651.png" alt="image-20210729215351651" style="zoom:80%;" />
+  <img src="mybatisimg/image-20210729215351651.png" alt="image-20210729215351651" style="zoom:80%;" />
 
   参数：除了id之外的所有的数据。id对应的是表中主键值，而主键我们是 ==自动增长== 生成的。
 
 * 编写SQL语句
 
-  <img src="mybatisimgimage-20210729215537167.png" alt="image-20210729215537167" style="zoom:80%;" />
+  <img src="mybatisimg/image-20210729215537167.png" alt="image-20210729215537167" style="zoom:80%;" />
 
 * 编写测试方法并执行
 
@@ -839,7 +839,7 @@ public void testAdd() throws IOException {
 
 执行结果如下：
 
-![image-20210729220348255](mybatisimgimage-20210729220348255.png)
+![image-20210729220348255](mybatisimg/image-20210729220348255.png)
 
 #### 1.6.4  添加-主键返回
 
@@ -847,17 +847,17 @@ public void testAdd() throws IOException {
 
 比如：添加订单和订单项，如下图就是京东上的订单
 
-<img src="mybatisimgimage-20210729221207962.png" alt="image-20210729221207962" style="zoom:80%;" />
+<img src="mybatisimg/image-20210729221207962.png" alt="image-20210729221207962" style="zoom:80%;" />
 
 订单数据存储在订单表中，订单项存储在订单项表中。
 
 * 添加订单数据
 
-  <img src="mybatisimgimage-20210729221049462.png" alt="image-20210729221049462" style="zoom:80%;" />
+  <img src="mybatisimg/image-20210729221049462.png" alt="image-20210729221049462" style="zoom:80%;" />
 
 * 添加订单项数据，订单项中需要设置所属订单的id
 
-  <img src="mybatisimgimage-20210729221058898.png" alt="image-20210729221058898" style="zoom:80%;" />
+  <img src="mybatisimg/image-20210729221058898.png" alt="image-20210729221058898" style="zoom:80%;" />
 
 明白了什么时候 `主键返回` 。接下来我们简单模拟一下，在添加完数据后打印id属性值，能打印出来说明已经获取到了。
 
@@ -877,7 +877,7 @@ public void testAdd() throws IOException {
 
 ### 1.7  修改
 
-<img src="mybatisimgimage-20210729222642700.png" alt="image-20210729222642700" style="zoom:80%;" />
+<img src="mybatisimg/image-20210729222642700.png" alt="image-20210729222642700" style="zoom:80%;" />
 
 如图所示是修改页面，用户在该页面书写需要修改的数据，点击 `提交` 按钮，就会将数据库中对应的数据进行修改。注意一点，如果哪儿个输入框没有输入内容，我们是将表中数据对应字段值替换为空白还是保留字段之前的值？答案肯定是保留之前的数据。
 
@@ -971,13 +971,13 @@ public void testUpdate() throws IOException {
 
 执行测试方法结果如下：
 
-![image-20210729224205522](mybatisimgimage-20210729224205522.png)
+![image-20210729224205522](mybatisimg/image-20210729224205522.png)
 
 从结果中SQL语句可以看出，只修改了 `status`  字段值，因为我们给的数据中只给Brand实体对象的 `status` 属性设置值了。这就是 `set` 标签的作用。
 
 ### 1.8  删除一行数据
 
-![image-20210729224549305](mybatisimgimage-20210729224549305.png)
+![image-20210729224549305](mybatisimg/image-20210729224549305.png)
 
 如上图所示，每行数据后面都有一个 `删除` 按钮，当用户点击了该按钮，就会将改行数据删除掉。那我们就需要思考，这种删除是根据什么进行删除呢？是通过主键id删除，因为id是表中数据的唯一标识。
 
@@ -1036,7 +1036,7 @@ public void testDeleteById() throws IOException {
 
 ### 1.9  批量删除
 
-<img src="mybatisimgimage-20210729225713894.png" alt="image-20210729225713894" style="zoom:70%;" />
+<img src="mybatisimg/image-20210729225713894.png" alt="image-20210729225713894" style="zoom:70%;" />
 
 
 
@@ -1200,7 +1200,7 @@ User select(@Param("username") String username,@Param("password") String passwor
 
 * 运行代码结果如下
 
-  <img src="mybatisimgimage-20210805230303461.png" alt="image-20210805230303461" style="zoom:80%;" />
+  <img src="mybatisimg/image-20210805230303461.png" alt="image-20210805230303461" style="zoom:80%;" />
 
   在映射配合文件的SQL语句中使用用 `arg` 开头的和 `param` 书写，代码的可读性会变的特别差，此时可以使用 `@Param` 注解。
 
@@ -1250,7 +1250,7 @@ User select(@Param("username") String username,@Param("password") String passwor
 
 * 运行程序则可以看到错误
 
-  ![image-20210805231727206](mybatisimgimage-20210805231727206.png)
+  ![image-20210805231727206](mybatisimg/image-20210805231727206.png)
 
 ==结论：以后接口参数是多个时，在每个参数上都使用 `@Param` 注解。这样代码的可读性更高。==
 
@@ -1326,11 +1326,11 @@ Mybatis 针对 CURD 操作都提供了对应的注解，已经做到见名知意
 
 * 将之前案例中 `UserMapper.xml` 中的 根据id查询数据 的 `statement` 注释掉
 
-  <img src="mybatisimgimage-20210805235229938.png" alt="image-20210805235229938" style="zoom:70%;" />
+  <img src="mybatisimg/image-20210805235229938.png" alt="image-20210805235229938" style="zoom:70%;" />
 
 * 在 `UserMapper` 接口的 `selectById` 方法上添加注解
 
-  <img src="mybatisimgimage-20210805235405070.png" alt="image-20210805235405070" style="zoom:70%;" />
+  <img src="mybatisimg/image-20210805235405070.png" alt="image-20210805235405070" style="zoom:70%;" />
 
 * 运行测试程序也能正常查询到数据
 
@@ -1338,13 +1338,13 @@ Mybatis 针对 CURD 操作都提供了对应的注解，已经做到见名知意
 
 ==注意：==在官方文档中 `入门` 中有这样的一段话：
 
-![image-20210805234302849](mybatisimgimage-20210805234302849.png)
+![image-20210805234302849](mybatisimg/image-20210805234302849.png)
 
 所以，==注解完成简单功能，配置文件完成复杂功能。==
 
 而我们之前写的动态 SQL 就是复杂的功能，如果用注解使用的话，就需要使用到 Mybatis 提供的SQL构建器来完成，而对应的代码如下：
 
-<img src="mybatisimgimage-20210805234842497.png" alt="image-20210805234842497" style="zoom:70%;" />
+<img src="mybatisimg/image-20210805234842497.png" alt="image-20210805234842497" style="zoom:70%;" />
 
 上述代码将java代码和SQL语句融到了一块，使得代码的可读性大幅度降低。
 
