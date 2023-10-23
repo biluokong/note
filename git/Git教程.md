@@ -818,7 +818,9 @@ git reset  <文件名>
 ```shell
 # git commit 将暂存区的文件修改提交到本地仓库
 git commit -m "日志信息"  <文件名>  
-
+# 撤销上次commit
+git reset --soft head~1	# 不会撤销git add
+git reset head~	# 同时会撤销git add
 ```
 
 #### 10.5.3 删除文件 rm
@@ -847,8 +849,12 @@ git rm -r --cached "灰色文件夹名称"
 ### 10.6 版本回退 reset
 
 ```shell
-# 版本切换
+# 版本切换(回退到指定版本)
 git reset --hard <commitID>
+# 回退到上个版本
+git reset --hard head^
+# 回退到第2个版本 
+git reset --hard head~2
 # 查看已删除的提交记录
 git reflog
 # 以tree形式显示提交记录

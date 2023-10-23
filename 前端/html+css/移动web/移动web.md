@@ -158,6 +158,7 @@ transform-origin: 水平原点位置 垂直原点位置;
 多重转换技巧：先平移再旋转
 
 ```css
+/* 一边平移的时候一边旋转 */
 transform: translate() rotate();
 ```
 
@@ -165,11 +166,29 @@ transform: translate() rotate();
   * 旋转会改变网页元素的坐标轴向
   * 先写旋转，则后面的转换效果的轴向以旋转后的轴向为准，会影响转换结果
 
+多重转换中其它转换形态会以第一种转换形态的坐标为轴。
+
+注：
+
+- 旋转会改变坐标轴，所以第一种转换形态用旋转时需要注意。
+- 多重转换的多种形态不能分开写，否则会覆盖。
+
+### 透明度
+
+```css
+/* 0是透明，1是不透明 */
+opacity: 0;
+```
+
 ### 缩放
 
 ```css
 transform: scale(缩放倍数);
 transform: scale(X轴缩放倍数, Y轴缩放倍数);
+/* 背景图片缩放：图片水平垂直居中，并缩小到20px（前面需加斜杠） */
+/* 实际是指定图片的大小 */
+background: rgba(0, 0, 0, .5) url() no-repeate
+center / 20px
 ```
 
 * 技巧
@@ -593,6 +612,7 @@ perspective: 视距;
 ### 缩放
 
 ```css
+transform: scale(缩放倍数);
 transform: scale3d(x, y, z);
 transform: scaleX();
 transform: scaleY();
@@ -857,7 +877,7 @@ body {
 }
 ```
 
-# 移动 Web 第四天
+# 移动 Web 第三天
 
 ## 01-移动 Web 基础
 
@@ -1267,7 +1287,7 @@ img {
 }
 ```
 
-# 移动 Web 第五天
+# 移动 Web 第四天
 
 ## 01-vw适配方案
 
@@ -1770,7 +1790,7 @@ header {
 }
 ```
 
-# 移动 Web 第六天
+# 移动 Web 第五天
 
 响应式布局方案
 

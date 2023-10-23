@@ -4384,6 +4384,10 @@ logging:
 
 ​		这样程序在运行的时候就可以进行自动构建了，实现了热部署的效果。
 
+<font color="red"><b>注</b></font>：如果idea是2021版的，可能注册表没有“compiler automake.allow.when.app.running”，它在设置里的高级设置里。
+
+![image-20231021205113645](img/image-20231021205113645.png)
+
 <font color="#ff0000"><b>关注</b></font>：如果你每敲一个字母，服务器就重新构建一次，这未免有点太频繁了，所以idea设置当idea工具失去焦点5秒后进行热部署。其实就是你从idea工具中切换到其他工具时进行热部署，比如改完程序需要到浏览器上去调试，这个时候idea就自动进行热部署操作。
 
 **总结**
@@ -4458,6 +4462,21 @@ public class SSMPApplication {
 1. 通过配置可以关闭热部署功能降低线上程序的资源消耗
 
 
+
+### KF-1-5.Tomcat热加载
+
+tomcat启用热加载需要工件类型为war exploded
+
+然后按下图设置：
+
+![image-20231021210608568](img/image-20231021210608568.png)
+
+不一定需要设置“设置 -> 构建、执行、部署 -> 编译器 -> 自动构建项目” 和 “设置 -> 高级设置 -> 编译器 -> 自动make启动”（2021版idea，2021以上是注册(ctrl+shift+alt+/)里的compiler automake.allow.when.app.running）
+
+- war模式：将web工程以war包的形式上传到服务器；
+- war exploded模式：将web工程以当前文件夹的位置关系上传到服务器。
+
+​	    通俗地说，war模式先打成war包，然后再发布到Tomcat的ROOT下。所以选择这个模式后，你再看下你的tomcat的root文件夹下，是刚打成的项目。war exploded模式只编译生成target，然后把当前的target文件夹的位置关系上传到服务器，没有打包到tomcat的ROOT下。因此这种方式支持热部署，一般在开发的时候也是用这种方式。
 
 ## KF-2.配置高级
 
