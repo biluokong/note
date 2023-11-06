@@ -1,4 +1,4 @@
-复习：
+7[复习]()：
 
 splice() 方法用于添加或删除数组中的元素。
 
@@ -27,6 +27,11 @@ let arr = ['red', 'green', 'blue']
 arr.splice(1, 0, 'pink', 'hotpink') // 在索引号是1的位置添加 pink  hotpink
 console.log(arr) // ['red', 'pink', 'hotpink', 'green', 'blue']
 ~~~
+
+# 声明变量const优先
+
+- 不知道变量是否会修改，先const，要修改时再改成let
+- 引用类型只改变内容，而不改变引用地址，直接const声明
 
 # Web APIs - 第1天笔记
 
@@ -62,7 +67,7 @@ DOM（Document Object Model）是将整个 HTML 文档的每一个标签元素�
 
 观察一个小例子：
 
-![demo](assets/demo.gif)
+![demo](webApiimg/demo.gif)
 
 上述的例子中当用户分分别点击【开始】或【结束】按钮后，通过右侧调试窗口可以观察到 html 标签的内容在不断的发生改变，这便是通过 DOM 实现的。
 
@@ -124,8 +129,8 @@ DOM（Document Object Model）是将整个 HTML 文档的每一个标签元素�
 
 ## 获取DOM对象
 
-1. querySelector   满足条件的第一个元素
-2. querySelectorAll  满足条件的元素集合 返回伪数组
+1. **querySelector('css选择器')**   满足条件的第一个元素
+2. querySelectorAll                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               满足条件的元素集合 返回伪数组
 3. 了解其他方式
    1. getElementById
    2. getElementsByTagName
@@ -201,7 +206,7 @@ DOM（Document Object Model）是将整个 HTML 文档的每一个标签元素�
   const pic = document.querySelector('.pic')
 	// 2. 修改属性
   pic.src = './images/lion.webp'
-  pic.width = 400;
+  pic.style.width = 400;
   pic.alt = '图片不见了...'
 </script>
 ```
@@ -235,7 +240,7 @@ DOM（Document Object Model）是将整个 HTML 文档的每一个标签元素�
 </html>
 ```
 
-任何标签都有 `style` 属性，通过 `style` 属性可以动态更改网页标签的样式，如要遇到 `css` 属性中包含字符 `-` 时，要将 `-` 去掉并将其后面的字母改成大写，如 `background-color` 要写成 `box.style.backgroundColor`
+任何标签都有 `style` 属性，通过 `style` 属性可以动态更改网页标签的样式，如要遇到 `css` 属性中包含字符 `-` 时，要将 `-` 去掉并将其后面的字母改成大写，如 `background-color` 要写成 `box.style.backgroundColor`；有单位的属性值要加单位
 
 2. 操作类名(className) 操作CSS
 
@@ -270,7 +275,7 @@ DOM（Document Object Model）是将整个 HTML 文档的每一个标签元素�
 >
 >1.由于class是关键字, 所以使用className去代替
 >
->2.className是使用新值换旧值, 如果需要添加一个类,需要保留之前的类名
+>2.className是使用新值换旧值, 如果需要添加一个类,需要保留之前的类名，可以使用classList
 
 3. 通过 classList 操作类控制CSS
 
@@ -411,7 +416,13 @@ DOM（Document Object Model）是将整个 HTML 文档的每一个标签元素�
 
 > 知道间歇函数的作用，利用间歇函数创建定时任务。
 
-`setInterval` 是 JavaScript 中内置的函数，它的作用是间隔固定的时间自动重复执行另一个函数，也叫定时器函数。
+`setInterval` 是 JavaScript 中内置的函数，它的作用是间隔固定的时间自动重复执行另一个函数，也叫定时器函数，返回值为定时器的id编号。
+
+开启定时器：setInterval(函数， 间隔时间)（第一次执行要等间隔时间到）
+
+关闭定时器：clearInterval(id)（id为定时器的id编号）
+
+开启定时器原则：先关后开，防止重复启动定时器
 
 ```html
 <script>
@@ -422,7 +433,9 @@ DOM（Document Object Model）是将整个 HTML 文档的每一个标签元素�
 
   // 2. 使用 setInterval 调用 repeat 函数
   // 间隔 1000 毫秒，重复调用 repeat
-  setInterval(repeat, 1000)
+  // setInterval(函数, 间歇时间)，可以写匿名函数
+  setInterval(repeat, 1000)	//不要写成 repeat()
+  setInterval('repeat()', 1000)	//也可以这样写，但不推荐
 </script>
 ```
 
@@ -437,12 +450,6 @@ DOM（Document Object Model）是将整个 HTML 文档的每一个标签元素�
 |             |        |                           |
 |             |        |                           |
 |             |        |                           |
-
-
-
-
-
-
 
 # Web APIs - 第2天
 
@@ -466,7 +473,17 @@ DOM（Document Object Model）是将整个 HTML 文档的每一个标签元素�
 
 结合 DOM 使用事件时，需要为 DOM 对象添加事件监听，等待事件发生（触发）时，便立即调用一个函数。
 
-`addEventListener` 是 DOM 对象专门用来添加事件监听的方法，它的两个参数分别为【事件类型】和【事件回调】。
+事件监听三要素：
+
+- 事件源：触发了事件的dom元素
+- 事件类型；触发事件的方式（如click、mouseover）
+- 事件调用的函数：触发事件时会调用的函数
+
+`addEventListener('事件类型', 函数)` 是 DOM 对象专门用来添加事件监听的方法，它的两个参数分别为【事件类型】和【事件回调】。
+
+添加事件的第二种方法：dom元素.on事件类型 = 函数（传统方法）。
+
+第一种添加事件的方式更推荐，addEventListener方式可绑定多次，on方式多次绑定原来的会被覆盖。
 
 ```html
 <!DOCTYPE html>
@@ -506,6 +523,17 @@ DOM（Document Object Model）是将整个 HTML 文档的每一个标签元素�
 4. 事件触发后，相对应的回调函数会被执行
 
 大白话描述：所谓的事件无非就是找个机会（事件触发）调用一个函数（回调函数）。
+
+### 事件注册
+
+- 传统on方式：btn.onclick = 函数（L0)
+  - 同一个对象注册同类型事件，后面注册的事件会覆盖前面注册的事件
+  - 使用null覆盖前面注册的同个事件，就可以实现事件的解绑
+- 事件监听注册：btn.addEventListener('click', 函数)（L2）
+  - 语法：addEventListener(事件类型, 事件处理函数, 是否使用捕获)
+  - 后面注册的事件不会覆盖前面注册的事件
+  - 可以通过第三个参数指定事件是在冒泡阶段还是捕获阶段执行，默认值false，在冒泡阶段执行
+  - 匿名函数无法解绑，解绑需要用removeEventListener(事件类型, 事件处理函数名, 获取捕获或冒泡阶段)
 
 ### 事件类型
 
@@ -558,7 +586,7 @@ DOM（Document Object Model）是将整个 HTML 文档的每一个标签元素�
 
 鼠标事件是指跟鼠标操作相关的事件，如单击、双击、移动等。
 
-1. `mouseenter 监听鼠标是否移入 DOM 元素
+mouseenter 监听鼠标是否移入 DOM 元素
 
 ```html
 <body>
@@ -581,7 +609,7 @@ DOM（Document Object Model）是将整个 HTML 文档的每一个标签元素�
 </body>
 ```
 
-1. `mouseleave 监听鼠标是否移出 DOM 元素
+mouseleave 监听鼠标是否移出 DOM 元素
 
 ```html
 <body>
@@ -602,6 +630,13 @@ DOM（Document Object Model）是将整个 HTML 文档的每一个标签元素�
 </body>
 ```
 
+mousemove 鼠标移动事件
+
+注：鼠标经过和离开还有：mouseover 和 mouseout
+
+- mouseover 和 mouseout 会有冒泡效果
+- mouseenter 和 mouseleave 没有冒泡效果（推荐）
+
 ###  键盘事件
 
 keydown   键盘按下触发
@@ -616,6 +651,12 @@ blur 失去焦点
 ### 文本框输入事件
 
 input  
+
+### 视/音频事件
+
+ontimeupdate 视/音频(audio/video)当前的播放位置发生改变时触发
+
+onloadeddate 在当前帧的数据加载完成且还没有足够的数据播放 视/音频 的下一帧触发
 
 ## 事件对象
 
@@ -648,9 +689,12 @@ input
 
 1. `ev.type` 当前事件的类型
 2. `ev.clientX/Y` 光标相对浏览器窗口的位置
-3. `ev.offsetX/Y` 光标相于当前 DOM 元素的位置
+3. `ev.offsetX/Y` 光标相对当前 DOM 元素的位置
+3. `ev.pageX/Y` 光标相对于DOM的位置，不受滚动距离的影响
+3. `ev.key` 用户按下的键盘键的值（现在不提倡使用keyCode属性）
+3. `ev.target` 事件源
 
-注：在事件回调函数内部通过 window.event 同样可以获取事件对象。
+注：在事件回调函数内部通过 window.event 同样可以获取事件对象。(window可以省略，window的属性和方法一般都可以直接使用)
 
 ## 环境对象
 
@@ -692,7 +736,7 @@ input
 1. `this` 本质上是一个变量，数据类型为对象
 2. 函数的调用方式不同 `this` 变量的值也不同
 3. 【谁调用 `this` 就是谁】是判断 `this` 值的粗略规则
-4. 函数直接调用时实际上 `window.sayHi()` 所以 `this` 的值为 `window`
+4. 函数直接调用时实际上 `window.sayHi()` 所以 `this` 的值为 `window`，所以普通方法的this是window
 ## 回调函数
 
 如果将函数 A 做为参数传递给函数 B 时，我们称函数 A 为回调函数。
@@ -902,7 +946,7 @@ input
 </body>
 ```
 
-结论：事件对象中的 `ev.stopPropagation` 方法，专门用来阻止事件冒泡。
+结论：事件对象中的 `ev.stopPropagation` 方法，专门用来阻止事件冒泡，它实际是阻止事件流动传播，捕获和冒泡都会被阻止。
 
 >鼠标经过事件：
 >
@@ -910,9 +954,42 @@ input
 >
 >mouseenter  和 mouseleave   没有冒泡效果 (推荐)
 
+## 解绑事件
+
+~~~javascript
+const btn = document.querySelector('button')
+//传统方式绑定事件
+btn.onclick = function () {}	
+//解绑
+btn.onclick = null
+
+//下面这种方式无法解绑，因为匿名函数没有名字
+btn.addEventListener('click', function () {})
+//解绑：removeEventListener(事件类型,事件处理函数,[获取捕获或冒泡阶段])，第三个参数默认false
+btn.removeEventListener('click', '函数名')
+~~~
+
+## 阻止默认事件
+
+某些情况我们需要阻止默认行为的发生，如链接的跳转、表单域跳转等。语法：event.preventDefault()
+
+~~~js
+const form = document.querySelector('form')
+form.addEventListener('submit', function (e) {
+    e.preventDefault()
+})
+~~~
+
+
+
 ## 事件委托
 
 事件委托是利用事件流的特征解决一些现实开发需求的知识技巧，主要的作用是提升程序效率。
+
+- 优点：减少注册次数，可以提高程序性能
+- 原理：事件委托其实是利用事件冒泡的特点
+  - 给父元素注册事件，当我们触发子元素时，会冒泡到父元素，从而触发父元素的事件
+- 实现：事件对象.target 可以获得真正触发事件的元素，元素.tagName 可以获取元素的标签名称(大写)
 
 大量的事件监听是比较耗费性能的，如下代码所示
 
@@ -947,7 +1024,7 @@ input
 
 我们的最终目的是保证只有点击 button 子元素才去执行事件的回调函数，如何判断用户点击是哪一个子元素呢？
 
-![event](assets/event.png)
+![event](webApiimg/event.png)
 
 事件对象中的属性 `target` 或 `srcElement`属性表示真正触发事件的元素，它是一个元素类型的节点。
 
@@ -974,29 +1051,49 @@ input
 
 ### 页面加载事件
 
-加载外部资源（如图片、外联CSS和JavaScript等）加载完毕时触发的事件
+加载外部资源（如图片、外联CSS和JavaScript等）加载完毕时触发的事件（也可以监听具体资源）
 
 有些时候需要等页面资源全部处理完了做一些事情
 
 **事件名：load**
 
-监听页面所有资源加载完毕：
-
 ~~~javascript
+//监听页面所有资源加载完毕：
 window.addEventListener('load', function() {
     // xxxxx
 })
+//监听某个具体资源绑定load事件
+img.addEventListener('load', function() {
+    // xxxxx
+})
 ~~~
+
+补：事件名 `DOMContentLoaded` ，当初始的HTML文档被完全加载和解析完成后触发，无需等待样式表、图像等完全加载完毕。
+
+`document.addEventListener('DOMContentLoaded', 函数)`
 
 ### 元素滚动事件
 
 滚动条在滚动的时候持续触发的事件
 
 ~~~javascript
+//页面滚动事件（也可以监听其他元素）
 window.addEventListener('scroll', function() {
-    // xxxxx
+    //获取body元素：document.body
+    //获取html元素跟获取body不一样，如下：
+    const html = document.documentElement
+    //获取页面向上滚动了多少像素
+    console.log(html.scrollTop)
 })
 ~~~
+
+获取滚动的位置：scrollLeft 和 scrollTop（元素属性）
+
+- 用于获取被卷去的大小，这两个属性可以获取元素内容往左、往上滚动出去而看不到的部分的长度
+- 获取要用内容的父级元素
+- 这两个值是可**读写**的
+
+滚动到指定的坐标：scrollTo(x, y)，如：window.scrollTO(0, 0)
 
 ### 页面尺寸事件
 
@@ -1008,31 +1105,27 @@ window.addEventListener('resize', function() {
 })
 ~~~
 
+#### client家族
+
+- 获取元素可见部分的宽高：clientWidth 和 clientHeight，不包含边框、margin、滚动条等
+
+#### offset家族
+
+- 获取元素自身的宽高：offsetWidth 和 offsetHeight，包含宽高、padding、border（获取的是可视高度，盒子隐藏时结果为0）
+- 获取位置：offsetLeft 和 offsetTop
+  - 获取元素距离自己定位父级元素的左、上距离
+  - 是**只读**属性
+
 ## 元素尺寸与位置
 
-获取元素的自身宽高、包含元素自身设置的宽高、padding、border
+- 获取元素的自身宽高、包含元素自身设置的宽高、padding、border：offsetWidth和offsetHeight  
+  - 获取出来的是数值,方便计算
+  - 注意: 获取的是可视宽高, 如果盒子是隐藏的,获取的结果是0
 
-offsetWidth和offsetHeight  
+- 返回对象，属性值包含元素的`大小`和`相对于视口的位置`：element.getBoundingClientRect()
+  - 和offsetTop不一样，不是相对于定位父级元素的位置，而是相对可视窗口的位置
 
-获取出来的是数值,方便计算
-
-注意: 获取的是可视宽高, 如果盒子是隐藏的,获取的结果是0
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![image-20231027215215807](webApiImg/image-20231027215215807.png)
 
 # Web APIs - 第4天
 
@@ -1065,8 +1158,6 @@ ECMAScript 中内置了获取系统时间的对象 Date，使用 Date 时与之�
 
 ### 方法
 
-
-
  ~~~javascript
    // 1. 实例化
   const date = new Date();
@@ -1077,19 +1168,25 @@ ECMAScript 中内置了获取系统时间的对象 Date，使用 Date 时与之�
  ~~~
 
 
-getFullYear 获取四位年份
+getFullYear() 获取四位年份
 
-getMonth 获取月份，取值为 0 ~ 11
+getMonth() 获取月份，取值为 0 ~ 11
 
-getDate 获取月份中的每一天，不同月份取值也不相同
+getDate() 获取月份中的每一天，不同月份取值也不相同
 
-getDay 获取星期，取值为 0 ~ 6
+getDay() 获取星期，取值为 0 ~ 6（0是星期日）
 
-getHours 获取小时，取值为 0 ~ 23
+getHours() 获取小时，取值为 0 ~ 23
 
-getMinutes 获取分钟，取值为 0 ~ 59
+getMinutes() 获取分钟，取值为 0 ~ 59
 
-getSeconds 获取秒，取值为 0 ~ 59
+getSeconds() 获取秒，取值为 0 ~ 59
+
+toLocaleString() 以当地日期格式来格式化日期（年/月/日 时:分:秒）
+
+toLocaleDateString() 使用当地格式，但只获取年月日（年/月/日）
+
+toLocaleTimeString() 使用当地格式，但只获取时分秒（时:分:秒）
 
 ### 时间戳
 
@@ -1104,140 +1201,21 @@ getSeconds 获取秒，取值为 0 ~ 59
   console.log(date.getTime())
 // 还有一种获取时间戳的方法
   console.log(+new Date())
+  console.log(+new Date(‘2022-4-1 18:30:00’))
   // 还有一种获取时间戳的方法
   console.log(Date.now())
 
 ~~~
 
-
 获取时间戳的方法，分别为 getTime 和 Date.now 和  +new Date()
+
+第三中方法无需实例化，但前面两种可以返回指定时间的时间戳
 
 ## DOM 节点
 
 > 掌握元素节点创建、复制、插入、删除等操作的方法，能够依据元素节点的结构关系查找节点
 
 回顾之前 DOM 的操作都是针对元素节点的属性或文本的，除此之外也有专门针对元素节点本身的操作，如插入、复制、删除、替换等。
-
-### 插入节点
-
-在已有的 DOM 节点中插入新的 DOM 节点时，需要关注两个关键因素：首先要得到新的 DOM 节点，其次在哪个位置插入这个节点。
-
-如下代码演示：
-
-```html
-<body>
-  <h3>插入节点</h3>
-  <p>在现有 dom 结构基础上插入新的元素节点</p>
-  <hr>
-  <!-- 普通盒子 -->
-  <div class="box"></div>
-  <!-- 点击按钮向 box 盒子插入节点 -->
-  <button class="btn">插入节点</button>
-  <script>
-    // 点击按钮，在网页中插入节点
-    const btn = document.querySelector('.btn')
-    btn.addEventListener('click', function () {
-      // 1. 获得一个 DOM 元素节点
-      const p = document.createElement('p')
-      p.innerText = '创建的新的p标签'
-      p.className = 'info'
-      
-      // 复制原有的 DOM 节点
-      const p2 = document.querySelector('p').cloneNode(true)
-      p2.style.color = 'red'
-
-      // 2. 插入盒子 box 盒子
-      document.querySelector('.box').appendChild(p)
-      document.querySelector('.box').appendChild(p2)
-    })
-  </script>
-</body>
-```
-
-结论：
-
-- `createElement` 动态创建任意 DOM 节点
-
-- `cloneNode` 复制现有的 DOM 节点，传入参数 true 会复制所有子节点
-
-- `appendChild` 在末尾（结束标签前）插入节点
-
-再来看另一种情形的代码演示：
-
-```html
-<body>
-  <h3>插入节点</h3>
-  <p>在现有 dom 结构基础上插入新的元素节点</p>
-	<hr>
-  <button class="btn1">在任意节点前插入</button>
-  <ul>
-    <li>HTML</li>
-    <li>CSS</li>
-    <li>JavaScript</li>
-  </ul>
-  <script>
-    // 点击按钮，在已有 DOM 中插入新节点
-    const btn1 = document.querySelector('.btn1')
-    btn1.addEventListener('click', function () {
-
-      // 第 2 个 li 元素
-      const relative = document.querySelector('li:nth-child(2)')
-
-      // 1. 动态创建新的节点
-      const li1 = document.createElement('li')
-      li1.style.color = 'red'
-      li1.innerText = 'Web APIs'
-
-      // 复制现有的节点
-      const li2 = document.querySelector('li:first-child').cloneNode(true)
-      li2.style.color = 'blue'
-
-      // 2. 在 relative 节点前插入
-      document.querySelector('ul').insertBefore(li1, relative)
-      document.querySelector('ul').insertBefore(li2, relative)
-    })
-  </script>
-</body>
-```
-
-结论：
-
-- `createElement` 动态创建任意 DOM 节点
-
-- `cloneNode` 复制现有的 DOM 节点，传入参数 true 会复制所有子节点
-
-- `insertBefore` 在父节点中任意子节点之前插入新节点
-
-### 删除节点
-
-删除现有的 DOM 节点，也需要关注两个因素：首先由父节点删除子节点，其次是要删除哪个子节点。
-
-```html
-<body>
-  <!-- 点击按钮删除节点 -->
-  <button>删除节点</button>
-  <ul>
-    <li>HTML</li>
-    <li>CSS</li>
-    <li>Web APIs</li>
-  </ul>
-
-  <script>
-    const btn = document.querySelector('button')
-    btn.addEventListener('click', function () {
-      // 获取 ul 父节点
-      let ul = document.querySelector('ul')
-      // 待删除的子节点
-      let lis = document.querySelectorAll('li')
-
-      // 删除节点
-      ul.removeChild(lis[0])
-    })
-  </script>
-</body>
-```
-
-结论：`removeChild` 删除节点时一定是由父子关系。
 
 ### 查找节点
 
@@ -1270,10 +1248,12 @@ DOM 树中的任意节点都不是孤立存在的，它们要么是父子关系�
 </body>
 ```
 
-结论：
+结论：（都是属性）
 
-- `childNodes` 获取全部的子节点，回车换行会被认为是空白文本节点
-- `children` 只获取元素类型节点
+- `parentNode` 返回最近一级的父节点，找不到返回null
+
+- `childNodes` 获取全部的子节点，回车换行会被认为是空白文本节点，只选儿子
+- `children` 只获取元素类型节点，只选儿子，返回伪数组
 
 ```html
 <body>
@@ -1350,19 +1330,151 @@ DOM 树中的任意节点都不是孤立存在的，它们要么是父子关系�
 
 - `previousSibling` 获取前一个节点，以相对位置查找节点，实际应用中非常灵活。
 - `nextSibling` 获取后一个节点，以相对位置查找节点，实际应用中非常灵活。
+- `previousElementSibling` 获取前一个元素节点
+- `nextElementSibling` 获取后一个元素节点
 
+### 插入节点
 
+在已有的 DOM 节点中插入新的 DOM 节点时，需要关注两个关键因素：首先要得到新的 DOM 节点，其次在哪个位置插入这个节点。
 
+如下代码演示：
 
+```html
+<body>
+  <h3>插入节点</h3>
+  <p>在现有 dom 结构基础上插入新的元素节点</p>
+  <hr>
+  <!-- 普通盒子 -->
+  <div class="box"></div>
+  <!-- 点击按钮向 box 盒子插入节点 -->
+  <button class="btn">插入节点</button>
+  <script>
+    // 点击按钮，在网页中插入节点
+    const btn = document.querySelector('.btn')
+    btn.addEventListener('click', function () {
+      // 1. 获得一个 DOM 元素节点
+      const p = document.createElement('p')
+      p.innerText = '创建的新的p标签'
+      p.className = 'info'
+      
+      // 复制原有的 DOM 节点
+      const p2 = document.querySelector('p').cloneNode(true)
+      p2.style.color = 'red'
 
+      // 2. 插入盒子 box 盒子
+      document.querySelector('.box').appendChild(p)
+      document.querySelector('.box').appendChild(p2)
+    })
+  </script>
+</body>
+```
 
+结论：
 
+- `createElement('标签')` 动态创建任意 DOM 元素节点
+- `当前节点.cloneNode()` 复制当前节点，传入参数 true 会把当前节点的后代节点也一起复制，默认false
+- `父节点.appendChild(节点)` 在父节点内的末尾（结束标签前）插入节点
+- `insertBefore(新节点, 子节点)` 在父节点中指定子节点之前插入新节点（如果子节点为null或undefined，相对于appendChild方法）
 
+再来看另一种情形的代码演示：
 
+```html
+<body>
+  <h3>插入节点</h3>
+  <p>在现有 dom 结构基础上插入新的元素节点</p>
+	<hr>
+  <button class="btn1">在任意节点前插入</button>
+  <ul>
+    <li>HTML</li>
+    <li>CSS</li>
+    <li>JavaScript</li>
+  </ul>
+  <script>
+    // 点击按钮，在已有 DOM 中插入新节点
+    const btn1 = document.querySelector('.btn1')
+    btn1.addEventListener('click', function () {
 
+      // 第 2 个 li 元素
+      const relative = document.querySelector('li:nth-child(2)')
 
+      // 1. 动态创建新的节点
+      const li1 = document.createElement('li')
+      li1.style.color = 'red'
+      li1.innerText = 'Web APIs'
 
+      // 复制现有的节点
+      const li2 = document.querySelector('li:first-child').cloneNode(true)
+      li2.style.color = 'blue'
 
+      // 2. 在 relative 节点前插入
+      document.querySelector('ul').insertBefore(li1, relative)
+      document.querySelector('ul').insertBefore(li2, relative)
+    })
+  </script>
+</body>
+```
+
+### 删除节点
+
+删除现有的 DOM 节点，也需要关注两个因素：首先由父节点删除子节点，其次是要删除哪个子节点。
+
+```html
+<body>
+  <!-- 点击按钮删除节点 -->
+  <button>删除节点</button>
+  <ul>
+    <li>HTML</li>
+    <li>CSS</li>
+    <li>Web APIs</li>
+  </ul>
+
+  <script>
+    const btn = document.querySelector('button')
+    btn.addEventListener('click', function () {
+      // 获取 ul 父节点
+      let ul = document.querySelector('ul')
+      // 待删除的子节点
+      let lis = document.querySelectorAll('li')
+
+      // 删除节点
+      ul.removeChild(lis[0])
+    })
+  </script>
+</body>
+```
+
+结论：`父节点.removeChild(节点)` 删除节点时一定是由父子关系
+
+- 如果不存在父子关系，则删除不成功
+- 删除节点和隐藏节点(display:none)有区别：隐藏节点删除是用html节点来删除
+
+补：`节点.remove()` 可以直接删除节点
+
+## M端事件
+
+移动端有自己独特的地方。比方`触屏事件touch`(也称触摸事件)，Android 和 IOS 都有。
+
+touch对象代表一个触摸点，如手指、触摸笔等。
+
+常见触屏事件：
+
+- touchstart：手指触摸到一个DOM元素时触发
+- touchmove：手指在一个DOM元素上滑动时触发
+- touchend：手指从一个DOM元素上移开时触发
+
+## Swiper插件
+
+开源、免费、强大的触摸滑动插件
+
+官网：https://www.swiper.com.cn/
+
+在线演示：https://www.swiper.com.cn/demo/index.html
+
+基本使用流程：http://www.swiper.com.cn/usage/index.html
+
+API文档：https://www.swiper.com.cn/api/index.html
+
+注意：多个swiper同时使用时，类名要注意区分
 
 # Web APIs - 第5天笔记
 
@@ -1385,7 +1497,7 @@ JavaScript的组成
   - DOM   文档对象模型， 定义了一套操作HTML文档的API
   - BOM   浏览器对象模型，定义了一套操作浏览器窗口的API
 
- ![67604738945](assets/1676047389456.png)
+ ![67604738945](webApiimg/1676047389456.png)
 
 ## window对象
 
@@ -1396,7 +1508,7 @@ JavaScript的组成
 - 所有通过var定义在全局作用域中的变量、函数都会变成window对象的属性和方法
 - window对象下的属性和方法调用的时候可以省略window
 
- ![67604743636](assets/1676047436362.png)
+ ![67604743636](webApiimg/1676047436362.png)
 
 ## 定时器-延迟函数
 
@@ -1445,6 +1557,40 @@ clearTimeout(timerId)
 </body>
 ~~~
 
+## JS执行机制
+
+JS 语言的一大特点是单线程，同一时间只能做一件事情。
+
+这是它诞生的使命所致——js是为了处理页面中用户的交互，以及操作DOM所诞生的。比如我们对某个DOM元素进行添加和删除操作时，不能同时进行。应该先添加，之后再删除。
+
+单线程意味着所有任务需要排队，前一个任务结束才会执行后一个任务。这样导致的问题是：如果JS执行的时间过长，就会造成页面的渲染不连贯，导致页面渲染加载堵塞的感觉。
+
+为了解决这个问题，利用多核CPU的计算能力，HTML5 提出 Web Worker 标准，允许 JS 脚本创建多个线程。于是，JS 中出现了<font color="red">同步</font>和<font color="red">异步</font>。
+
+### 同步任务
+
+同步任务都在主线程执行，形成一个<font color='red'>执行栈</font>
+
+### 异步任务
+
+JS 的异步是通过回调函数实现的。一般而言，异步任务有以下三中类型：
+
+- 普通事件，如 click、resize 等
+- 资源加载，如 load、error 等
+- 定时器，包括 setInterval、setTimeout 方法等
+
+异步任务会添加到<font color='red'>任务队列</font>中（也加消息队列）
+
+### 执行机制
+
+先执行**执行栈中的同步任务**，异步任务则会被放入任务队列中，一旦执行栈中的所有同步任务执行完毕，系统就会依序读取**任务队列**中的异步任务，于是被读取的异步任务结束等待状态，进入执行栈，开始执行。
+
+![image-20231028231648157](webApiImg/image-20231028231648157.png)
+
+由于主线程不断的重复获得任务、执行任务、再获得任务、再执行，所有这种机制被称为<font color='red'>事件循环（event loop）</font>。
+
+![](C:\Users\797799421\Desktop\笔记\前端\js\webApiImg\image-20231028231928460.png)
+
 ## location对象 
 
 location (地址) 它拆分并保存了 URL 地址的各个组成部分， 它是一个对象
@@ -1455,6 +1601,11 @@ location (地址) 它拆分并保存了 URL 地址的各个组成部分， 它�
 | search    | 属性，获取地址中携带的参数，符号 ？后面部分          |
 | hash      | 属性，获取地址中的啥希值，符号 # 后面部分            |
 | reload()  | 方法，用来刷新当前页面，传入参数 true 时表示强制刷新 |
+| host      | 属性，获取主机，包括 域名 / ip 和 端口               |
+| hostname  | 属性，获取主机名：域名 / ip                          |
+| port      | 属性，获取端口                                       |
+| pathname  | 属性，获取 域名 / ip 后面的部分                      |
+| protocol  | 属性，获取请求的协议部分，如“http:”                  |
 
 ~~~html
 <body>
@@ -1508,6 +1659,8 @@ navigator是对象，该对象下记录了浏览器自身的相关信息
   }})();
 ~~~
 
+补：立即执行函数除了 `(function(){})()` 这种写法，还可以这么写：`!function(){}()`、`+function(){}()`、`~function(){}()`
+
 ## histroy对象
 
 history (历史)是对象，主要管理历史记录， 该对象与浏览器地址栏的操作相对应，如前进、后退等
@@ -1516,11 +1669,11 @@ history (历史)是对象，主要管理历史记录， 该对象与浏览器地
 
 history对象一般在实际开发中比较少用，但是会在一些OA 办公系统中见到。
 
- ![67604783479](assets/1676047834796.png)
+ ![67604783479](webApiimg/1676047834796.png)
 
 常见方法：
 
- ![67604784659](assets/1676047846593.png)
+![67604784659](webApiimg/1676047846593.png)
 
 ~~~html
 <body>
@@ -1566,7 +1719,7 @@ history对象一般在实际开发中比较少用，但是会在一些OA 办公�
 
 **特性：**以键值对的形式存储，并且存储的是字符串， 省略了window
 
-![67604963508](assets/1676049635087.png)
+![67604963508](webApiimg/1676049635087.png)
 
 ~~~html
 <!DOCTYPE html>
@@ -1730,14 +1883,6 @@ console.log(newArr)
 </body>
 ~~~
 
-
-
-
-
-
-
-
-
 # Web APIs - 第6天笔记
 
 > 目标：能够利用正则表达式完成小兔鲜注册页面的表单验证，具备常见的表单验证能力
@@ -1756,7 +1901,7 @@ console.log(newArr)
 - 例如验证表单：手机号表单要求用户只能输入11位的数字 (匹配)
 - 过滤掉页面内容中的一些敏感词(替换)，或从字符串中获取我们想要的特定部分(提取)等 
 
- ![67607966636](assets/1676079666366.png)
+ ![67607966636](webApiimg/1676079666366.png)
 
 
 
@@ -1775,8 +1920,8 @@ console.log(newArr)
 
 2. 使用正则
 
-   - `test()方法`   用来查看正则表达式与指定的字符串是否匹配
-   - 如果正则表达式与指定的字符串匹配 ，返回`true`，否则`false`
+   - `test()方法`   用来查看正则表达式与指定的字符串是否匹。如果正则表达式与指定的字符串匹配 ，返回`true`，否则`false`
+   - `regObj.exec(字符串)` 在一个指定字符串中执行一个搜索匹配。匹配成功会返回一个数组，否则返回null
 
 ~~~html
 <body>
@@ -1810,7 +1955,7 @@ console.log(newArr)
 
 正则表达式中的边界符（位置符）用来提示字符所处的位置，主要有两个字符
 
-![67608008165](assets/1676080081650.png)
+![67608008165](webApiimg/1676080081650.png)
 
 >如果 ^ 和 $ 在一起，表示必须是精确匹配
 
@@ -1848,7 +1993,7 @@ console.log(newArr)
 
 量词用来设定某个模式重复次数
 
-![67608018538](assets/1676080185383.png)
+![67608018538](webApiimg/1676080185383.png)
 
 > 注意： 逗号左右两侧千万不要出现空格
 
@@ -1912,7 +2057,7 @@ console.log(newArr)
 
 表示字符的范围，定义的规则限定在某个范围，比如只能是英文字母，或者数字等等，用表示范围
 
- ![67608029616](assets/1676080296168.png)
+ ![67608029616](webApiimg/1676080296168.png)
 
 ~~~html
 <body>
@@ -1960,15 +2105,15 @@ console.log(newArr)
 
 某些常见模式的简写方式，区分字母和数字
 
-![67608035363](assets/1676080353637.png)
+![67608035363](webApiimg/1676080353637.png)
 
- ![67608037232](assets/1676080372325.png)
+ ![67608037232](webApiimg/1676080372325.png)
 
 ## 替换和修饰符
 
 replace 替换方法，可以完成字符的替换
 
- ![67608043716](assets/1676080437160.png)
+ ![67608043716](webApiimg/1676080437160.png)
 
 ~~~html
 <body>
@@ -2005,7 +2150,7 @@ replace 替换方法，可以完成字符的替换
 
 ## 正则插件
 
- ![67608054863](assets/1676080548639.png)
+ ![67608054863](webApiimg/1676080548639.png)
 
 
 
@@ -2015,7 +2160,7 @@ replace 替换方法，可以完成字符的替换
 
 ## 判断是否有类
 
- ![67608061879](assets/1676080618794.png)
+ ![67608061879](webApiimg/1676080618794.png)
 
 元素.classList.contains() 看看有没有包含某个类，如果有则返回true，么有则返回false
 
