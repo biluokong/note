@@ -1,0 +1,25 @@
+uniapp:
+
+1、navigationBarTitleText不显示：
+	因为每个pages项里的 style 属性优先级高于 globalStyle 里的配置。
+	解决：注释或删除掉每个pages项的style属性
+
+2、获取小程序的当前窗口（视图）大小，wx.getSystemInfoSync().windowHeight
+	另一种方式：100vh（vw和vh是把当前视口宽、高等分为100份）
+
+	
+3、切换一级分类时，二级分类不会自动到最上面
+	思路1：定义一个data：scroll_top = 0，触发一级分类的click事件就
+把二级分类盒子的scroll-top改为0，当前后值都为0，是不会触发的该数据的动态更新的，
+解决方法，在点击事件函数里写上：this.scroll_top = this.scroll_top === 0 ? 1 : 0
+	思路2：点击事件触发时，active属性会变化（除非点的是同一个一级分类），
+可以让二级分类的盒子加上 :scroll-top="active === 0 ? 0 : 0"
+
+4、为自定义组件添加点击事件时，会被当作自定义事件，从而触发无效。
+	解决方法：
+		（1）使用原生事件：@click.native
+    	（2）在自定义组件内部添加click事件，并this.$emit('click')给父组件，
+		此时再在父组件使用 @click 即可
+		
+5、为下拉触底加节流阀是不必要的，可以用 uni.showLoading()，添加 mask 属性，并
+	该值为 true，防止用户触发穿透，让用户触发下拉触底事件后无法再次触发

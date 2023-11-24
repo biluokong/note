@@ -1,0 +1,16 @@
+
+1、vue基础&小程序基础接口
+视频中的接口域名为https://www.escook.cn/  替换成  https://applet-base-api-t.itheima.net/ 
+2、微信小程序黑马优购项目接口
+黑马优购项目视频中域名为http://www.uinav.com的，替换成  https://api-hmugo-web.itheima.net/
+ 
+ 
+黑马优购在线讲义
+https://applet-base-api-t.itheima.net/docs-uni-shop/index.htm
+ 
+注：
+由于小程序本身权限问题，属于小程序开发者才能够调用成功登录、支付等比较重要的接口，因为小程序的开发者最多只能90个，没办法给每个学生开通权限
+ 
+进入公司之后，公司会给开放开发者权限，接口就没问题了
+ 
+登录接口是不影响后续学习的

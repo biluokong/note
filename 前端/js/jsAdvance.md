@@ -1274,7 +1274,7 @@ console.log(sum)
 ### 对象原型
 
 
-对象都会有一个属性 \__proto__ 指向构造函数的 prototype 原型对象，之所以我们对象可以使用构造函数 prototype 
+对象都会有一个属性 \__proto__ 指向构造函数的 prototype 原型对象，之所以我们对象可以使用构造函数的 prototype 
 
 原型对象的属性和方法，就是因为对象有 \__proto__ 原型的存在。
 
@@ -1943,3 +1943,411 @@ function throttle(fn, t) {
   - 创建一个节流函数，调用fun在wait秒内最多执行func一次
   - fun返回最后一次func调用的结果
   - [lodash.throttle | Lodash中文文档 | Lodash中文网 (lodashjs.com)](https://www.lodashjs.com/docs/lodash.throttle#_throttlefunc-wait0-options)
+
+# 补充
+
+## 类
+
+ES6中新增了类的概念，可以使用`class`关键字声明一个类，之后可以用该类来实例化对象；类名习惯首字母大写，类中的 this 指向实例对象。
+
+类抽象了对象的公共部分，它泛指某一大类；对象特指某一个，通过类实例化可以获得一个具体的对象。
+
+### constructor构造函数
+
+`constructor()`方法是类的构造函数（默认方法），用于传递参数，返回实例对象，通过 new 命令生成对象实例是，会自动调用该方法。如果没有显示定义，类内部会自动生成一个无参构造方法。
+
+~~~js
+class Start {
+  // 成员变量：可以先声明，再在构造方法内赋值，也可以直接通过this.age 创建成员变量并赋值，如this.name
+  age = 12	// 赋默认值
+  constructor(name) {
+    this.name = name
+    this.age = 22
+  }
+}
+
+const start = new Start('lisi')
+~~~
+
+### 类中的属性
+
+实例属性是每个实例对象独属一份的，静态属性一个类独有一份的；
+
+实例属性通过 `实例对象.` 访问，静态属性通过 `类名.` 访问。
+
+~~~js
+class User {
+  age = 12	// 实例属性
+  static className = 'user'	// 静态属性的第一种方式
+  constructor(name) {
+    this.name = name	// 实例属性
+  }
+}
+User.age = 12	// 静态属性的第二种方式
+// 静态属性的第三种方式（这是静态属性的本质）
+User.__proto__.age = 12
+~~~
+
+
+
+### 类中的方法
+
+类中添加实例方法时，可以直接写方法，不需要声明变量进行赋值。（相当于ES6的对象属性简写，因为函数名和变量名相同）
+
+实例方法是挂载到类的原型对象上的，静态方法是挂载到类上的。
+
+但是赋值方式声明的方法不能用 super 调用，会报错显示它不是个函数。
+
+~~~js
+class User {
+  // 第一种写法（不推荐）
+  sayHi = function() {
+    console.log('hello')
+  }
+  // 第二种写法（不推荐）
+  sayHi = () => {}
+  // 第三中写法（推荐）
+  sayHi() {}
+  // 静态方法的第一种写法（推荐）
+  static sayHi() {}
+}
+User.sayHi() {}	// 静态方法的第二种写法
+// 静态方法的第三中写法（这是静态方法的实质）
+User.__proto__.sayHi = function() {}
+~~~
+
+### 继承
+
+js中的类可以通过 `extends`关键字来继承父类的一些属性和方法。
+
+#### super
+
+super指向了父类（实例对象），用于访问父类的函数。可以使用 `super(参数...)` 来调用父类的构造方法；可以使用 `super.` 来调用父类的方法。
+
+注意：无法通过 super 访问父类的属性，只能通过 this 来访问属性，super 访问只会得到 undefined；原因是属性在实例化时只产生一份，并且独属于该实例对象。本质和类的内部机制（原型对象）有关。
+
+子类如果有父类的同名方法，优先调用子类的方法（就近原则）；如果想要调用父类的同名方法，可以用 super 调用父类的方法。
+
+构造函数使用 super 时，必须要放在 this 的前面，并且只有子类显式声明了构造函数，就必须用super先调用父类的构造方法。（这和java不同，java只有父类声明有参构造方法，子类才必须用 super 先调用父类的构造方法）
+
+~~~js
+class Person {
+ constructor(name, age) {
+     this.name = name;
+     this.age = age;
+ }
+
+ sayHello() {
+     console.log(`Hello, my name is ${this.name} and I am ${this.age} years old.`);
+ }
+}
+
+class Employee extends Person {
+ constructor(name, age, employeeId) {
+     super(name, age);
+     this.employeeId = employeeId;
+ }
+
+ sayHello() {
+     console.log(`Hello, I am an employee with employeeId ${this.employeeId}.`);
+     super.sayHello();
+ }
+}
+~~~
+
+### 类的本质
+
+类就是函数（通过 typeof 可以知道类就是函数）。类的内部工作机制就是原型操作，可以把它当作一种语法糖；它实际是为了简化 `函数对原型对象的操作` 而产生的，它能提高代码的可读性和健壮性。
+
+#### 属性
+
+- 类中定义的属性会为每个实例对象产生一份
+
+~~~js
+class User {
+  age = 12
+  constructor(name) {
+    this.name = name
+  }
+}
+// 等同于
+function User(name) {
+  this.age = 12
+  this.name = name
+}
+~~~
+
+- 类中是静态属性是挂载到类的`__proto__`上的，实例对象不存在该属性
+
+~~~JS
+function Fd() {}
+Fd.className = 'fd'	// 构造函数上的静态属性
+// 等同 Fd.__proto__.className = 'fd'
+// 相当于
+class Fd {
+  static className= 'fd'	// 类上的静态属性
+}
+~~~
+
+#### 方法
+
+- 类中定义的方法会自动放到它的函数原型`prototype`上，实例对象可以通过原型链来访问
+
+~~~js
+class User {
+  sayHi() {consolo.log('hi')}
+}
+// 等同于
+function User() {}
+User.prototype.sayHi = function() {consolo.log('hi')}
+~~~
+
+- 类中定义的方法不会被遍历（因为该方法实际不是实例对象中的方法，而是原型对象中的方法）
+
+~~~js
+// 通过类的方式定义的方法，在挂载到原型对象上是，会自动把该方法的特征改为false： enumerable：false
+class User {
+  show() {}
+}
+cosnt user = new User()
+for (const key in user) {
+  console.log(key)
+}
+// 通过函数方式给原型对象的方式是可以遍历的，它的 enumerable 为 true
+function User() {
+  show() {}
+}
+const user = new User()
+for (const key in user) {
+  // 通过此方式排除掉原型对象上的方法
+  if (user.hasOwnProperty(key))	{
+    console.log(key)
+  }
+}
+// 查看函数特征的方法（可以转换为方便查看的JSON字符串）
+JSON.stringify(
+  Object.getOwnPropertyDescriptor(原型对象, 原型对象上的函数)
+)
+~~~
+
+- 类的静态的方法是挂载到类的`__proto__`上的，实例对象中不存在该方法
+
+~~~js
+class User {
+  static sayHi() {console.log('hi')}
+}
+// 相当于
+function User() {}
+User.sayHi = function() {console.log('hi')}
+//等同于：User.__proto__.sayHi = function(){}
+~~~
+
+
+
+- 类是默认使用严格模式的
+
+~~~js
+"use strict";	// 使用严格模式
+function User() {}
+User.prototype.show = function() {
+  function test() {
+    console.log(this)
+  }
+  test()
+}
+const u = new User()
+// 没有使用严格模式时，输出了Window对象；使用严格模式时输出的undefined
+u.show()
+
+class Hd {
+  show() {
+    function test() {
+      console.log(this)
+    }
+    test()
+  }
+}
+const hd = new Hd()
+hd.show	// 默认输出是undefined（默认为严格模式）
+~~~
+
+
+
+### 类的注意点
+
+- ES6 中类没有变量提示，必须先定义类，才能使用类实例化对象
+- 类里面的共有属性和方法一定要加this使用
+- 类中构造函数的this指向实例对象
+- 类中方法的this指向的是方法的调用者（不一定是实例对象，因为该方法的调用者可能为构造方法中声明的事件监听对象）
+
+
+
+## prototype、\__proto__与constructor
+
+![image-20231123221857144](advanceImg/image-20231123221857144.png)
+
+### 基本定义
+
+- `__proto__`和`constructor`属性是**对象**所独有的
+- `prototype`属性是**函数**所独有的。但是由于JS中函数也是一种对象，所以函数也拥有`__proto__`和`constructor`属性
+
+### 指向规则
+
+- 实例对象的`construcotr`指向当前对象的构造函数，原型对象的`constructor`指向与其关联的构造函数，它一定是**从一个对象指向一个函数**
+
+- `__proto__`指向的是当前对象的构造函数（即`constructor`）的`prototype`属性；它一定是**从一个对象指向另一个对象**
+- `prototype`指向的当前函数的原型对象，它一定是**从一个函数指向一个对象**
+- `Function()`函数是`Object()`的构造函数，所以`Object()`的`constructor`指向了`Function()`
+- `Function()`函数是`其他构造函数`的构造函数，所以其他构造函数的`constructor`指向了`Function()`
+- `Function()`函数的构造函数是它本身，所以它的`constructor`指向为它自身、它的`__proto__`指向与它的`prototype`指向一样
+
+### 作用或说明
+
+说明：这里的属性包括了函数。
+
+- **`__proto__`**：当前访问一个对象的属性时，如果该对象内不存在此属性，就会去它的`__proto__`属性所指向的那个对象（相当于父对象）里去找；如果父对象也不存在，则继续往上找，直到到达原型链的顶端**null**为止
+
+![image-20231123213452164](advanceImg/image-20231123213452164.png)
+
+- **`prototype`**：用于定义函数（它的`constructor`指向的函数）的所有实例对象公用的属性和方法。**任何构造函数在定义的时候，都会默认同时创建该函数的prototype对象**
+
+![image-20231123215544202](advanceImg/image-20231123215544202.png)
+
+- **`constructor`**：其实单从`constructor`来讲，它是只有`prototype`对象才有的，实例对象本身不具有该属性；但实例对象可以通过原型链来找到它的构造函数，如通过它的`__proto__`属性的`construcotor`属性来找到。所有实例对象的`constructor`属性是通过原型链来找到其指向的目标的。
+
+![image-20231123220829271](C:\Users\797799421\Desktop\笔记\前端\js\advanceImg\image-20231123220829271.png)
+
+~~~js
+function Foo() {}
+const foo = new Foo()
+// foo.__proto__ === Foo.prototype	--> true
+// foo.constructor === Foo --> true
+// foo.constructor === foo.__proto__.constructor --> true
+// foo.constructor === Foo.prototype.constructor --> true
+~~~
+
+## 访问器
+
+访问器（getter 和 setter）是一种用于实现对象属性访问控制的方法。访问器可以用于获取或设置对象属性值，同时可以在属性被访问时执行一些操作。
+
+可以用于函数和类，因为函数也是对象。
+
+注意：
+
+- 访问器的优先级是高于属性的普通操作的
+
+- 不要把属性和setter、getter方法放在同一级，可能会产生递归调用问题。解决方法：
+
+  - 它属性放另一个对象中（不同级即可）
+  - 可以用Symbol
+
+  ~~~js
+  // 第一种解决方法
+  const Lesson = {
+  	data: { total: 2 },
+    get total() {
+      return this.data.total
+    }
+  }
+  console.log(Lesson.total)
+  // 输出结果为：{"data":{"total":2},"total":2}
+  console.log(JSON.stringify(Lesson))
+  
+  // 第二中解决方法
+  const DATA = Symbol()
+  const Lesson = {
+  	[DATA]: { total: 2 },
+    get total() {
+      return this[DATA].total
+    }
+  }
+  console.log(Lesson.total)
+  // 输出结果为：{"total":2}
+  console.log(JSON.stringify(Lesson))
+  ~~~
+
+### 保护数据
+
+~~~js
+const user = {
+  data: { name: 'lisi', age: 10 },
+  set age(value) {
+    if (typeof value != 'number' || value < 10 || value > 100) {
+      throw new Error('年龄格式错误')
+    }
+    this.data.age = value
+  },
+  get age() {
+    return this.data.age
+  }
+}
+user.age = 39
+console.log(user.age)
+~~~
+
+### 伪造属性操作
+
+这样伪造的属性无法修改，非常安全。（类似于 vue 中的计算属性）
+
+~~~js
+// 使用严格模式时，修改实际不存在的属性total时会直接报错
+'use strict'	// 使用严格模式
+const Lesson = {
+  lists: [
+    { name: 'js', price: 100 },
+    { name: 'ts', price: 200 },
+    { name: 'vue', price: 120 }
+  ],
+  get total() {
+    return this.lists.reduce((pre, next) => pre + next.price, 0)
+  }
+}
+console.log(Lesson.total)
+Lesson.total = 100	// 严格模式下报错
+~~~
+
+### 批量设置和访问
+
+1、直接在对象中定义get和set方法
+
+~~~js
+const user = {
+  name: 'lisi',
+  age: 11,
+  get values() {
+    return `姓名：${this.name}，年龄为：${this.age}`;
+  },
+  set values(valuesStr) {
+    [this.name, this.age] = valuesStr.split(',')
+  }
+}
+user.values = 'zs,22'
+console.log(JSON.stringify(user))
+console.log(user.values)
+~~~
+
+
+
+2、使用Object.defineProperty为对象添加。
+
+​	当为对象的某属性设置get方法后，在访问该属性时就会调用get方法，如果属性名不以`_`开头，可能会出现递归调用get方法的情况，造成栈内存溢出。
+
+~~~js
+const user = {
+  name: 'lisi',
+  age: 11
+}
+Object.defineProperty(user, 'name', {
+  get: function () {
+    console.log('设置')
+    // 这里访问了name属性，会调用get方法；然后不停递归调用get方法，造成栈内存溢出
+    return this.name	
+  }
+})
+console.log(user.name)
+
+// 解决递归调用问题
+~~~
+
+
+
