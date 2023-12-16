@@ -1343,6 +1343,13 @@ console.log(sum)
 
 结论：原型继承是为了继承父类的属性和方法，实现重用。
 
+注意：
+
+- 这种继承方式子类无法继承父类的静态方法，可以加上`Man.__proto__ = Person`，从而继承父类的静态方法
+- 这种继承的方式对类无效，因为这行代码`Man.prototype = new Person()`对类是无法赋值成功的
+
+- 
+
 语法：
 
 ​	构造函数.prototype = new 继承对象的构造函数
@@ -2171,6 +2178,41 @@ const hd = new Hd()
 hd.show	// 默认输出是undefined（默认为严格模式）
 ~~~
 
+#### 继承
+
+类的继承实质是让子类的`__proto__`属性执行父类，子类的`prototype.__proto__`指向父类的`prototype`。
+
+这种方式子类的实例方法的原型链上可以找到父类的`prototype`，子类的原型链上也可以找到父类的。即子类既可以继承父类的实例方法，又能继承父类的静态方法。
+
+~~~js
+// 父类
+class Father {
+  constructor(name) {
+    this.name = name;
+  }
+
+  sayHi() {
+    console.log(`Hi, my name is ${this.name}`);
+  }
+
+  static sayHello() {log}
+}
+// 子类
+// class Son extends Father { }
+// 上面这行代码相当于下面三行代码
+class Son { }
+Son.__proto__ = Father
+Son.prototype.__proto__ = Father.prototype
+
+// 函数形式的写法
+function Person() { }
+Person.prototype.sayHi = function () { console.log('hi') }
+Person.sayHello = function () { console.log('hello') }
+function Woman() { }
+Woman.__proto__ = Person
+Woman.prototype.__proto__ = Person
+~~~
+
 
 
 ### 类的注意点
@@ -2349,5 +2391,14 @@ console.log(user.name)
 // 解决递归调用问题
 ~~~
 
+## vue事件的补充
 
+### 原生事件
 
+在vue的自定义组件中，如果使用 `@事件类型` ，它实际会去绑定自定义组件中的自定义事件， 如果该事件在组件中没有定义，则无法触发。
+
+解决方法：使用 **`@事件类型.native`** 就可以绑定H5的原生事件了。
+
+### 阻止默认事件
+
+**`@事件类型.prevent`**

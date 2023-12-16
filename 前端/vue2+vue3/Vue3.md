@@ -277,6 +277,13 @@ const filterList = computed(item=>item > 2)
     console.log(newValue, oldValue)
   })
   }
+  // 精确监听多个
+  watch(
+		[() => state.value.age, () => state.value.count],
+    ([newAge, newCount], [oldAge, oldCount]) => {
+			...
+  	})
+  }
 </script>
 ~~~
 
@@ -593,8 +600,9 @@ export const useCounterStore = defineStore('counter', () => {
       }
     ],
     'vue/no-setup-props-destructure': ['off'], // 关闭 props 解构的校验
-    // 💡 添加未定义变量错误提示，create-vue@3.6.3 关闭，这里加上是为了支持下一个章节演示。
+    // 💡 添加未定义变量错误提示，create-vue@3.6.3 关闭，这里加上是为了支持下一个章节演示（有了自动导入时，直接使用会报错未）
     'no-undef': 'error'
+    // 关闭：‘no-undef': 0
   }
 ~~~
 

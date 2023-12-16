@@ -138,6 +138,7 @@ $ yarn add  cos-js-sdk-v5
 
 - 实现上传方法-代码位置
 ```javascript
+		// 导入：import COS from 'cos-js-sdk-v5'
 
     // 选择图片上传
     uploadImage(params) {
