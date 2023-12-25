@@ -8610,71 +8610,7 @@ snabbdom 是著名的虚拟dom库，是diff算法的鼻祖，vue源码借鉴了s
 </template>
 ~~~
 
-## 遇到的问题
 
-### element-ui
-
-#### dialog
-
-- 使用`<el-dialog>` 时出现了遮罩层把弹框都遮住的情况。解决方法：给标签加上 `append-to-body`
-
-- 出现了页面（元素）的移动，它的遮罩层会给body加上`padding-right=20px`。问题分析：[element e-dialog弹窗导致页面偏移，body上多了样式"padding-right: 17px" 解决办法 - 掘金 (juejin.cn)](https://juejin.cn/post/7008495519794200612) 解决方法：标签上加上`:lock-scroll="false"`
-
-#### el-form
-
-如果使用了表单的`resetFields`方法，即使属性不需要使用rules校验，也要加上prop属性，不然该表单value无法被重置。
-
-### vue
-
-#### $refs
-
-使用$refs获取组件时，获取的对象为null 或 调用获取对象的方法/属性报错 该函数/属性不存在。
-
-原因：组件还未渲染出来
-
-解决方法：
-
-- 使用`this.$nextTick(() => { 之前的代码写在这 })`
-  - nextTick：该方法保证在下次事件循环中执行
-- vue2中：可以使用`setTimeout(() => { 代码 }, 0)`，以让代码在下一次事件循环中执行
-
-#### 非响应式数据
-
-添加/追加的动态属性，是不具备响应式特定的。
-
-解决方法：可以用`this.$set(目标对象, 属性名称, 初始值)`
-
-~~~vue
-<script>
-  export default {
-    name: '',
-    data() {
-      return {
-				obj: {}
-      }
-    },
-    methods: {
-      getObj() {
-        // 这样添加的数据是响应式的
-        this.obj = {
-          name: 'lisi',
-          age: 12
-        }
-        // 这样添加的数据不是响应式的
-        this.obj.sex = '男'
-        // 应该这么添加
-        this.$set(obj, sex, '男')
-      }
-    }
-  }
-</script>
-~~~
-
-### 浏览器
-
-#### sockjs报错
-
-解决方法：找到/node_modules/sockjs-client/dist/sockjs.js中的`self.xhr.send(payload)`，把这行注释掉即可
 
 ## 小技巧
 
