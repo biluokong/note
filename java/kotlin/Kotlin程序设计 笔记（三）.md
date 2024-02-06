@@ -1,4 +1,4 @@
-# Kotlin程序设计高级篇
+#  Kotlin程序设计高级篇
 
 在学习了前面的内容之后，相信各位小伙伴应该对Kotlin这门语言有了一些全新的认识，我们已经了解了大部分的基本内容，从本章开始，就是对我们之前所学的基本内容的进一步提升。
 
@@ -337,6 +337,10 @@ fun main() {
 
 可以看到，即使是Int类型的父类Number，也无法接收其子类类型的结果，这就很奇怪了，我们前面说过一个类可以被当做其父类使用（因为父类具有属性什么子类一定也有）会自动完成隐式类型转换，但是为什么到了泛型这里就不行了呢？
 
+> 在java里，这些写法同样会报错，但可以使用泛型通配符解决：
+>
+> `List<? extends Number> = List<Integer>`
+
 为了探究这个问题，我们先从几个概念开始说起，假设Int类型是Number类型的子类，正常情况下只能子类转换为父类，泛型类型`Test<T>`存在以下几种形变：
 
 * 协变 (Covariance)：因为Int是Number的子类，所以`Test<Int>`同样是`Test<Number>`的子类，可以直接转换
@@ -358,7 +362,7 @@ fun main() {
 }
 ```
 
-虽然看上去非常难理解，但是简单来说，其实就是为类型添加一个可以转换子类的性质，`out`作用就是使类型支持协变，可以支持泛型从父类转换为子类，但是不能子类转父类，比如这里使用Any就没法成功接受。相反的，如果我们标记某个类型为`in`，那么这个类型就是逆变的，可以由父类向下转化：
+虽然看上去非常难理解，但是简单来说，其实就是为类型添加一个可以转换子类的性质，`out`作用就是使类型支持协变，可以支持泛型从父类转换为子类（类似java中的`? extends xx`），但是不能子类转父类，比如这里使用Any就没法成功接受。相反的，如果我们标记某个类型为`in`，那么这个类型就是逆变的，可以由父类向下转化（类似java中的`? super xx`）：
 
 ```kotlin
 fun main() {
@@ -1339,7 +1343,7 @@ val list: List<String> = listOfNotNull(*array)   //使用listOfNotNull可以自�
 val list: List<String> = emptyList()   //返回空列表
 ```
 
-或是使用构造函数来创建一个列表：
+或是使用构造函数（实际不是构造函数，List是接口）来创建一个列表：
 
 ```kotlin
 val list: List<String> = List(3){ "TZ" }  //跟数组一样，不多说了
@@ -1353,6 +1357,7 @@ val list: List<String> = listOf("AAA", "BBB", "CCC", "DDD")
 for (s in list) {  //使用forin来快速遍历数组中的每一个元素
     println(s)
 }
+test1.forEach(::println)	//使用forEach方法遍历
 
 for ((index, item) in list.withIndex()) {
     println("元素$item, 下标: $index")
@@ -1454,7 +1459,7 @@ val hashSet = HashSet<String>()  //创一个不重复且无序的Set集合
 val linkedHashSet = LinkedHashSet<String>()   //跟mutableSetOf一样得到一个不重复且有序的Set集合 
 ```
 
-最后我们来讲解一个前面就买下伏笔的问题，这里我们创建了一个Student类型的Set集合：
+最后我们来讲解一个前面就埋下伏笔的问题，这里我们创建了一个Student类型的Set集合：
 
 ```kotlin
 class Student(private val name: String, private val age: Int) {
@@ -2073,9 +2078,9 @@ val list = listOf("AA", "BBB", "CC", "DDD")
 println(list.slice(1..2))   //截取从第二个元素到第三个元素共两个元素的List片段，结果：[BBB, CC]
 println(list.take(2))  //使用take获取从第一个元素开始的长度为N的元素片段，结果：[AA, BBB]
 println(list.takeLast(2)) //同上，但是从尾部倒着来，结果：[CC, DDD]
-println(list.drop(2))   //这个跟take是反着的，直接跳过前N个元素截取，结果：[DDD]
+println(list.drop(2))   //这个跟take是反着的，直接跳过前N个元素截取，结果：[CC, DDD]
 println(list.dropLast(2))  //不用多说了吧
-println(list.takeWhile { it.length > 2 })   //从第一个元素开始，依次按照给定的函数进行判断，如果判断成功则添加到返回列表中，直到遇到一个不满足条件的就返回，这里的结果就是 [AA]
+println(list.takeWhile { it.length <= 2 })   //从第一个元素开始，依次按照给定的函数进行判断，如果判断成功则添加到返回列表中，直到遇到一个不满足条件的就返回，这里的结果就是 [AA]
 ...
 ```
 
@@ -2538,7 +2543,7 @@ fun main() {
 
 现在我们希望一个类既支持单例类那样的直接调用，又支持像一个普通class那样使用，这时该怎么办呢？
 
-我们可以使用半生对象来完成，实际上就是将一个单例类写到某个类的内部：
+我们可以使用伴生对象来完成，实际上就是将一个单例类写到某个类的内部：
 
 ```kotlin
 class Student(val name: String, val age: Int) {

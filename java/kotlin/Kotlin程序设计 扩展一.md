@@ -420,6 +420,10 @@ fun main() {
 }
 ```
 
+> 注意：在kotlin中，集合和数组的不同泛型之间都是抗变的；在java中，则集合和kotlin一样是抗变的，但有父子关系的数组是协变的，这与kotlin不同。
+>
+> 好处：在java中对进行了协变的数组进行修改时，可能会在运行时报错；但在kotlin进行同样的操作时，会在编译阶段就报错，因为kotlin不支持out协变类型的改操作
+
 ### 泛型转换
 
 Kotlin的泛型与Java型有点不同，当将Java类型导入Kotlin时，将完成以下转换：
@@ -590,7 +594,7 @@ public static void main(String[] args) {
 }
 ```
 
-只不过，对于类的属性，由于Kotlin中本质是以get和set函数的形式存在的，因此，我们只能使用对应的Getter和Setter方法来进行调用：
+只不过，对于类的属性，由于Kotlin中本质是以get和set函数的形式存在的，属性默认是私有的。因此，我们只能使用对应的Getter和Setter方法来进行调用：
 
 ```java
 public static void main(String[] args) {
@@ -643,6 +647,10 @@ public static void main(String[] args) {
 如果是Kotlin文件中直接编写的顶层定义，可以当做特定文件的静态属性来使用：
 
 ```kotlin
+var a = 3	// => private static int a = 3 和get、set方法
+val b = 3 // => private static final int b = 3 和get方法
+const val c = 3 // => public static final int c = 3
+
 fun test() {
     println("Hello World")
 }
@@ -676,9 +684,31 @@ class Student {
         fun test() {}
     }
 }
+//反编译：
+public final class Student {
+  	@NotNull
+		public static final Companion Companion = new Companion( null);
+	  
+  	public static final class Companion {
+      	private Companion() {}
+     	
+      	p
+    }
+}
 
 object Test {
     fun hello() {}
+}
+//反编译后：
+public final class Test {
+    @NotNull
+    public static final Test INSTANCE = new Test();
+
+    private Test() {
+    }
+
+    public final void hello() {
+    }
 }
 ```
 
@@ -696,6 +726,12 @@ class Student {
     companion object {
         @JvmStatic fun test() {}
     }
+}
+
+//@JvmStatic fun test() {} => 反编译后：
+@JvmStatic
+public static final void test() {
+  Companion.test();
 }
 ```
 
@@ -722,3 +758,4 @@ public static void main(String[] args) {
     Student.name = "";   //此时name就是Student的静态属性
 }
 ```
+
