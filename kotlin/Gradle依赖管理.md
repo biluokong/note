@@ -150,6 +150,7 @@ Generate build using new APIs and behavior (some features may change in the next
 ```
 
 接着我们可以看到项目成功完成了初始化操作：
+
 ```sh
 > Task :init
 To learn more about Gradle by exploring our Samples at https://docs.gradle.org/8.5/samples/sample_building_java_applications.html
@@ -489,6 +490,8 @@ plugins {  //使用plugins函数配置插件，结合Lambda表达式可以使用
 ![](Gradle-pic/MitGbFHSE4ycqJr.png)
 
 这里我们执行了自定义的打印语句，包括可以通过`rootProject`对象拿到当前的项目文件File对象等。
+
+### 仓库配置
 
 在Gradle中，和Maven一样也分为插件和依赖，我们可以在`settings.gradle.kt`中可以为所有的项目进行统一配置，比如要修改获取插件的仓库位置：
 
@@ -1506,3 +1509,57 @@ class MyPlugin: Plugin<Project> {
 ![](Gradle-pic/AopXNIChP8HKykf.png)
 
 相信大家也应该明白为什么官方插件导入之后会多出来这么多任务了。
+
+# 补充
+
+## init.gradle
+
+Maven中有全局settings.xml，Gradle中也有与之对应的init.gradle。
+
+- 作用：减少冗余配置
+
+- 加载顺序
+
+  - `~/.gradle/init.gradle`文件
+  - `~/.gradle/init.d/`目录下的以`.gradle`结尾的文件
+  - `~/$GRADLE_HOME/init.d/`目录下的以`.gradle`结尾的文件
+
+  - `$GRADLE_USER_HOME/init.gradle`文件
+  - `$GRADLE_USER_HOME/init.d目录下的以.gradle结尾的文件`
+
+- 运行时指定：可以使用`-I` 或者`–init-script`指定启动脚本，如`gradle -I init.gradle build`
+
+全局配置所有项目的仓库：
+
+~~~kotlin
+allprojects {
+    buildscript {
+        repositories {
+            maven { url 'https://maven.aliyun.com/repository/public/' }
+            maven { url 'https://maven.aliyun.com/repository/central' }
+            google()
+            mavenCentral()
+        }
+    }
+
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        google()
+        mavenCentral()
+    }
+
+    println "${name}: Aliyun maven mirror injected"
+}
+~~~
+
+## repositories
+
+repositories有三个级别的。
+
+- buildScript块的repositories主要是为了Gradle脚本自身的执行，获取脚本依赖插件。（它会优先执行）
+
+- allprojects块的repositories用于多项目构建，为所有项目提供共同所需依赖包。而子项目可以配置自己的repositories以获取自己独需的依赖包。
+
+
+- 根级别的repositories主要是为了当前项目提供所需依赖包，比如log4j、spring-core等依赖包可从mavenCentral仓库获得。
