@@ -2979,20 +2979,3 @@ fun main() {
 可以看到，此函数的类型是`String.() -> Int `，也就是说它是专门针对于String类型编写的扩展函数，没有参数，返回值类型为Int，并使用Lambda表达式进行赋值，同时这个函数也是属于String类型的，只能由对象调用，或是主动传入一个相同类型的对象作为参数才能直接调用。可能这里会有些绕不太好理解，需要同学们多去思考。
 
 总结一下，扩展属性更像是针对于原本类编写的外部工具函数，而绝不是对原有类的修改。
-
-
-
-## 补充
-
-### 获取类的class
-
-~~~kotlin
-val kClass: KClass<Any> = Any::class
-val clazz: Class<Any> = Any::class.java
-~~~
-
-在 Kotlin 中，`::class` 和 `::class.java` 返回的类型和用途有所不同。前者用于 Java 的反射和与 Java 代码交互，后者用于 Kotlin 的类型检查和反射。
-
-`KClass` 是 Kotlin 提供的运行时类型信息的类，它提供了很多关于类本身的信息，比如类名、父类、成员函数等。`KClass` 是类型安全的，并且只能用于 Kotlin 代码中。
-
-`class` 是 Java 的运行时类型信息表示。`Class` 对象提供了 Java 反射 API 的入口，允许你在运行时查询和操作类的各种信息。这个对象通常用于与 Java 框架或库交互，或者当你需要使用 Java 的反射功能时。

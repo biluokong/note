@@ -2113,6 +2113,13 @@ val sequence: Sequence<Int> = generateSequence {
     println("生成一个新的元素")
     10   //返回值就是生成的元素
 }
+
+val sequence: Sequence<Int> = generateSequence {
+    for (i in 1..3) {
+     	Thread.sleep(1000)   
+        yield(i)	// 将值添加到序列中
+    }
+}
 ```
 
 可以看到generateSequence得到的结果并没有在一开始执行println，因为序列的数据处理是惰性的，在我们添加
@@ -2910,33 +2917,3 @@ val s = person.name ?: throw IllegalArgumentException("Name required")
 ```
 
 至此，有关Kotlin基础语言部分就全部完结了，后面我们还会继续讲解Kotlin的更多扩展知识，包括Kotlin与Java的交互、Kotlin协程、Kotlin反射等等，感谢各位小伙伴一直以来的支持。
-
-# 补充
-
-## 注解
-
-kotlin中注解属性为数组的，表示形式从`{}`变成`[]`了，并且`Class`类型的属性用`KClass`替代了。
-
-## 静态属性
-
-在kotlin中，如果想要在类中定义静态变量，有两种方法（不算单例类）：
-
-- 顶层级变量：在该类文件中类的外部定义变量
-- 伴生对象变量：使用`companion object`关键字在类内部定义伴生对象，可以使用`@JvmStatic`注解简化操作。
-
-## use方法
-
-java7引入的try-with-resources语法糖可以自动关闭流对象，在kotlin中可以用use方法达到类似效果。
-
-~~~kotlin
-FileOutputStream(path).use { fos ->  
-	try {  
-		fos.write(data)  
-		// 你可以在这里添加更多的文件操作代码  
-	} catch (e: IOException) {  
-		e.printStackTrace()  
-		// 处理异常  
-	}  
-  }  
-~~~
-
