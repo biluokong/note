@@ -569,6 +569,10 @@ export const useCounterStore = defineStore('counter', () => {
 
 4. 其他配置，看官网文档即可
 
+# Idea
+
+idea创建默认是npm，如果想使用其他构建器（yarn、pnpm等），创建项目的时候把 `npx create-vite` 改为 `npx pnpm create vue`
+
 #  常用插件
 
 1. ESLint：按eslint规范自动格式化代码（vscode插件）

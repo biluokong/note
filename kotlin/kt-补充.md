@@ -40,6 +40,10 @@ fun main() {
 }
 ~~~
 
+## 静态内部类
+
+定义静态内部类时，不需要要加`inner`关键字。但此时内部类就无法持有外部类的引用的（无法`this@外部类目`），因为它相当于一个独立的类，不是作为**实例属性**。
+
 # 注解
 
 ## 数组属性
@@ -1390,3 +1394,94 @@ fun main() = runBlocking<Unit> {
 }
 ~~~
 
+# spring
+
+## 自动加open
+
+在springboot中使用kotlin中，由于类和类的方法默认是final的，不可继承，这会导致使用AOP机制时出现问题，可以通过第三方依赖让加了指定注解的类指定添加open关键字。
+
+配置文档：[全开放编译器插件 |Kotlin 文档 (kotlinlang.org)](https://kotlinlang.org/docs/all-open-plugin.html#command-line-compiler)
+
+~~~xml
+<properties>
+    <java.version>11</java.version>
+    <kotlin.version>1.9.10</kotlin.version>
+    <spring-boot.version>2.7.6</spring-boot.version>
+</properties>
+<dependencies>
+    <!--使用kotlin需要的依赖（库和运行时环境）-->
+    <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib-jdk8</artifactId>
+        <version>${kotlin.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.jetbrains.kotlinx</groupId>
+        <artifactId>kotlinx-coroutines-core</artifactId>
+        <version>1.7.2</version>
+    </dependency>
+</dependencies>
+
+
+<build>
+    <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+    <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+    <plugins>
+        <plugin>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-maven-plugin</artifactId>
+            <configuration>
+                <args>
+                    <arg>-Xjsr305=strict</arg>
+                </args>
+                <compilerPlugins>
+                    <!--allopen依赖配置好后，在加上下面spring插件的配置，可以让一些spring相关的注解自动启用allopen的功能-->
+                    <plugin>spring</plugin>
+                    <plugin>all-open</plugin>
+                </compilerPlugins>
+                <pluginOptions>
+                    <!--指定有哪些注解的类自动加上open-->
+                    <option>all-open:annotation=org.springframework.validation.annotation.Validated</option>
+                </pluginOptions>
+                <option>all-open:annotation=org.springframework.web.bind.annotation.RestControllerAdvice</option>
+                <option>all-open:annotation=org.springframework.context.annotation.Configuration</option>
+            </configuration>
+            <dependencies>
+                <dependency>
+                    <groupId>org.jetbrains.kotlin</groupId>
+                    <artifactId>kotlin-maven-allopen</artifactId>
+                    <version>${kotlin.version}</version>
+                </dependency>
+            </dependencies>
+        </plugin>
+    </plugins>
+</build>
+~~~
+
+注：
+
+- `<plugin>spring</plugin>`：支持的注解包括下面这些，以这些注解为元注解的注解同样生效。
+  - @Compoent
+  - @Async
+  - @Transactional
+  - @Cacheable
+  - @SpringBootTest
+
+- 数据类不能被继承，数据需要改为普通类并使用open才能被继承
+- Validated注解修饰参数时，参数的类型并不会自动加上open，因为kotlin-maven-allopen只作用于类级别的注解
+  - 解决方法：可以自定义一个注解，给对应的类加上该注解，并在allopen插件中配置好该注解
+
+~~~kotlin
+package com.example.utils
+
+@Target(AnnotationTarget.CLASS)
+@Retention(AnnotationRetention.RUNTIME)
+@MustBeDocumented
+annotation class AutoOpen
+~~~
+
+
+
+## 构造函数注解无效
+
+kotlin中给构造函数的参数加上的注解不会被编译器编译，等同于无效。要注解生效只能单独放在类的属性声明上。
