@@ -573,6 +573,25 @@ export const useCounterStore = defineStore('counter', () => {
 
 idea创建默认是npm，如果想使用其他构建器（yarn、pnpm等），创建项目的时候把 `npx create-vite` 改为 `npx pnpm create vue`
 
+# 报错
+
+## 导入vue文件报错
+
+点进 main.ts 以及其他引用了 vue 文件的地方发现报错。**Cannot find module 'xxx.vue' or its corresponding type declarations.ts(2307)**。
+报错原因：typescript 只能理解 .ts 文件，无法理解 .vue文件
+
+解决方法：在项目根目录或 src 文件夹下创建一个名为 shims-vue.d.ts 的文件，并写入以下内容：
+
+~~~typescript
+declare module '*.vue' {
+  import { ComponentOptions } from 'vue'
+  const componentOptions: ComponentOptions
+  export default componentOptions
+}
+~~~
+
+
+
 #  常用插件
 
 1. ESLint：按eslint规范自动格式化代码（vscode插件）

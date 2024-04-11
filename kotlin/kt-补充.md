@@ -44,6 +44,21 @@ fun main() {
 
 定义静态内部类时，不需要要加`inner`关键字。但此时内部类就无法持有外部类的引用的（无法`this@外部类目`），因为它相当于一个独立的类，不是作为**实例属性**。
 
+## 私有set方法
+
+私有化set
+
+~~~kotlin
+class User {
+	var username: String? = null
+		private set
+}
+~~~
+
+## 返回null类型
+
+java中的void对应kotlin中的Unit，java的null则对应kotlin中的 `Nothing`
+
 # 注解
 
 ## 数组属性
@@ -1482,6 +1497,34 @@ annotation class AutoOpen
 
 
 
-## 构造函数注解无效
+# 问题
 
-kotlin中给构造函数的参数加上的注解不会被编译器编译，等同于无效。要注解生效只能单独放在类的属性声明上。
+## mybatis-plus
+
+### lambdaQuery
+
+报错：org.apache.ibatis.reflection.ReflectionException: Error parsing property name 'register$lambda$0'.  Didn't start with 'is', 'get' or 'set'.
+
+- 报错代码：`lambdaQuery().eq(User::username, username).one()`
+
+- 原因：kotlin中的方法引用不等于java中的方法引用
+
+- 解决方法：`ktQuery().eq(User::username, username).one()`
+
+## validation
+
+### 注解无效
+
+kotlin中给构造函数的参数加上validation的一些注解无法生效。
+
+**原因分析：**
+
+- 在 Java 中，注解写在在实体类属性或者 get/set 方法上；在 kotlin 中，属性直接写在构造函数中。
+- 可能是优先级的问题：在构造函数中，如果注解的@Target里除了有 `ElementType.FIELD`，还有`ElementType.PARAMETER` ，则kotlin优先把该注解当作对函数参数的注解，而不是对属性/get方法的注解。所以`@TableId`注解之所以可以生效，是因为它并没有 `ElementType.PARAMETER`。
+- 查看注解是否生效：可以查看反编译后的java代码，或者查看它编译后的.class文件，看一看该注解是否存在于属性之上。
+
+**解决办法：**
+
+- 添加 `@field:` 标识符（`@field:NotBlank`），`field` 标识符能够限定注解作用于属性。
+
+- 添加 `@get:`(`@get:NotBlank`) 标识符。 kotlin 会直接在字节码中生成 `getter` 跟 `setter`，这样写是显式的是表明这个注解应该作用在 `getter` 上。
