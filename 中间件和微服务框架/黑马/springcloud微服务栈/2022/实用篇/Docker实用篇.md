@@ -932,6 +932,27 @@ docker run的命令中通过 -v 参数挂载文件或目录到容器中：
 
 - ⑤ 使用docker run创建容器并运行
 
+还可以以脚本方式运行：
+
+~~~dockerfile
+FROM java:8-alpine
+COPY ./app.jar /tmp/app.jar
+COPY ./start.sh /tmp/start.sh
+EXPOSE 32380
+ENTRYPOINT ["/tmp/start.sh"]
+~~~
+
+脚本内容如下：可以把控制台的输出重定向到指定文件中
+
+~~~sh
+#!/bin/sh
+java -jar /tmp/app.jar >> /tmp/app.log 2>&1
+~~~
+
+~~~bash
+docker run --network=host -u root --privileged=true -v /root/chat/app.jar:/tmp/ -v /root/chat/app.log:/tmp/app.log -p 32383:32383 --name chat -d chat:1.0
+~~~
+
 
 
 ## 3.4.小结
