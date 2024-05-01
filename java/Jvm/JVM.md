@@ -60,7 +60,7 @@ public class main1 {
 ```
 
 
- 
+
 
 
 ![](https://img-blog.csdnimg.cn/92278128d3734a0a9779673dd7b791b3.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBATEwuTEVCUk9O,size_20,color_FFFFFF,t_70,g_se,x_16)
@@ -514,8 +514,8 @@ public class main1 {
 ​            String x3="ef";
 ​            System.out.println(x3==x4);//true
 ​    
-        }
-    }
+​        }
+​    }
 
 
 ### 5-7 StringTable 位置
@@ -1762,9 +1762,9 @@ Java代码：
 
 
 ​    
-    public class Main {
-        public Main() {
-    
+​    public class Main {
+​        public Main() {
+​    
         }
     
         private void test1() {
@@ -2790,7 +2790,7 @@ JVM 将执行状态分成了 5 个层次：
 
 还能够进行**常量折叠**（constant folding）的优化
 
-    System.out.println(8);
+    System.out.println(81);
 
 
 

@@ -11757,7 +11757,7 @@ Spring中的事件编程模型就是观察者模式的实现。在Spring中定�
 
 getHandler是HandlerMapping接口中的唯一方法，用于根据请求找到匹配的处理器。
 
-比如我们自己写了AccountDao接口，然后这个接口下有不同的实现类：AccountDaoForMySQL，AccountDaoForOracle。对于service来说不需要关心底层具体的实现，只需要面向AccountDao接口调用，底层可以灵活切换实现，这就是策略模式。
+
 
 ## 19.8 模板方法模式
 
