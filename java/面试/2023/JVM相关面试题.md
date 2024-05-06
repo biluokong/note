@@ -35,7 +35,7 @@ Java Virtual Machine Java程序的运行环境（java二进制字节码的运行
 
 （1）类加载器（ClassLoader）把Java代码转换为字节码
 
-（2）运行时数据区（Runtime Data Area）把字节码加载到内存中，而字节码文件只是JVM的一套指令集规范，并不能直接交给底层系统去执行，而是有执行引擎运行
+（2）运行时数据区（Runtime Data Area）把字节码加载到内存中，而字节码文件只是JVM的一套指令集规范，并不能直接交给底层系统去执行，而是由执行引擎运行
 
 （3）执行引擎（Execution Engine）将字节码翻译为底层系统指令，再交由CPU执行去执行，此时需要调用其他语言的本地库接口（Native Method Library）来实现整个程序的功能。
 
