@@ -204,11 +204,11 @@ public static int binarySearch(int[] a, int target) {
 
 两个算法比较，可以看到 $n$ 在较小的时候，二者花费的次数差不多
 
-<img src="C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221108095747933.png" alt="image-20221108095747933" style="zoom:50%;" />
+<img src="imgs/image-20221108095747933.png" alt="image-20221108095747933" style="zoom:50%;" />
 
 但随着 $n$ 越来越大，比如说 $n=1000$ 时，用二分查找算法（红色）也就是 $54t$，而蓝色算法则需要 $3003t$
 
-<img src="C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221108100014451.png" alt="image-20221108100014451" style="zoom:50%;" />
+<img src="imgs/image-20221108100014451.png" alt="image-20221108100014451" style="zoom:50%;" />
 
 
 
@@ -236,7 +236,7 @@ public static int binarySearch(int[] a, int target) {
 
 **大 $O$ 表示法[^4]**
 
-![image-20221108103846566](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221108103846566.png)
+![image-20221108103846566](imgs/image-20221108103846566.png)
 
 其中
 
@@ -284,7 +284,7 @@ public static int binarySearch(int[] a, int target) {
 
 **常见大 $O$ 表示法**
 
-![image-20221108114915524](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221108114915524.png)
+![image-20221108114915524](imgs/image-20221108114915524.png)
 
  按时间复杂度从低到高
 
@@ -503,7 +503,7 @@ public static int binarySearchRightmost(int[] a, int target) {
 
 几个名词
 
-![image-20221125174155058](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221125174155058.png)
+![image-20221125174155058](imgs/image-20221125174155058.png)
 
 **范围查询**：
 
@@ -987,7 +987,7 @@ int[][] array = {
 
 内存图如下
 
-<img src="C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221104114132056.png" alt="image-20221104114132056" style="zoom:67%;" />
+<img src="imgs/image-20221104114132056.png" alt="image-20221104114132056" style="zoom:67%;" />
 
 * 二维数组占 32 个字节，其中 array[0]，array[1]，array[2] 三个元素分别保存了指向三个一维数组的引用
 
@@ -1105,15 +1105,15 @@ ns         %     Task name
 
 以 ji 执行为例，第一次内循环要读入 $[0,0]$ 这条数据，由于局部性原理，读入 $[0,0]$ 的同时也读入了 $[0,1] ... [0,13]$，如图所示
 
-![image-20221104164329026](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221104164329026.png)
+![image-20221104164329026](imgs/image-20221104164329026.png)
 
 但很遗憾，第二次内循环要的是 $[1,0]$ 这条数据，缓存中没有，于是再读入了下图的数据
 
-![image-20221104164716282](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221104164716282.png)
+![image-20221104164716282](imgs/image-20221104164716282.png)
 
 这显然是一种浪费，因为 $[0,1] ... [0,13]$ 包括 $[1,1] ... [1,13]$ 这些数据虽然读入了缓存，却没有及时用上，而缓存的大小是有限的，等执行到第九次内循环时
 
-![image-20221104164947154](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221104164947154.png)
+![image-20221104164947154](imgs/image-20221104164947154.png)
 
 缓存的第一行数据已经被新的数据 $[8,0] ... [8,13]$ 覆盖掉了，以后如果再想读，比如 $[0,1]$，又得到内存去读了
 
@@ -1279,21 +1279,21 @@ merge(a1, 0, 2, 3, 6, a2);
 
 * 单向链表，每个元素只知道其下一个元素是谁
 
-![image-20221110083407176](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221110083407176.png)
+![image-20221110083407176](imgs/image-20221110083407176.png)
 
 * 双向链表，每个元素知道其上一个元素和下一个元素
 
-![image-20221110083427372](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221110083427372.png)
+![image-20221110083427372](imgs/image-20221110083427372.png)
 
 * 循环链表，通常的链表尾节点 tail 指向的都是 null，而循环链表的 tail 指向的是头节点 head
 
-![image-20221110083538273](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221110083538273.png)
+![image-20221110083538273](imgs/image-20221110083538273.png)
 
 
 
 链表内还有一种特殊的节点称为哨兵（Sentinel）节点，也叫做哑元（ Dummy）节点，它不存储数据，通常用作头尾，用来简化边界判断，如下图所示
 
-![image-20221110084611550](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221110084611550.png)
+![image-20221110084611550](imgs/image-20221110084611550.png)
 
 
 
@@ -1830,13 +1830,13 @@ public class DoublyLinkedListSentinel implements Iterable<Integer> {
 
 双向环形链表带哨兵，这时哨兵**既作为头，也作为尾**
 
-![image-20221229144232651](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221229144232651.png)
+![image-20221229144232651](imgs/image-20221229144232651.png)
 
-![image-20221229143756065](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221229143756065.png)
+![image-20221229143756065](imgs/image-20221229143756065.png)
 
-![image-20221229153338425](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221229153338425.png)
+![image-20221229153338425](imgs/image-20221229153338425.png)
 
-![image-20221229154248800](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221229154248800.png)
+![image-20221229154248800](imgs/image-20221229154248800.png)
 
 参考实现
 
@@ -2446,6 +2446,15 @@ public int recursion(ListNode p, int n) {
     }
     return nth + 1;
 }
+
+//另一种
+fun recursion(p: ListNode?, count: AtomicInteger): ListNode? {
+	if (p == null) return null
+	p.next = recursion(p, count)
+	val n = count.decrementAndGet()
+	if (n == 0) return p.next
+	return p
+}
 ```
 
 Q：p.next.next 不怕空指针吗？
@@ -2856,6 +2865,25 @@ mergeTwoLists(p1=[1,3,8,9], p2=[2,4]) {
 }
 ```
 
+~~~kotlin
+val sentinel = ListNode(-300)
+sentinel.next = list1
+return recursion(sentinel, list2)!!.next
+
+fun recursion(l1: ListNode?, l2: ListNode?): ListNode? {
+	if (l1 == null) return l2
+	if (l2 == null) return l1
+	return if (l1.`val` <= l2.`val`) {
+		l1.next = recursion(l1.next, l2)
+		l1
+	}
+	else {
+		l2.next = recursion(l1, l2.next)
+		l2
+	}
+}
+~~~
+
 
 
 #### E07. 合并多个有序链表-Leetcode 23
@@ -3045,7 +3073,7 @@ public boolean isPalindrome(ListNode h1) {
 
 > 除了 Floyd 判环算法外，还有其它的判环算法，详见 https://en.wikipedia.org/wiki/Cycle_detection
 
-<img src="C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221229190646563.png" alt="image-20221229190646563" style="zoom: 50%;" />
+<img src="imgs/image-20221229190646563.png" alt="image-20221229190646563" style="zoom: 50%;" />
 
 如果链表上存在环，那么在环上以不同速度前进的两个指针必定会在某个时刻相遇。算法分为两个阶段
 
@@ -3082,9 +3110,7 @@ public boolean hasCycle(ListNode head) {
     while (h != null && h.next != null) {
         t = t.next;
         h = h.next.next;
-        if(h == t){
-            return true;
-        }
+        if(h == t) return true;
     }
     return false;
 }
@@ -3105,13 +3131,11 @@ public ListNode detectCycle(ListNode head) {
         h = h.next.next;
         if (h == t) {
             t = head;
-            while (true) {
-                if (h == t) {
-                    return h;
-                }
+            while (h != t) {
                 h = h.next;
                 t = t.next;
             }
+            return h;
         }
     }
     return null;
@@ -3119,6 +3143,26 @@ public ListNode detectCycle(ListNode head) {
 ```
 
 * 还有一道扩展题目，也可以用判环算法思想来解：就是 287 题，寻找重复数
+	* 数组长度为$n+1$，而值的范围为$[1, n]$，则必然出现环。索引相当于next指针，值相当于val。
+
+
+~~~kotlin
+public int findDuplicate(int[] nums) {
+    int slow = 0, fast = 0;
+    do {
+        slow = nums[slow];
+        fast = nums[nums[fast]];
+    } while (slow != fast);
+    slow = 0;
+    while (slow != fast) {
+        slow = nums[slow];
+        fast = nums[fast];
+    }
+    return slow;
+}
+~~~
+
+
 
 
 
@@ -3178,60 +3222,28 @@ public class Ex1Leetcode237 {
 
 原题叫做**相交**链表，个人觉得用**共尾**链表更形象些，此题更像是一道脑筋急转弯，留给大家练习
 
+> 思路：假设链表1的长度为 $n1$，到相交点要经过 $m1$ 个结点；链表2的长度为 $n2$，到相交点要经过 $m2$ 个结点，则有 $n1-m1=n2-m2$，即 $n1+m2=n2+m1$，所以 $p1$ 走到 $n1+m2$ 步时会正好和走了 $n2+m1$ 步的 $p2$ 相遇于相交结点。
+
 例如，下图的两个链表 [1, 2, 4, 5] 与 [3, 4, 5] 它们中 [4, 5] 是相同的，此时应返回节点 4
 
-![image-20221228081715799](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221228081715799.png)
+![image-20221228081715799](imgs/image-20221228081715799.png)
 
 非共尾的情况，如下图所示，此时返回 null
 
-![image-20221228082002730](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221228082002730.png)
-
-思路，称两个链表为 a=[1, 2, 4, 5]，b=[3, 4, 5]，图中用 N 代表 null
-
-1. 遍历 a，遇到 null 时改道遍历 b
-2. 与此同时，遍历 b，遇到 null 时改道遍历 a
-3. 在此过程中，如果**遇到相同**的节点，即为找寻目标，返回即可，如下图中的第二次出现的 4
-4. 相同节点应该比较其**引用值**，图中数字只是为了便于区分
-
-```
-1	2	4	5	N	3	4	5	N
-3	4	5	N	1	2	4	5	N
-```
-
-如果两个链表长度相同，则可以更早找到目标，例如 a=[1, 4, 5]，b=[3, 4, 5]，第一次出现 4 时，即可返回
-
-```
-1	4	5	N	3	4	5	N
-3	4	5	N	1	4	5	N
-```
-
-如果是非共尾的情况，如 a=[1, 2, 4]，b=[3, 5]，可以看到，唯一相等的情况，是遍历到最后那个 N 此时退出循环
-
-```
-1	2	4	N	3	5	N
-3	5	N	1	2	4	N
-```
+![image-20221228082002730](imgs/image-20221228082002730.png)
 
 代码
 
 ```java
-public ListNode getIntersectionNode(ListNode a, ListNode b) {
-    ListNode p1 = a;
-    ListNode p2 = b;
+public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+    //因为 n1-m1=n2-m2 ==> n1+m2=n2+m1
+    ListNode p1 = headA, p2 = headB;
     while (true) {
-        if (p1 == p2) {
-            return p1;
-        }
-        if (p1 == null) {
-            p1 = b;
-        } else {
-            p1 = p1.next;
-        }
-        if (p2 == null) {
-            p2 = a;
-        } else {
-            p2 = p2.next;
-        }            
+        if (p1 == p2) return p1;
+        if (p1 == null) p1 = headB;
+        else p1 = p1.next;
+        if (p2 == null) p2 = headA;
+        else p2 = p2.next;
     }
 }
 ```
@@ -3759,7 +3771,7 @@ public static int f(int n) {
 
 **执行流程**
 
-![](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/2.gif)
+![](imgs/2.gif)
 
 * 绿色代表正在执行（对应递），灰色代表执行结束（对应归）
 * 递不到头，不能归，对应着深度优先搜索
@@ -3781,7 +3793,7 @@ public static int f(int n) {
 
 **变体1 - 兔子问题[^8]**
 
-![image-20221110155655827](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221110155655827.png)
+![image-20221110155655827](imgs/image-20221110155655827.png)
 
 * 第一个月，有一对未成熟的兔子（黑色，注意图中个头较小）
 * 第二个月，它们成熟
@@ -3833,7 +3845,7 @@ Tower of Hanoi，是一个源于印度古老传说：大梵天创建世界时做
 
 下面的动图演示了4片圆盘的移动方法
 
-![](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/Tower_of_Hanoi_4.gif)
+![](imgs/Tower_of_Hanoi_4.gif)
 
 使用程序代码模拟圆盘的移动过程，并估算出时间复杂度
 
@@ -3847,7 +3859,7 @@ Tower of Hanoi，是一个源于印度古老传说：大梵天创建世界时做
 
 	* 移动圆盘1 $a \mapsto c$  
 
-	<img src="C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221219090741078.png" alt="image-20221219090741078" style="zoom:50%;" />
+	<img src="imgs/image-20221219090741078.png" alt="image-20221219090741078" style="zoom:50%;" />
 
 * 如果有两个圆盘，那么
 
@@ -3855,7 +3867,7 @@ Tower of Hanoi，是一个源于印度古老传说：大梵天创建世界时做
 	* 圆盘2 $a \mapsto c$
 	* 圆盘1 $b \mapsto c$
 
-	<img src="C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221219091316225.png" alt="image-20221219091316225" style="zoom:50%;" />
+	<img src="imgs/image-20221219091316225.png" alt="image-20221219091316225" style="zoom:50%;" />
 
 * 如果有三个圆盘，那么
 
@@ -3863,7 +3875,7 @@ Tower of Hanoi，是一个源于印度古老传说：大梵天创建世界时做
 	* 圆盘3 $a \mapsto c$
 	* 圆盘12 $b \mapsto c$
 
-	<img src="C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221219091930614.png" alt="image-20221219091930614" style="zoom:50%;" />
+	<img src="imgs/image-20221219091930614.png" alt="image-20221219091930614" style="zoom:50%;" />
 
 * 如果有四个圆盘，那么
 
@@ -3871,7 +3883,7 @@ Tower of Hanoi，是一个源于印度古老传说：大梵天创建世界时做
 	* 圆盘4 $a \mapsto c$
 	* 圆盘 123 $b \mapsto c$
 
-<img src="C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221219092537323.png" alt="image-20221219092537323" style="zoom:50%;" />
+<img src="imgs/image-20221219092537323.png" alt="image-20221219092537323" style="zoom:50%;" />
 
 
 
@@ -3928,7 +3940,7 @@ public class E02HanoiTower {
 
 #### E03. 杨辉三角[^6]
 
-![image-20221219172514410](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221219172514410.png)
+![image-20221219172514410](imgs/image-20221219172514410.png)
 
 **分析**
 
@@ -4069,7 +4081,7 @@ private static void createRow(int[] row, int i) {
 
 上述代码存在很多重复的计算，例如求 $f(5)$ 递归分解过程
 
-![image-20221207092417933](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221207092417933.png)
+![image-20221207092417933](imgs/image-20221207092417933.png)
 
 可以看到（颜色相同的是重复的）：
 
@@ -4106,7 +4118,7 @@ public static int f(int[] cache, int n) {
 
 优化后的图示，只要结果被缓存，就**不会执行其子问题**
 
-![image-20221213173225807](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221213173225807.png)
+![image-20221213173225807](imgs/image-20221213173225807.png)
 
 * 改进后的时间复杂度为 $O(n)$
 * 请自行验证改进后的效果
@@ -4273,7 +4285,7 @@ c()
 
 安装 Scala
 
-![image-20221111122709227](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221111122709227.png)
+![image-20221111122709227](imgs/image-20221111122709227.png)
 
 Scala 入门
 
@@ -4649,7 +4661,7 @@ $T(n) = T(1) + 2 + ... + n = T(1) + (n-1)\frac{2+n}{2} = c + \frac{n^2}{2} + \fr
 
 > 注：
 >
-> * 等差数列求和为 $个数*\frac{\vert首项-末项\vert}{2}$ 
+> * 等差数列求和为 $个数*\frac{\vert首项+末项\vert}{2}$ 
 
 
 
@@ -4735,11 +4747,11 @@ public interface Queue<E> {
 
 下面以**单向环形带哨兵**链表方式来实现队列
 
-![image-20221230150105089](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221230150105089.png)
+![image-20221230150105089](imgs/image-20221230150105089.png)
 
-![image-20221230150141318](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221230150141318.png)
+![image-20221230150141318](imgs/image-20221230150141318.png)
 
-![image-20221230150153271](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221230150153271.png)
+![image-20221230150153271](imgs/image-20221230150153271.png)
 
 代码
 
@@ -4847,13 +4859,13 @@ public class LinkedListQueue<E>
 3. 数组性能更佳
 4. 环形数组比较适合实现有界队列、RingBuffer 等
 
-![image-20221228175413998](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221228175413998.png)
+![image-20221228175413998](imgs/image-20221228175413998.png)
 
 **下标计算**
 
 例如，数组长度是 5，当前位置是 3 ，向前走 2 步，此时下标为 $(3 + 2)\%5 = 0$
 
-![image-20221228180357257](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221228180357257.png)
+![image-20221228180357257](imgs/image-20221228180357257.png)
 
 $$
 (cur + step) \% length
@@ -4871,11 +4883,11 @@ $$
 
 **判断空**
 
-![image-20221231081009018](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221231081009018.png)
+![image-20221231081009018](imgs/image-20221231081009018.png)
 
 **判断满**
 
-![image-20221231080909475](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20221231080909475.png)
+![image-20221231080909475](imgs/image-20221231080909475.png)
 
 满之后的策略可以根据业务需求决定
 
@@ -5251,6 +5263,24 @@ class Solution {
     }
 }
 ```
+
+方法二：递归，广度优先遍历BFS
+
+~~~java
+List<List<Integer>> res = new ArrayList<>();
+bfs(root, res, 0);
+return res;
+
+void bfs(TreeNode root, List<List<Integer>> res, int floor) {
+    if (root == null) return;
+    if (floor >= res.size()) res.add(new ArrayList<>());
+    res.get(floor).add(root.val);
+    bfs(root.left, res, floor + 1);
+    bfs(root.right, res, floor + 1);
+}
+~~~
+
+
 
 
 
@@ -5689,7 +5719,7 @@ public boolean isValid(String s) {
 
 
 
-#### E02. 后缀表达式求值-Leetcode 120
+#### E02. 后缀表达式求值-Leetcode：LCR 036
 
 后缀表达式也称为逆波兰表达式，即运算符写在后面
 
@@ -6377,11 +6407,11 @@ public class ArrayDeque1<E> implements Deque<E>, Iterable<E> {
 
 数组实现中，如果存储的是基本类型，那么无需考虑内存释放，例如
 
-![image-20230110084245095](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230110084245095.png)
+![image-20230110084245095](imgs/image-20230110084245095.png)
 
 但如果存储的是引用类型，应当设置该位置的引用为 null，以便内存及时释放
 
-![image-20230110084632543](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230110084632543.png)
+![image-20230110084632543](imgs/image-20230110084632543.png)
 
 
 
@@ -6390,62 +6420,27 @@ public class ArrayDeque1<E> implements Deque<E>, Iterable<E> {
 #### E01. 二叉树 Z 字层序遍历-Leetcode 103
 
 ```java
-public class E01Leetcode103 {
-    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        List<List<Integer>> result = new ArrayList<>();
-        if (root == null) {
-            return result;
+public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+    List<List<Integer>> res = new ArrayList<>();
+    if (root == null) return res;
+    List<TreeNode> queue = new LinkedList<>();
+    queue.add(root);
+    List<Integer> list = null;
+    boolean flag = true;
+    while (!queue.isEmpty()) {
+        int size = queue.size();
+        list = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            TreeNode node = queue.remove(0);
+            if (flag) list.add(node.val);
+            else list.add(0, node.val);
+            if (node.left != null) queue.add(node.left);
+            if (node.right != null) queue.add(node.right);
         }
-        LinkedList<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-        boolean leftToRight = true;
-        int c1 = 1;
-        while (!queue.isEmpty()) {
-            int c2 = 0;
-            LinkedList<Integer> deque = new LinkedList<>();
-            for (int i = 0; i < c1; i++) {
-                TreeNode n = queue.poll();
-                if (leftToRight) {
-                    deque.offerLast(n.val);
-                } else {
-                    deque.offerFirst(n.val);
-                }
-                if (n.left != null) {
-                    queue.offer(n.left);
-                    c2++;
-                }
-                if (n.right != null) {
-                    queue.offer(n.right);
-                    c2++;
-                }
-            }
-            c1 = c2;
-            leftToRight = !leftToRight;
-            result.add(deque);
-        }
-
-        return result;
+        flag = !flag;
+        res.add(list);
     }
-
-    public static void main(String[] args) {
-        TreeNode root = new TreeNode(
-                new TreeNode(
-                        new TreeNode(4),
-                        2,
-                        new TreeNode(5)
-                ),
-                1,
-                new TreeNode(
-                        new TreeNode(6),
-                        3,
-                        new TreeNode(7)
-                )
-        );
-        List<List<Integer>> lists = new E01Leetcode103().zigzagLevelOrder(root);
-        for (List<Integer> list : lists) {
-            System.out.println(list);
-        }
-    }
+    return res;
 }
 ```
 
@@ -6625,25 +6620,25 @@ public class PriorityQueue2<E extends Priority> implements Queue<E> {
 
 例1 - 满二叉树（Full Binary Tree）特点：每一层都是填满的
 
-![image-20230112171444699](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230112171444699.png)
+![image-20230112171444699](imgs/image-20230112171444699.png)
 
 例2 - 完全二叉树（Complete Binary Tree）特点：最后一层可能未填满，靠左对齐
 
-![image-20230112171917135](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230112171917135.png)
+![image-20230112171917135](imgs/image-20230112171917135.png)
 
 例3 - 大顶堆
 
-![image-20230112170242265](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230112170242265.png)
+![image-20230112170242265](imgs/image-20230112170242265.png)
 
 例4 - 小顶堆
 
-![image-20230112171236067](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230112171236067.png)
+![image-20230112171236067](imgs/image-20230112171236067.png)
 
 
 
 完全二叉树可以使用数组来表示
 
-![image-20230112174351649](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230112174351649.png)
+![image-20230112174351649](imgs/image-20230112174351649.png)
 
 
 
@@ -7279,15 +7274,15 @@ java.lang.IllegalMonitorStateException
 
 那有同学说，加上锁不就行了吗，于是写出了下面的代码
 
-![image-20230208160343493](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230208160343493.png)
+![image-20230208160343493](imgs/image-20230208160343493.png)
 
 发现什么问题了？两把锁这么嵌套使用，非常容易出现死锁，如下所示
 
-![image-20230208160143386](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230208160143386.png)
+![image-20230208160143386](imgs/image-20230208160143386.png)
 
 因此得避免嵌套，两段加锁的代码变成了下面平级的样子
 
-![image-20230208162857435](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230208162857435.png)
+![image-20230208162857435](imgs/image-20230208162857435.png)
 
 性能还可以进一步提升
 
@@ -7563,7 +7558,7 @@ override fun down(parent: Int) {
 
 Floyd 建堆算法(heapify+down)作者（也是之前龟兔赛跑判环作者）：
 
-![image-20230213095110902](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230213095110902.png)
+![image-20230213095110902](imgs/image-20230213095110902.png)
 
 1. 找到最后一个非叶子节点
 2. 从后向前，对每个节点执行下潜
@@ -7577,7 +7572,7 @@ Floyd 建堆算法(heapify+down)作者（也是之前龟兔赛跑判环作者）
 
 算法时间复杂度分析
 
-![image-20230213114024607](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230213114024607.png)
+![image-20230213114024607](imgs/image-20230213114024607.png)
 
 下面看交换次数的推导：设节点高度为 3
 
@@ -8029,7 +8024,7 @@ public double findMedian() {
 
 #### 广度优先
 
-![image-20230216153607396](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230216153607396.png)
+![image-20230216153607396](imgs/image-20230216153607396.png)
 
 | 本轮开始时队列 | 本轮访问节点 |
 | -------------- | ------------ |
@@ -8057,7 +8052,7 @@ public double findMedian() {
 
 #### 深度优先
 
-![image-20230221110443230](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230221110443230.png)
+![image-20230221110443230](imgs/image-20230221110443230.png)
 
 | 栈暂存    | 已处理                                     | 前序遍历 | 中序遍历 |
 | --------- | ------------------------------------------ | -------- | -------- |
@@ -8235,7 +8230,7 @@ public static void colorPrintln(String origin, int color) {
 
 一张图演示三种遍历
 
-![Sorted_binary_tree_ALL_RGB.svg](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/Sorted_binary_tree_ALL_RGB.svg.png)
+![Sorted_binary_tree_ALL_RGB.svg](imgs/Sorted_binary_tree_ALL_RGB.svg.png)
 
 * 红色：前序遍历顺序
 * 绿色：中序遍历顺序
@@ -8717,7 +8712,7 @@ public TreeNode buildTree(int[] inOrder, int[] postOrder) {
 1. 树节点增加 key 属性，用来比较谁大谁小，key 不可以重复
 2. 对于任意一个树节点，它的 key 比左子树的 key 都大，同时也比右子树的 key 都小，例如下图所示
 
-![image-20230228090412983](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230228090412983.png)
+![image-20230228090412983](imgs/image-20230228090412983.png)
 
 轻易看出要查找 7 （从根开始）自然就可应用二分查找算法，只需三次比较
 
@@ -8730,7 +8725,7 @@ public TreeNode buildTree(int[] inOrder, int[] postOrder) {
 * 如果这棵树长得还不赖（左右平衡）上图，那么时间复杂度均是 $O(\log{N})$
 * 当然，这棵树如果长得丑（左右高度相差过大）下图，那么这时是最糟的情况，时间复杂度是 $O(N)$
 
-![image-20230228091405293](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230228091405293.png)
+![image-20230228091405293](imgs/image-20230228091405293.png)
 
 > 注：
 >
@@ -9017,7 +9012,7 @@ public void put(int key, Object value) {
 
 #### 前驱后继
 
-![image-20230228144422128](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230228144422128.png)
+![image-20230228144422128](imgs/image-20230228144422128.png)
 
 一个节点的前驱（前任）节点是指比它小的节点中，最大的那个
 
@@ -9034,7 +9029,7 @@ public void put(int key, Object value) {
 
 要效率更高，需要研究一下规律，**找前驱**分成 2 种情况：
 
-![image-20230228144422128](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230228144422128.png)
+![image-20230228144422128](imgs/image-20230228144422128.png)
 
 1. 节点有左子树，此时前驱节点就是左子树的最大值，图中属于这种情况的有
 	* 2 的前驱是1
@@ -9051,7 +9046,7 @@ public void put(int key, Object value) {
 
 **找后继**也分成 2 种情况
 
-![image-20230228152715296](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230228152715296.png)
+![image-20230228152715296](imgs/image-20230228152715296.png)
 
 1. 节点有右子树，此时后继节点即为右子树的最小值，如
 	* 2 的后继 3
@@ -9829,11 +9824,11 @@ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 
 前面介绍过，如果一棵二叉搜索树长的不平衡，那么查询的效率会受到影响，如下图
 
-![image-20230313090500760](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230313090500760.png)
+![image-20230313090500760](imgs/image-20230313090500760.png)
 
 通过旋转可以让树重新变得平衡，并且不会改变二叉搜索树的性质（即左边仍然小，右边仍然大）
 
-![image-20230313090817485](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230313090817485.png)
+![image-20230313090817485](imgs/image-20230313090817485.png)
 
 #### 如何判断失衡？
 
@@ -9900,19 +9895,19 @@ private int bf(AVLNode node) {
 
 当插入新节点，或删除节点时，引起高度变化时，例如
 
-![image-20230310153645397](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310153645397.png)
+![image-20230310153645397](imgs/image-20230310153645397.png)
 
 目前此树平衡，当再插入一个 4 时，节点们的高度都产生了相应的变化，8 节点失衡了
 
-![image-20230310153803661](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310153803661.png)
+![image-20230310153803661](imgs/image-20230310153803661.png)
 
 在比如说，下面这棵树一开始也是平衡的
 
-![image-20230310154155728](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310154155728.png)
+![image-20230310154155728](imgs/image-20230310154155728.png)
 
 当删除节点 8 时，节点们的高度都产生了相应的变化，6 节点失衡了
 
-![image-20230310154232729](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310154232729.png)
+![image-20230310154232729](imgs/image-20230310154232729.png)
 
 
 
@@ -9920,14 +9915,14 @@ private int bf(AVLNode node) {
 
 **LL**
 
-![image-20230310154459709](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310154459709.png)
+![image-20230310154459709](imgs/image-20230310154459709.png)
 
 * 失衡节点（图中 8 红色）的 bf > 1，即左边更高
 * 失衡节点的左孩子（图中 6）的 bf >= 0 即左孩子这边也是左边更高或等高
 
 **LR**
 
-![image-20230310154858754](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310154858754.png)
+![image-20230310154858754](imgs/image-20230310154858754.png)
 
 * 失衡节点（图中 8）的 bf > 1，即左边更高
 * 失衡节点的左孩子（图中 6 红色）的 bf < 0 即左孩子这边是右边更高
@@ -9936,14 +9931,14 @@ private int bf(AVLNode node) {
 
 **RL**
 
-![image-20230310155048187](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310155048187.png)
+![image-20230310155048187](imgs/image-20230310155048187.png)
 
 * 失衡节点（图中 3）的 bf <-1，即右边更高
 * 失衡节点的右孩子（图中 6 红色）的 bf > 0，即右孩子这边左边更高
 
 **RR**
 
-![image-20230310155347349](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310155347349.png)
+![image-20230310155347349](imgs/image-20230310155347349.png)
 
 * 失衡节点（图中 3）的 bf <-1，即右边更高
 * 失衡节点的右孩子（图中 6 红色）的 bf <= 0，即右孩子这边右边更高或等高
@@ -9972,7 +9967,7 @@ private int bf(AVLNode node) {
 
 旋转前
 
-![image-20230310162158692](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310162158692.png)
+![image-20230310162158692](imgs/image-20230310162158692.png)
 
 * 红色节点，旧根（失衡节点）
 * 黄色节点，旧根的左孩子，将来作为新根，旧根是它右孩子
@@ -9980,7 +9975,7 @@ private int bf(AVLNode node) {
 
 旋转后
 
-![image-20230310162442932](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310162442932.png)
+![image-20230310162442932](imgs/image-20230310162442932.png)
 
 代码
 
@@ -10000,7 +9995,7 @@ private AVLNode rightRotate(AVLNode red) {
 
 旋转前
 
-![image-20230310162945078](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310162945078.png)
+![image-20230310162945078](imgs/image-20230310162945078.png)
 
 * 红色节点，旧根（失衡节点）
 * 黄色节点，旧根的右孩子，将来作为新根，旧根是它左孩子
@@ -10008,7 +10003,7 @@ private AVLNode rightRotate(AVLNode red) {
 
 旋转后
 
-![image-20230310163019508](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310163019508.png)
+![image-20230310163019508](imgs/image-20230310163019508.png)
 
 代码
 
@@ -10028,19 +10023,19 @@ private AVLNode leftRotate(AVLNode red) {
 
 指先左旋左子树，再右旋根节点（失衡），这时一次旋转并不能解决失衡
 
-![image-20230310171424362](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310171424362.png)
+![image-20230310171424362](imgs/image-20230310171424362.png)
 
 左子树旋转后
 
-![image-20230310171636904](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310171636904.png)
+![image-20230310171636904](imgs/image-20230310171636904.png)
 
 根右旋前
 
-![image-20230310171821578](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310171821578.png)
+![image-20230310171821578](imgs/image-20230310171821578.png)
 
 根右旋后
 
-![image-20230310171903417](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310171903417.png)
+![image-20230310171903417](imgs/image-20230310171903417.png)
 
 代码
 
@@ -10057,19 +10052,19 @@ private AVLNode leftRightRotate(AVLNode root) {
 
 指先右旋右子树，再左旋根节点（失衡）
 
-![image-20230310172212302](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310172212302.png)
+![image-20230310172212302](imgs/image-20230310172212302.png)
 
 右子树右旋后
 
-![image-20230310172234154](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310172234154.png)
+![image-20230310172234154](imgs/image-20230310172234154.png)
 
 根左旋前
 
-![image-20230310172303012](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310172303012.png)
+![image-20230310172303012](imgs/image-20230310172303012.png)
 
 根左旋后
 
-![image-20230310172317379](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230310172317379.png)
+![image-20230310172317379](imgs/image-20230310172317379.png)
 
 代码
 
@@ -11751,11 +11746,11 @@ public class HashTable {
 
 ### 生成 hashCode
 
-![image-20230424083655435](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230424083655435.png)
+![image-20230424083655435](imgs/image-20230424083655435.png)
 
 hash 算法是将任意对象，分配一个**编号**的过程，其中编号是一个有限范围内的数字（如 int 范围内）
 
-![image-20230424090603325](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230424090603325.png)
+![image-20230424090603325](imgs/image-20230424090603325.png)
 
 
 
@@ -11843,7 +11838,7 @@ public static void main(String[] args) throws IOException {
 
 **MurmurHash**
 
-![image-20230425084247888](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230425084247888.png)
+![image-20230425084247888](imgs/image-20230425084247888.png)
 
 
 
@@ -12341,7 +12336,7 @@ public class E10Leetcode106Improved {
 
 #### 稳定 vs 不稳定
 
-![stability_playing_cards.svg](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/stability_playing_cards.svg.png)
+![stability_playing_cards.svg](imgs/stability_playing_cards.svg.png)
 
 #### Java 中的排序
 
@@ -12402,21 +12397,21 @@ JDK 14~20 中的排序实现
 
 以数组 3、2、1 的冒泡排序为例，第一轮冒泡
 
-![image-20230504153631958](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230504153631958.png)
+![image-20230504153631958](imgs/image-20230504153631958.png)
 
 第二轮冒泡
 
-![image-20230504154044402](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230504154044402.png)
+![image-20230504154044402](imgs/image-20230504154044402.png)
 
 未排序区域内就剩一个元素，结束
 
-![image-20230504154213239](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230504154213239.png)
+![image-20230504154213239](imgs/image-20230504154213239.png)
 
 优化手段：每次循环时，若能确定**更合适的**右边界，则可以减少冒泡轮数
 
 以数组 3、2、1、4、5 为例，第一轮结束后记录的 x，即为右边界
 
-![image-20230504161136854](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230504161136854.png)
+![image-20230504161136854](imgs/image-20230504161136854.png)
 
 非递归版代码
 
@@ -12496,7 +12491,7 @@ fun bubble4(nums: IntArray, high: Int, count: AtomicInteger) {
 
 以下面的数组选择最大值为例
 
-![image-20230507112728513](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230507112728513.png)
+![image-20230507112728513](imgs/image-20230507112728513.png)
 
 非递归实现
 
@@ -12561,19 +12556,19 @@ fun selection2(nums: IntArray, high: Int, count: AtomicInteger) {
 
 建堆
 
-![image-20230508080820117](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230508080820117.png)
+![image-20230508080820117](imgs/image-20230508080820117.png)
 
 交换，下潜调整
 
-![image-20230508080912944](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230508080912944.png)
+![image-20230508080912944](imgs/image-20230508080912944.png)
 
-![image-20230508080959301](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230508080959301.png)
+![image-20230508080959301](imgs/image-20230508080959301.png)
 
-![image-20230508081052055](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230508081052055.png)
+![image-20230508081052055](imgs/image-20230508081052055.png)
 
-![image-20230508081220301](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230508081220301.png)
+![image-20230508081220301](imgs/image-20230508081220301.png)
 
-![image-20230508081315265](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230508081315265.png)
+![image-20230508081315265](imgs/image-20230508081315265.png)
 
 代码
 
@@ -12645,9 +12640,9 @@ class HeapSort {
 
 例
 
-![image-20230513150750673](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230513150750673.png)
+![image-20230513150750673](imgs/image-20230513150750673.png)
 
-![image-20230513150907333](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230513150907333.png)
+![image-20230513150907333](imgs/image-20230513150907333.png)
 
 代码
 
@@ -12711,7 +12706,7 @@ fun insertion2(nums: IntArray, low: Int) {
 
 下图演示了 gap = 4，gap = 2，gap = 1 的三轮排序前后比较
 
-![image-20230508182439075](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230508182439075.png)
+![image-20230508182439075](imgs/image-20230508182439075.png)
 
 代码
 
@@ -12769,7 +12764,7 @@ fun shell(nums: IntArray) {
 * 治 - 当数据仅剩一个时可以认为有序
 * 合 - 两个有序的结果，可以进行合并排序（参见数组练习 E01. 合并有序数组）
 
-![image-20230513143854887](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230513143854887.png)
+![image-20230513143854887](imgs/image-20230513143854887.png)
 
 代码
 
@@ -12967,15 +12962,15 @@ fun merge(nums: IntArray, left1: Int, right1: Int, left2: Int, right2: Int, temp
 
 i 和 j 都从左边出发向右查找，i 找到比基准点4大的5，j找到比基准点小的2，停下来交换
 
-![image-20230513145045085](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230513145045085.png)
+![image-20230513145045085](imgs/image-20230513145045085.png)
 
 i 找到了比基准点大的5，j 找到比基准点小的3，停下来交换
 
-![image-20230513145259217](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230513145259217.png)
+![image-20230513145259217](imgs/image-20230513145259217.png)
 
 j 到达right 处结束，right 与 i 交换，一轮分区结束
 
-![image-20230513145454772](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230513145454772.png)
+![image-20230513145454772](imgs/image-20230513145454772.png)
 
 代码
 
@@ -13042,15 +13037,15 @@ fun partition(nums: IntArray, left: Int, right: Int): Int {
 
 i 找到比基准点大的5停下来，j 找到比基准点小的1停下来（包含等于），二者交换
 
-![image-20230513145918612](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230513145918612.png)
+![image-20230513145918612](imgs/image-20230513145918612.png)
 
 i 找到8，j 找到3，二者交换，i 找到7，j 找到2，二者交换
 
-![image-20230513150158220](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230513150158220.png)
+![image-20230513150158220](imgs/image-20230513150158220.png)
 
 i == j，退出循环，基准点与 i 交换
 
-![image-20230513150351115](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230513150351115.png)
+![image-20230513150351115](imgs/image-20230513150351115.png)
 
 代码
 
@@ -13083,7 +13078,7 @@ fun partition2(nums: IntArray, left: Int, right: Int): Int {
 
 例
 
-![image-20230513152038090](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230513152038090.png)
+![image-20230513152038090](imgs/image-20230513152038090.png)
 
 改进代码
 
@@ -13096,7 +13091,7 @@ val index = Random.nextInt(left, right + 1)
 
 如果重复值较多，则原来算法中的分区效果也不好，如下图中左侧所示，需要想办法改为右侧的分区效果
 
-![image-20230513151851103](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230513151851103.png)
+![image-20230513151851103](imgs/image-20230513151851103.png)
 
 改进方法：
 
@@ -15341,7 +15336,7 @@ public class Leetcode322 {
 
 用满二叉树结构编码，可以确保前缀不重复
 
-![image-20230616094945068](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230616094945068.png)
+![image-20230616094945068](imgs/image-20230616094945068.png)
 
 * 向左走 0，向右走 1
 * 走到叶子字符，累计起来的 0 和 1 就是该字符的二进制编码
@@ -15363,7 +15358,7 @@ public class Leetcode322 {
 
 考察下面的树
 
-![image-20230616095129461](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230616095129461.png)
+![image-20230616095129461](imgs/image-20230616095129461.png)
 
 * 00 表示 a
 * 01 表示 b
@@ -16078,11 +16073,11 @@ public class BellmanFord {
 
 机器人要从左上角走到右下角，每次只能**向右**或**向下**，问一共有多少条不同路径？
 
-![](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/robot_maze2.png)
+![](imgs/robot_maze2.png)
 
 分析，先考虑较为简单的情况
 
-![](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/robot_maze.png)
+![](imgs/robot_maze.png)
 
 可能路径有三种情况：
 
@@ -17071,7 +17066,7 @@ public class HouseRobberLeetcode198 {
 
 旅行商问题
 
-![image-20230731213127478](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230731213127478.png)
+![image-20230731213127478](imgs/image-20230731213127478.png)
 
 java 代码
 
@@ -17316,7 +17311,7 @@ public class CombinationLeetcode377 {
 
 #### 二分查找
 
-![image-20230802100240290](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230802100240290.png)
+![image-20230802100240290](imgs/image-20230802100240290.png)
 
 ```java
 public static int binarySearch(int[] a, int target) {
@@ -17342,7 +17337,7 @@ public static int recursion(int[] a, int target, int i, int j) {
 
 #### 快速排序
 
-![image-20230802100332341](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230802100332341.png)
+![image-20230802100332341](imgs/image-20230802100332341.png)
 
 ```java
 public static void sort(int[] a) {
@@ -17363,7 +17358,7 @@ private static void quick(int[] a, int left, int right) {
 
 #### 归并排序
 
-![image-20230513143854887](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/image-20230513143854887.png)
+![image-20230513143854887](imgs/image-20230513143854887.png)
 
 ```java
 public static void sort(int[] a1) {
@@ -20366,37 +20361,37 @@ public class SharesLeetcode188 {
 
 ### 入门图书
 
-![](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/s29358625.jpg)
+![](imgs/s29358625.jpg)
 
 
 
 ### 系统学习
 
-![](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/s29460367.jpg)
+![](imgs/s29460367.jpg)
 
-![](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/s29107491.jpg)
+![](imgs/s29107491.jpg)
 
 
 
 ### 扩展阅读
 
-<img src="C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/s29205454.jpg" style="zoom: 33%;" />
+<img src="imgs/s29205454.jpg" style="zoom: 33%;" />
 
-<img src="C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/s29970325.jpg" style="zoom:25%;" />
+<img src="imgs/s29970325.jpg" style="zoom:25%;" />
 
-![](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/s33662490.jpg)
+![](imgs/s33662490.jpg)
 
-![](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/s34606338.jpg)
+![](imgs/s34606338.jpg)
 
 ### 面试
 
-![](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/s34075059.jpg)
+![](imgs/s34075059.jpg)
 
 ### 案头装 B
 
-<img src="C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/s25648004.jpg" style="zoom:53%;" />
+<img src="imgs/s25648004.jpg" style="zoom:53%;" />
 
-![](C:/Users/797799421/Desktop/笔记/java/数据结构和算法/imgs/s11706681.jpg)
+![](imgs/s11706681.jpg)
 
 > 吐槽
 >

@@ -26,6 +26,21 @@ create-react-app是一个快速 创建React开发环境的工具，底层由Webp
 
 创建项目的更多方式：https://zh-hans.react.dev/learn/start-a-new-react-project
 
+补充创建方式：
+
+~~~bash
+# vite创建
+npm create vite@latest
+yarn create vite
+# pnpm集合了npm和yarn的优点
+pnpm create vite
+# 可以跟上-t/-template参数指定模板
+pnpm create vite -t react
+#-t参数：react、vue、vue-ts、react-ts等
+~~~
+
+
+
 ## JSX基础
 
 JSX是JavaScript和XML（HTML）的缩写，表示在JS代码中编写HTML模版结构,它是React中编写 UI模版的方式。

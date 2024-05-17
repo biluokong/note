@@ -2,7 +2,7 @@
 > Redux 是React最常用的集中状态管理工具，类似于Vue中的Pinia（Vuex），可以独立于框架运行
 > 作用：通过集中管理的方式管理应用的状态
 
-![image.png](assets/1.png)
+![image.png](assets/redux/1.png)
 **为什么要使用Redux？**
 
 1. 独立于组件，无视组件之间的层级关系，简化通信问题
@@ -12,7 +12,7 @@
 ## 1. 实现计数器
 > 需求：不和任何框架绑定，不使用任何构建工具，使用纯Redux实现计数器
 
-![image.png](assets/2.png)
+![image.png](assets/redux/2.png)
 使用步骤：
 
 1. 定义一个 reducer 函数 （根据当前想要做的修改返回一个新的状态）
@@ -71,7 +71,7 @@
 ## 2. Redux数据流架构
 > Redux的难点是理解它对于数据修改的规则, 下图动态展示了在整个数据的修改中，数据的流向
 
-![1](assets/3.png)
+![1](assets/redux/3.png)
 为了职责清晰，Redux代码被分为三个核心的概念，我们学redux，其实就是学这三个核心概念之间的配合，三个概念分别是:
 
 1. state:  一个对象 存放着我们管理的数据
@@ -87,7 +87,7 @@
 
 2. react-redux - 用来 链接 Redux 和 React组件 的中间件
 
-![image.png](assets/4.png)
+![image.png](assets/redux/4.png)
 ## 2. 配置基础环境
 
 1.  使用 CRA 快速创建 React 项目
@@ -108,7 +108,7 @@ npm run start
 
 ## 3. store目录结构设计
 
-![image.png](assets/5.png)
+![image.png](assets/redux/5.png)
 
 1. 通常集中状态管理的部分都会单独创建一个单独的 `store` 目录
 
@@ -118,7 +118,7 @@ npm run start
 
 # Redux与React - 实现counter
 ## 1. 整体路径熟悉
-![image.png](assets/6.png)
+![image.png](assets/redux/6.png)
 
 
 ## 2. 使用React Toolkit 创建 counterStore
@@ -132,17 +132,18 @@ const counterStore = createSlice({
   initialState: {
     count: 1
   },
-  // 修改数据的同步方法
+  // 修改数据的同步方法，是reducer函数（需要是纯函数）
   reducers: {
-    increment (state) {
+    increment (state, action) {
       state.count++
     },
-    decrement(state){
+    decrement(state, action){
       state.count--
     }
   }
 })
-// 结构出actionCreater
+// 解构出actionCreater
+// 可以这样理解：这里解构出的函数是生成的同名函数，表示action的类型，这些函数的参数为action的用于更新的值，存储于reduce函数中action参数的payload中。action: {type: 操作类型, value: 用于更新的值}
 const { increment,decrement } = counter.actions
 
 // 获取reducer函数
@@ -188,23 +189,23 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 ## 4. React组件使用store中的数据
 > 在React组件中使用store中的数据，需要用到一个钩子函数 - useSelector，它的作用是把store中的数据映射到组件中，使用样例如下：
 
-![image.png](assets/7.png)
+![image.png](assets/redux/7.png)
 ## 5. React组件修改store中的数据
 > React组件中修改store中的数据需要借助另外一个hook函数 - useDispatch，它的作用是生成提交action对象的dispatch函数，使用样例如下：
 
 
-![image.png](assets/8.png)
+![image.png](assets/redux/8.png)
 # Redux与React - 提交action传参
 > 需求：组件中有俩个按钮 `add to 10` 和 `add to 20` 可以直接把count值修改到对应的数字，目标count值是在组件中传递过去的，需要在提交action的时候传递参数
 
-![image.png](assets/9.png)
+![image.png](assets/redux/9.png)
 实现方式：在reducers的同步修改方法中添加action对象参数，在调用actionCreater的时候传递参数，参数会被传递到action对象payload属性上
 
-![image.png](assets/10.png)
+![image.png](assets/redux/10.png)
 
 # Redux与React - 异步action处理
 **需求理解**
-![image.png](assets/11.png)
+![image.png](assets/redux/11.png)
 
 **实现步骤**
 
@@ -277,10 +278,10 @@ export default App
 # Redux调试 - devtools
 > Redux官方提供了针对于Redux的调试工具，支持实时state信息展示，action提交信息查看等
 
-![image.png](assets/12.png)
+![image.png](assets/redux/12.png)
 # 美团小案例
 ## 1. 案例演示
-![image.png](assets/13.png)
+![image.png](assets/redux/13.png)
 
 > 基本开发思路：使用 RTK（Redux Toolkit）来管理应用状态, 组件负责 数据渲染 和 dispatch action
 
@@ -306,7 +307,7 @@ npm run serve
 npm run start 
 ```
 ## 3. 分类和商品列表渲染
-![image.png](assets/14.png)
+![image.png](assets/redux/14.png)
 1- 编写store逻辑
 
 ```javascript
@@ -397,7 +398,7 @@ const App = () => {
 export default App
 ```
 ## 4. 点击分类激活交互实现
-![image.png](assets/15.png)
+![image.png](assets/redux/15.png)
 1- 编写store逻辑
 
 ```javascript
@@ -460,7 +461,7 @@ const Menu = () => {
 }
 ```
 ## 5. 商品列表切换显示
-![image.png](assets/16.png)
+![image.png](assets/redux/16.png)
 
 ```jsx
 <div className="list-content">
@@ -481,7 +482,7 @@ const Menu = () => {
 </div>
 ```
 ## 6. 添加购物车实现
-![image.png](assets/17.png)
+![image.png](assets/redux/17.png)
 1- 编写store逻辑
 
 ```javascript
@@ -538,7 +539,7 @@ export default reducer
 </div>
 ```
 ## 7. 统计区域实现
-![image.png](assets/18.png)
+![image.png](assets/redux/18.png)
 
 实现思路
 
@@ -557,7 +558,7 @@ const totalPrice = cartList.reduce((a, c) => a + c.price * c.count, 0)
 </div>
 ```
 ## 8. 购物车列表功能实现
-![image.png](assets/19.png)
+![image.png](assets/redux/19.png)
 
 1-控制列表渲染
 ```jsx
@@ -648,7 +649,7 @@ clearCart (state) {
 </div>
 ```
 ## 9. 控制购物车显示和隐藏
-![image.png](assets/20.png)
+![image.png](assets/redux/20.png)
 
 ```jsx
 // 控制购物车打开关闭的状态

@@ -14,7 +14,7 @@
 > 2. 路径联想配置（VsCode），VsCode 在输入 @/ 时，自动联想出来对应的 src/下的子级目录
 
 
-![image.png](assets/12.png)
+![image.png](assets/router/12.png)
 ## 2. 路径解析配置
 配置步骤：
 
@@ -25,7 +25,7 @@ craco.config.js
 3. 配置文件中添加路径解析配置
 4. 包文件中配置启动和打包命令
 
-![image.png](assets/13.png)
+![image.png](assets/router/13.png)
 ## 3. 联想路径配置
 配置步骤：
 
@@ -48,7 +48,7 @@ craco.config.js
 > 在前后端分类的开发模式下，前端可以在没有实际后端接口的支持下先进行接口数据的模拟，进行正常的业务功能开发
 
 ## 1. 常见的Mock方式
-![image.png](assets/14.png)
+![image.png](assets/router/14.png)
 
 ## 2. json-server实现Mock
 实现步骤：
@@ -58,25 +58,25 @@ craco.config.js
 2.  准备一个json文件 （素材里获取）
 3.  添加启动命令 
 
-![image.png](assets/15.png)
+![image.png](assets/router/15.png)
 
 4.  访问接口进行测试 
 # 整体路由设计
-![image.png](assets/16.png)
+![image.png](assets/router/16.png)
 1. 俩个一级路由 （Layout / new）2. 俩个二级路由 （Layout - mouth/year）
 
 # antD主题定制
 ## 1. 定制方案
-![image.png](assets/17.png)
+![image.png](assets/router/17.png)
 ## 2. 实现方式
 
 1. 全局定制
 
-![image.png](assets/18.png)
+![image.png](assets/router/18.png)
 
 2. 局部定制
 
-![image.png](assets/19.png)
+![image.png](assets/router/19.png)
 
 ## 3. 记账本主题色
 ```css
@@ -86,7 +86,7 @@ craco.config.js
 ```
 
 # Redux管理账目列表
-![image.png](assets/20.png)
+![image.png](assets/router/20.png)
 
 ```javascript
 // 账单列表相关store
@@ -155,7 +155,7 @@ root.render(
 )
 ```
 # TabBar功能实现
-![image.png](assets/21.png)
+![image.png](assets/router/21.png)
 
 ## 1. 静态布局实现
 配套静态模版和样式文件
@@ -251,7 +251,7 @@ export default Layout
 
 # 月度账单-统计区域
 
-![image.png](assets/22.png)
+![image.png](assets/router/22.png)
 
 ## 1. 准备静态结构
 ```jsx
@@ -445,7 +445,7 @@ const Month = () => {
 export default Month
 ```
 ## 3. 切换时间显示
-![image.png](assets/23.png)
+![image.png](assets/router/23.png)
 
 > 实现思路：
 > 1. 以当前时间作为默认值
@@ -600,7 +600,7 @@ export default Month
 ```
 
 # 月度账单-单日统计列表实现
-![image.png](assets/24.png)
+![image.png](assets/router/24.png)
 ## 1. 准备组件和配套样式
 ```jsx
 import classNames from 'classnames'
@@ -772,7 +772,7 @@ export default DailyBill
 }
 ```
 ## 2. 按日分组账单数据
-![image.png](assets/25.png)
+![image.png](assets/router/25.png)
 
 ```javascript
 // 把当前月按日分组账单数据
@@ -834,7 +834,7 @@ const DailyBill = ({ date, billList }) => {
 export default DailyBill
 ```
 # 月度账单-单日账单列表展示
-![image.png](assets/26.png)
+![image.png](assets/router/26.png)
 
 ## 1. 渲染基础列表
 ```jsx
@@ -940,7 +940,7 @@ export const billTypeToName = Object.keys(billListData).reduce((prev, key) => {
 # 月度账单-切换打开关闭
 ![image.png](https://cdn.nlark.com/yuque/0/2023/png/274425/1680169396175-a10287d1-cc4a-4464-b295-aea0becb3805.png#averageHue=%23fcfcfc&clientId=u4bda8888-0a67-4&from=paste&height=98&id=u1d780ff6&name=image.png&originHeight=196&originWidth=736&originalType=binary&ratio=2&rotation=0&showTitle=false&size=15931&status=done&style=none&taskId=uc682e670-0453-45ac-9d64-b891c330814&title=&width=368)
 
-![image.png](assets/27.png)
+![image.png](assets/router/27.png)
 
 ```jsx
 // 声明状态
@@ -956,7 +956,7 @@ const [visible, setVisible] = useState(false)
 ```
 
 # 月度账单-Icon组件封装
-![image.png](assets/28.png)
+![image.png](assets/router/28.png)
 ## 1. 准备静态结构
 ```jsx
 const Icon = () => {

@@ -894,7 +894,7 @@ CMS全称 Concurrent Mark Sweep，是一款并发的、使用标记-清除算法
 
 #### 3.6.1 概述
 
-- 应用于新生代和老年代，**在****JDK9****之后默认使用****G1**
+- 应用于新生代和老年代，在JDK9之后默认使用G1
 
 - 划分成多个区域，每个区域都可以充当 eden，survivor，old， humongous，其中 humongous 专为大对象准备
 
@@ -1061,7 +1061,7 @@ nohup java -Xms512m -Xmx1024m -jar xxxx.jar --spring.profiles.active=prod &
 >
 >出现频率：☆☆☆☆
 
-​	对于JVM调优，主要就是调整年轻代、年老大、元空间的内存空间大小及使用的垃圾回收器类型。
+​	对于JVM调优，主要就是调整年轻代、老年代、元空间的内存空间大小及使用的垃圾回收器类型。
 
 https://www.oracle.com/java/technologies/javase/vmoptions-jsp.html
 
