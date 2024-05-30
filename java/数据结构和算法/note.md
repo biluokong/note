@@ -7552,6 +7552,21 @@ override fun down(parent: Int) {
         else break
     }
 }
+
+public void down(int parent) {
+    int min = parent;
+    while (true) {
+        int left = (parent << 1) + 1;
+        int right = left + 1;
+        if (left < size && array[min] > array[left]) min = left;
+        if (right < size && array[min] > array[right]) min = right;
+        if (min != parent) {
+            swap(parent, min);
+            parent = min;
+        }
+        else break;
+    }
+}
 ~~~
 
 ### 建堆
@@ -8269,6 +8284,24 @@ public boolean check(TreeNode left, TreeNode right) {
     }
     return check(left.left, right.right) && check(left.right, right.left);
 }
+
+//迭代方式
+public boolean isSymmetric(TreeNode root) {
+    LinkedList<TreeNode> queue = new LinkedList<>();
+    queue.add(root.left);
+    queue.add(root.right);
+    while (!queue.isEmpty()) {
+        TreeNode left = queue.poll();
+        TreeNode right = queue.poll();
+        if (left == null && right == null) continue;
+        if (left == null || right == null || left.val != right.val) return false;
+        queue.offer(left.left);
+        queue.offer(right.right);
+        queue.offer(left.right);
+        queue.offer(right.left);
+    }
+    return true;
+}
 ```
 
 类似题目：Leetcode 100 题 - 相同的树
@@ -8394,6 +8427,15 @@ public int minDepth(TreeNode node) {
         return d1 + d2 + 1;
     }
     return Integer.min(d1, d2) + 1;
+}
+
+//另一种写法
+public int recursion(TreeNode node) {
+    if (node == null) return 0;
+    if (node.left == null && node.right == null) return 1;
+    if (node.left == null) return recursion(node.right) + 1;
+    if (node.right == null) return recursion(node.left) + 1;
+    return Math.min(recursion(node.left), recursion(node.right)) + 1;
 }
 ```
 
@@ -8618,7 +8660,19 @@ public class E09Leetcode105 {
         }
         return root;
     }
+}
 
+//另一种写法
+private int p = 0;
+private HashMap<Integer, Integer> map;
+public TreeNode recursion(int[] preorder, int l, int r) {
+    if (p == preorder.length || l > r) return null;
+    TreeNode parent = new TreeNode(preorder[p++]);
+    //if (l == r) return parent;
+    Integer m = map.get(parent.val);
+    parent.left = recursion(preorder, l, m - 1);
+    parent.right = recursion(preorder, m + 1, r);
+    return parent;
 }
 ```
 
@@ -8654,6 +8708,19 @@ public TreeNode buildTree(int[] inOrder, int[] postOrder) {
         }
     }
     return root;
+}
+
+// 或，p = postorder.length - 1
+private int p;
+private HashMap<Integer, Integer> map;
+public TreeNode recursion(int[] postorder, int l, int r) {
+    if (p < 0 || l > r) return null;
+    TreeNode parent = new TreeNode(postorder[p--]);
+    //if (l == r) return parent;
+    Integer m = map.get(parent.val);
+    parent.right = recursion(postorder, m + 1, r);
+    parent.left = recursion(postorder, l, m - 1);
+    return parent;
 }
 ```
 
@@ -9414,7 +9481,7 @@ public List<Object> between(int key1, int key2) {
 
 #### E01. 删除节点-Leetcode 450
 
-例题已经讲过，用非递归和递归均可实现，这里只给出递归参考代码
+例题已经讲过，用非递归和递归均可实现，这里只给出递归参考代码（用之前的方法时，若想避免判断删除根节点的情况，可以创建一个哨兵节点作为新的根节点）
 
 ```java
 public TreeNode deleteNode(TreeNode node, int key) {
@@ -9458,16 +9525,11 @@ public TreeNode deleteNode(TreeNode node, int key) {
 例题也讲过了（put），下面给出递归实现
 
 ```java
-public TreeNode insertIntoBST(TreeNode node, int val) {
-    if(node == null) {
-        return new TreeNode(val);
-    }
-    if(val < node.val) {
-        node.left = insertIntoBST(node.left, val);
-    } else if(node.val < val) {
-        node.right = insertIntoBST(node.right, val);
-    }
-    return node;
+public TreeNode insertIntoBST(TreeNode root, int val) {
+    if (root == null) return new TreeNode(val);
+    if (val < root.val) root.left = insertIntoBST(root.left, val);
+    else root.right = insertIntoBST(root.right, val);
+    return root;
 }
 ```
 
@@ -9593,6 +9655,29 @@ private boolean doValid(TreeNode node, long min, long max) {
 * 对于 node.right 范围肯定是 $(node.val, max)$
 * 一开始不知道 min，max 则取 java 中长整数的最小、最大值
 * 本质是前序遍历 + 剪枝
+
+**利用性质：前驱 < node < 后继**
+
+~~~java
+public boolean isValidBST(TreeNode root) {
+    if (root == null) return true;
+    TreeNode precursor = root.left;
+    boolean precursorFlag; 
+    if (precursor == null) precursorFlag = true;
+    else {
+        while (precursor.right != null) precursor = precursor.right;
+        precursorFlag = precursor.val < root.val;
+    }
+    TreeNode successor = root.right;
+    boolean successorFlag;
+    if (successor == null) successorFlag = true;
+    else {
+        while (successor.left != null) successor = successor.left;
+        successorFlag = successor.val > root.val;
+    }
+    return precursorFlag && successorFlag && isValidBST(root.left) && isValidBST(root.right);
+}
+~~~
 
 
 
@@ -9796,6 +9881,21 @@ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
     return ancestor;
 }
 ```
+
+**递归方式**
+
+~~~java
+public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+    if (p.val < q.val) return recursion(root, p, q);
+    else return recursion(root, q, p);
+}
+public TreeNode recursion(TreeNode node, TreeNode p, TreeNode q) {
+    if (node == null) return null;
+    if (node.val > q.val) return recursion(node.left, p, q);
+    if (node.val < p.val) return recursion(node.right, p, q);
+    return node;
+}
+~~~
 
 
 
@@ -10081,20 +10181,15 @@ private AVLNode rightLeftRotate(AVLNode root) {
 
 ```java
 private AVLNode balance(AVLNode node) {
-    if (node == null) {
+    /*if (node == null) {
         return null;
-    }
+    }*/
     int bf = bf(node);
-    if (bf > 1 && bf(node.left) >= 0) {
-        return rightRotate(node);
-    } else if (bf > 1 && bf(node.left) < 0) {
-        return rightLeftRotate(node);
-    } else if (bf < -1 && bf(node.right) > 0) {
-        return leftRightRotate(node);
-    } else if (bf < -1 && bf(node.right) <= 0) {
-        return rightRotate(node);
-    }
-    return node;
+    if (bf > 1 && bf(node.left) >= 0) return rightRotate(node);
+    else if (bf > 1 && bf(node.left) < 0) return leftRightRotate(node);
+    else if (bf < -1 && bf(node.right) > 0) return rightLeftRotate(node);
+    else if (bf < -1 && bf(node.right) <= 0) return leftRotate(node);
+    else return node;
 }
 ```
 
@@ -10193,9 +10288,9 @@ private AVLNode doRemove(AVLNode node, int key) {
             node = s;
         }
     }
-    if (node == null) {
+    /*if (node == null) {
         return null;
-    }
+    }*/
     updateHeight(node);
     return balance(node);
 }
@@ -10386,20 +10481,12 @@ public class AVLTree {
     }
 
     private AVLNode balance(AVLNode node) {
-        if (node == null) {
-            return null;
-        }
         int bf = bf(node);
-        if (bf > 1 && bf(node.left) >= 0) {
-            return rightRotate(node);
-        } else if (bf > 1 && bf(node.left) < 0) {
-            return rightLeftRotate(node);
-        } else if (bf < -1 && bf(node.right) > 0) {
-            return leftRightRotate(node);
-        } else if (bf < -1 && bf(node.right) <= 0) {
-            return rightRotate(node);
-        }
-        return node;
+        if (bf > 1 && bf(node.left) >= 0) return rightRotate(node);
+        else if (bf > 1 && bf(node.left) < 0) return leftRightRotate(node);
+        else if (bf < -1 && bf(node.right) > 0) return rightLeftRotate(node);
+        else if (bf < -1 && bf(node.right) <= 0) return leftRotate(node);
+        else return node;
     }
 }
 ```
@@ -11014,7 +11101,7 @@ ai 问题列表
 
 特性3：$m$ 阶B树的每个节点最多有 $m$ 个孩子，除根节点和叶子节点外，其他节点至少有 $\lceil m/2 \rceil$ 个孩子。则有：$\lceil m/2 \rceil -1 \leq n \leq m-1$
 
-特性4：最小度 $t$（节点的孩子数称为度）和节点中键数量 $n$ 的关系如下：$t-1 \leq n \leq 2t-1$
+特性4：最小度 $t$（节点的孩子数称为度）和节点中key-键数量 $n$ 的关系如下：$t-1 \leq n \leq 2t-1$
 
 特性5：叶子节点的深度都相同
 
@@ -11934,22 +12021,41 @@ abba
 public int lengthOfLongestSubstring(String s) {
     int[] map = new int[128];
     Arrays.fill(map, -1);
-    int begin = 0;
-    int maxLength = 0;
-    for (int end = 0; end < s.length(); end++) {
-        char ch = s.charAt(end);
-        if (map[ch] != -1) { // 重复时调整 begin
-            begin = Math.max(begin, map[ch] + 1);
-            map[ch] = end;
-        } else { // 不重复
-            map[ch] = end;
-        }
-        System.out.println(s.substring(begin, end + 1));
-        maxLength = Math.max(maxLength, end - begin + 1);
+    int begin = 0, max = 0;
+    char[] chars = s.toCharArray();
+    for (int end = 0; end < chars.length; end++) {
+        int index = map[chars[end]];
+        if (index != -1 && index >= begin) begin = index + 1;
+        //或
+        //if (index != -1) begin = Integer.max(begin, index + 1);
+        map[chars[end]] = end;
+        max = Integer.max(max, end - begin + 1);
     }
-    return maxLength;
+    return max;
 }
 ```
+
+更快的方法——滑动窗口：只要出现重复的，长度至少减1（去掉左/右边重复的字符），长度减1的是当前最大的。
+
+~~~java
+public int lengthOfLongestSubstring(String s) {
+    char[] str = s.toCharArray();
+    boolean[] has = new boolean[128];
+    int max = 0;
+    int left = 0;
+    for (int right = 0; right < str.length; right++) {
+        char c = str[right];
+        while (has[c]) {
+            // 缩小窗口
+            has[str[left++]] = false;	
+        }
+        has[c] = true;
+        // 更新窗口长度最大值
+        max = Math.max(max, right - left + 1);	
+    }
+    return max;
+}
+~~~
 
 
 
@@ -11964,8 +12070,10 @@ public List<List<String>> groupAnagrams(String[] strs) {
         char[] chars = str.toCharArray();
         Arrays.sort(chars);
         String key = new String(chars);
-        List<String> strings = map.computeIfAbsent(key, k -> new ArrayList<>());
-        strings.add(str);
+        //map.putIfAbsent(key, new ArrayList<>());
+        //map.get(key).add(str);
+        //一行搞定上面两行
+        map.computeIfAbsent(key, s -> new ArrayList<>()).add(str);
     }
     return new ArrayList<>(map.values());
 }
@@ -12018,13 +12126,68 @@ public List<List<String>> groupAnagrams(String[] strs) {
 public boolean containsDuplicate(int[] nums) { // 5ms
     HashSet<Integer> set = new HashSet<>();
     for (int key : nums) {
-        if (!set.add(key)) {
-            return true;
-        }
+        if (!set.add(num)) return true;
+    }
+    return false;
+}
+
+//重复元素2-leetcode 219
+public boolean containsNearbyDuplicate(int[] nums, int k) {
+    HashMap<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < nums.length; i++) {
+        Integer index = map.put(nums[i], i);
+        if (index != null && i - index <= k) return true;
     }
     return false;
 }
 ```
+
+重复元素3-leetcode 220【困难】两种解法
+
+~~~java
+//方法1：滑动窗口+二分查找
+public boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
+    //滑动窗口，窗口大小为 indexDiff
+    TreeSet<Integer> set = new TreeSet<>();	
+    for (int i = 0; i < nums.length; i++) {
+        int num = nums[i];
+        // 从 set 中找到小于等于 num 的最大值（小于等于 num 的最接近 num 的数）
+        Integer left = set.floor(num);
+        // 从 set 中找到大于等于 num 的最小值（大于等于 num 的最接近 num 的数）
+        Integer right = set.ceiling(num);
+        if (left != null && num - left <= valueDiff) return true;
+        if (right != null && right - num <= valueDiff) return true;
+        set.add(num);
+        //移除下标范围不再 [max(0, i-indexDiff), i] 的数
+        if (i >= indexDiff) set.remove(nums[i - indexDiff]);
+    }
+    return false;
+}
+
+//方法2：桶排序
+public boolean containsNearbyAlmostDuplicate(int[] nums, int indexDiff, int valueDiff) {
+    HashMap<Integer, Integer> map = new HashMap<>();
+    int size = valueDiff + 1;
+    for (int i = 0; i < nums.length; i++) {
+        int num = nums[i];
+        int idx = getIdx(num, size);
+        // 目标桶已存在（桶不为空），说明前面已有 [num - valueDiff, num + valueDiff] 范围的数字
+        if (map.containsKey(idx)) return true;
+        // 检查相邻的桶
+        int left = idx - 1, right = idx + 1;
+        if (map.containsKey(left) && num - map.get(left) <= valueDiff) return true;
+        if (map.containsKey(right) && map.get(right) - num <= valueDiff) return true;
+        map.put(idx, num);
+        //移除下标范围不在 [max(0, i-indexDiff), i] 的数
+        if (i >= indexDiff) map.remove(getIdx(nums[i - indexDiff], size));
+    }
+    return false;
+}
+
+public int getIdx(int num, int size) {
+    return num >= 0 ? num / size : (num + 1) / size - 1;
+}
+~~~
 
 
 
@@ -12858,7 +13021,7 @@ fun mergeSort(nums: IntArray, temp: IntArray) {
 		while (i < nums.size) {
 			val left = i
 			val right = min(i + (width shl 1) - 1, nums.size - 1)
-			// 这里不用用 (left + right)/2 因为right的长度可能为nums.size，导致mid的计算错误
+			// 这里不用 (left + right)/2 因为right的长度可能为nums.size，导致mid的计算错误
 			val mid = min(i + width - 1, nums.size)
 			merge(nums, left, mid, mid + 1, right, temp)
 			i += width shl 1
@@ -12866,19 +13029,6 @@ fun mergeSort(nums: IntArray, temp: IntArray) {
 		System.arraycopy(temp, 0, nums, 0, nums.size)
 		width = width shl 1
 	}
-}
-
-// 先排序好当前范围内元素到临时数组上，在复制回原数组当前范围上
-fun split(nums: IntArray, left: Int, right: Int, temp: IntArray) {
-	// 治：子数组长度为1，不需要排序
-	if (left == right) return
-	val mid = left + right ushr 1
-	// 分：划分为两个数组
-	split(nums, left, mid, temp)
-	split(nums, mid + 1, right, temp)
-	// 合：合并两个数组，并使之有序
-	merge(nums, left, mid, mid + 1, right, temp)
-	System.arraycopy(temp, left, nums, left, right - left +  1)
 }
 
 // 参数：原数组、子数组1左边界、子数组1右边界、子数组2左边界、子数组2右边界、临时数组
@@ -12918,6 +13068,7 @@ fun split2(nums: IntArray, left: Int, right: Int, temp: IntArray, size: Int) {
 			while (j >= 0 && nums[j] > key) nums[j + 1] = nums[j--]
 			if (j + 1 != i) nums[j + 1] = key
 		}
+        return
 	}
 	val mid = left + right ushr 1
 	// 分：划分为两个数组
@@ -13001,11 +13152,9 @@ fun partition(nums: IntArray, left: Int, right: Int): Int {
 	val pivot = nums[right]
 	var (i, j) = intArrayOf(left, left)
 	while (j < right) {
-		if (nums[j] < pivot) {	// j找到比枢纽元素小的了
-			/* nums[i]两种可能：
-				1. nums[i] < pivot：则nums[j]也小于，i==j不会交换，i++
-				2. nums[i] >= pivot：则i的位置是对的，i和j应该交换，i++,j++
-			 */
+		if (nums[j] < pivot) {	// j找到比枢纽元素小的了，则也意味着没找到比枢纽元素大的，则可以i++
+			//开始时i和j同步，所以i==j，一旦j>=p，则i>=p，i就需要停止，j继续前进，直到j<p；
+            //后面j<p时，i和j之间的元素都是>=p的，并且j>i，所以当i!=j时，则i一定>=p。
 			if (i != j)	nums[i] = nums[j].apply { nums[j] = nums[i] }
 			i++
 		}
@@ -13549,6 +13698,27 @@ public class E02Leetcode1636 {
             }
         }).mapToInt(Integer::intValue).toArray();
     }
+}
+
+//更快的
+public int[] frequencySort(int[] nums) {
+    int[] counting = new int[201];
+    for (int num : nums) counting[num + 100]++;
+    TreeMap<Integer, List<Integer>> map = new TreeMap<>();
+    for (int i = 0; i < counting.length; i++) {
+        int key = counting[i];
+        for (int j = 0; j < key; j++) {
+            map.computeIfAbsent(key, ArrayList::new).add(i - 100);
+        }
+    }
+    int i = 0;
+    for (List<Integer> list : map.values()) {
+        list.sort((o1, o2) -> o2 - o1);
+        for (Integer num : list) {
+            nums[i++] = num;
+        }
+    }
+    return nums;
 }
 ```
 

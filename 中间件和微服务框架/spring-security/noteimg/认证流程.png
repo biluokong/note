@@ -1,0 +1,77 @@
+﻿<!-- 
+官网http://yun.nz/
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>404</title>
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+
+    <nav>
+        <div class="menu">
+            <div class="menu_icon">
+                <span class="icon"></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="wrapper">
+
+        <div class="container">
+
+            <div id="scene" class="scene" data-hover-only="false">
+
+
+                <div class="circle" data-depth="1.2"></div>
+
+                <div class="one" data-depth="0.9">
+                    <div class="content">
+                        <span class="piece"></span>
+                        <span class="piece"></span>
+                        <span class="piece"></span>
+                    </div>
+                </div>
+
+                <div class="two" data-depth="0.60">
+                    <div class="content">
+                        <span class="piece"></span>
+                        <span class="piece"></span>
+                        <span class="piece"></span>
+                    </div>
+                </div>
+
+                <div class="three" data-depth="0.40">
+                    <div class="content">
+                        <span class="piece"></span>
+                        <span class="piece"></span>
+                        <span class="piece"></span>
+                    </div>
+                </div>
+
+                <p class="p404" data-depth="0.50">404</p>
+                <p class="p404" data-depth="0.10">404</p>
+
+            </div>
+
+            <div class="text">
+                <article>
+                    <p>Uh oooooooh! 看来你迷路了。<br>不过你有兴趣了解我的话...</p>
+
+                    <button onclick="window.location='/about-me'">关于我</button>
+                </article>
+            </div>
+
+        </div>
+    </section>
+	
+	<script src="js/parallax.min.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/script.js"></script>
+
+</body>
+</html>
