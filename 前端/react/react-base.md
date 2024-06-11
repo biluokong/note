@@ -37,6 +37,10 @@ pnpm create vite
 # 可以跟上-t/-template参数指定模板
 pnpm create vite -t react
 #-t参数：react、vue、vue-ts、react-ts等
+
+# 使用eslint
+pnpm i eslint -D
+npx eslint --init
 ~~~
 
 

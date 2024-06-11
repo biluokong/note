@@ -796,6 +796,39 @@ public class DefaultFeignConfig {
 @EnableFeignClients(defaultConfiguration = DefaultFeignConfig.class)
 ```
 
+## 2.6.拦截器
+
+OpenFeign提供了一个拦截器接口，我们只需要实现这个接口即可以发起请求前做一些处理。
+
+~~~java
+public interface RequestInterceptor {
+  void apply(RequestTemplate template);
+}
+~~~
+
+例如把用户信息在发送请求之前统一放在请求头中：
+
+~~~java
+@Bean
+public RequestInterceptor userInfoRequestInterceptor(){
+    return new RequestInterceptor() {
+        @Override
+        public void apply(RequestTemplate template) {
+            // 获取登录用户
+            Long userId = UserContext.getUser();
+            if(userId == null) {
+                // 如果为空则直接跳过
+                return;
+            }
+            // 如果不为空则放入请求头中，传递给下游微服务
+            template.header("user-info", userId.toString());
+        }
+    };
+}
+~~~
+
+
+
 # 3.Gateway服务网关
 
 Spring Cloud Gateway 是 Spring Cloud 的一个全新项目，该项目是基于 Spring 5.0，Spring Boot 2.0 和 Project Reactor 等响应式编程和事件流技术开发的网关，它旨在为微服务架构提供一种简单有效的统一的 API 路由管理方式。

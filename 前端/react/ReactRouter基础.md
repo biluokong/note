@@ -65,7 +65,32 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 # 导航传参
 ![image.png](assets/router/7.png)
 
+## searchParams
+
+~~~js
+// 需要配置占位符
+{
+    path: '/myClub/:clubId',
+    element: <ClubContent />
+}
+navigate('/article?id=1001&name=jack')
+
+const [params] = useSearchParams()
+const id = params.get('id')
+~~~
+
+## params
+
+~~~js
+// 不用先占位
+navigate('/article/1001')
+
+const [params] = useParams()
+const id = params.id
+~~~
+
 # 嵌套路由配置
+
 ## 1. 什么是嵌套路由
 在一级路由中又内嵌了其他路由，这种关系就叫做嵌套路由，嵌套至一级路由内的路由又称作二级路由，例如：
 ![image.png](assets/router/8.png)
@@ -98,4 +123,14 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 | --- | --- | --- | --- |
 | history | url/login | history对象 + pushState事件 | 需要 |
 | hash | url/#/login | 监听hashChange事件 | 不需要 |
+
+# 组件外跳转
+
+~~~js
+import router from '../router'
+
+if (status === 401) {
+    return router.navigate('/login')
+}
+~~~
 
