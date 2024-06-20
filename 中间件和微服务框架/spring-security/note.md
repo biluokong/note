@@ -1066,3 +1066,135 @@ public PasswordEncoder passwordEncoder(){
 	>     }
 	> }
 	> ```
+
+# JWT
+
+1. 配置类：（多种方式，这里是自定义SecurityFilterChain的Bean）
+
+~~~java
+@Configuration
+@RequiredArgsConstructor
+public class SecurityConfig {
+	private final StringRedisTemplate redisTemplate;
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+		return httpSecurity
+				.formLogin((config) -> {
+					config.loginProcessingUrl(LOGIN_URL)
+						.usernameParameter("loginAct")
+						.passwordParameter("loginPwd")
+						.successHandler((request, response, authentication) -> {
+							TUser user = (TUser) authentication.getPrincipal();
+							String userJson = JsonUtil.toJson(user);
+
+							// 生成jwt，如果勾选了记住我，则保存7天，否则保存30分钟
+							String jwt = JWTUtils.createJWT(userJson);
+							boolean rememberMe = Boolean.parseBoolean(request.getParameter("rememberMe"));
+							redisTemplate.opsForValue().set(TOKEN_KEY + user.getId(), jwt,
+									rememberMe ? EXPIRE_TIME : DEFAULT_EXPIRE_TIME, TimeUnit.MINUTES);
+
+							user.setLoginPwd(null);
+							String res = JsonUtil.toJson(R.OK(user, jwt));
+							response.setContentType("application/json;charset=utf-8");
+							response.getWriter().write(res);
+						})
+						.failureHandler((request, response, exception) -> {
+							String json = JsonUtil.toJson(R.FAIL(exception.getMessage()));
+							response.setContentType("application/json;charset=utf-8");
+							response.getWriter().write(json);
+						});
+					
+				})
+				.logout((config) -> {
+					config.logoutUrl(LOGIN_OUT_URL)
+						.logoutSuccessHandler((request, response, authentication) -> {
+							TUser user = (TUser) authentication.getPrincipal();
+							redisTemplate.delete(TOKEN_KEY + user.getId());
+							response.setContentType("application/json;charset=utf-8");
+							response.getWriter().write(JsonUtil.toJson(R.OK()));
+						});
+				})
+				.authorizeHttpRequests((config) -> {
+					config.requestMatchers(LOGIN_URL).permitAll()
+						.anyRequest().authenticated();
+				})
+				.csrf(AbstractHttpConfigurer::disable)
+				// 禁用session，前后端分离不需要用session，用jwt
+				.sessionManagement((config) -> {
+					config.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				})
+				.addFilterBefore(new TokenFilter(redisTemplate), LogoutFilter.class)
+				.build();
+	}
+}
+~~~
+
+
+
+2. 过滤器配置：
+
+~~~java
+@RequiredArgsConstructor
+public class TokenFilter extends OncePerRequestFilter {
+	private final StringRedisTemplate redisTemplate;
+	// 创建一个单线程的线程池
+	private final ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
+
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+		if (request.getRequestURI().contains(Constants.LOGIN_URL)) {
+			filterChain.doFilter(request, response);
+			return;
+		}
+		response.setContentType("application/json;charset=utf-8");
+		String token = request.getHeader("Authorization");
+		if (!StringUtils.hasText(token)) {
+			String resJson = JsonUtil.toJson(R.FAIL(CodeEnum.TOKEN_IS_EMPTY));
+			response.setStatus(401);
+			response.getWriter().write(resJson);
+			return;
+		}
+		if (!JWTUtils.verifyJWT(token)) {
+			String resJson = JsonUtil.toJson(R.FAIL(CodeEnum.TOKEN_IS_ILLEGAL));
+			response.setStatus(401);
+			response.getWriter().write(resJson);
+			return;
+		}
+		TUser user = JWTUtils.parseJWTGetUser(token);
+		String redisToken = redisTemplate.opsForValue().get(TOKEN_KEY + user.getId());
+		if (redisToken == null) {
+			String resJson = JsonUtil.toJson(R.FAIL(CodeEnum.TOKEN_IS_EXPIRE));
+			response.setStatus(401);
+			response.getWriter().write(resJson);
+			return;
+		}
+		if (!token.equals(redisToken)) {
+			String resJson = JsonUtil.toJson(R.FAIL(CodeEnum.TOKEN_IS_ILLEGAL));
+			response.setStatus(401);
+			response.getWriter().write(resJson);
+			return;
+		}
+		UsernamePasswordAuthenticationToken authentication =
+				new UsernamePasswordAuthenticationToken(user, user.getId(), user.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		// 异步给token续续期
+		EXECUTOR_SERVICE.submit(() -> {
+			boolean rememberMe = Boolean.parseBoolean(request.getHeader("rememberMe"));
+			if (rememberMe) {
+				redisTemplate.expire(TOKEN_KEY + user.getId(), EXPIRE_TIME, TimeUnit.MINUTES);
+			} else {
+				redisTemplate.expire(TOKEN_KEY + user.getId(), DEFAULT_EXPIRE_TIME, TimeUnit.MINUTES);
+			}
+		});
+		filterChain.doFilter(request, response);
+	}
+}
+~~~
+
