@@ -1124,6 +1124,13 @@ public class SecurityConfig {
 					config.requestMatchers(LOGIN_URL).permitAll()
 						.anyRequest().authenticated();
 				})
+            	.exceptionHandling((config) -> {
+					// 没有权限时触发（若配置了全局异常处理器，则优先走全局异常处理器的逻辑）
+					config.accessDeniedHandler((request, response, accessDeniedException) -> {
+						String json = JsonUtil.toJson(R.FAIL(ACCESS_DENIED));
+						response.getWriter().write(json);
+					});
+				})
 				.csrf(AbstractHttpConfigurer::disable)
 				// 禁用session，前后端分离不需要用session，用jwt
 				.sessionManagement((config) -> {
@@ -1196,5 +1203,149 @@ public class TokenFilter extends OncePerRequestFilter {
 		filterChain.doFilter(request, response);
 	}
 }
+~~~
+
+# 权限处理
+
+可以分为三种：数据权限、菜单权限、功能权限
+
+## 数据权限
+
+可以通过AOP给SQL已经加上过滤条件。例如根据用户角色来拼接一个过滤条件：
+
+1. 自定义用于数据过滤的注解：
+
+~~~java
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface DataScope {
+	/**
+	 * 表的别名
+	 */
+	String tableAlias() default "";
+
+	/**
+	 * 表的字段名
+	 */
+	String tableField() default "";
+}
+~~~
+
+2. 切面类：
+
+> 约定：被注解的方法的第一个参数必须是BaseQuery对象，它含有属性filterSQL；若有多个查询条件的方法，可以定义一个新的Query对象并继承BaseQuery对象，从而满足约定的条件。
+
+~~~java
+@Aspect
+@Component
+public class DataScopeAspect {
+	@Pointcut("@annotation(com.biluo.annotation.DataScope)")
+	public void dataScopePointCut() {}
+
+	@Before("dataScopePointCut()")
+	public void doBefore(JoinPoint point) {
+		MethodSignature signature = (MethodSignature) point.getSignature();
+		DataScope dataScope = signature.getMethod().getDeclaredAnnotation(DataScope.class);
+		String tableAlias = dataScope.tableAlias();
+		String tableField = dataScope.tableField();
+		// 获取当前用户
+		TUser user = (TUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<String> roleList = user.getRoleList();
+		if (!roleList.contains("admin")) {
+			Object arg = point.getArgs()[0];
+			if (arg instanceof BaseQuery query) {
+				query.setFilterSQL(" and " + tableAlias + "." + tableField + " = " + user.getId());
+			}
+		}
+	}
+}
+~~~
+
+3. 给对应的mapper类中的查询方法加上注解：
+
+~~~java
+@DataScope(tableAlias = "tc", tableField = "owner_id")
+List<ClueDto> list(BaseQuery query);
+
+public class BaseQuery {
+	private String filterSQL;
+}
+~~~
+
+4. xml文件中的sql语句末尾拼上过滤sql：
+
+~~~xml
+<select id="list" resultType="com.biluo.model.Clue" resultMap="BaseResultMap">
+    select ...
+    <where>
+        ${filterSQL}
+    </where>
+</select>
+~~~
+
+## 菜单权限
+
+用户登录成功时，可以把用户的菜单权限列表返回给用户，前端可以根据该权限列表数据动态渲染页面菜单。
+
+~~~vue
+const { userInfo } = storeToRefs(userStore)
+
+<el-aside :width="isCollapse ? '64px' : '200px'">
+    <div class="menuTitle" @click="dashboard">xxx系统</div>
+    <el-menu
+             active-text-color="#ffd04b"
+             background-color="#334157"
+             :default-active="getRoutePath($route.path)"
+             text-color="#ffffff"
+             :unique-opened="true"
+             :collapse="isCollapse"
+             :collapse-transition="false"
+             :router="true"
+             style="border-right: 0">
+        <el-sub-menu :index="index+1" v-for="(menu, index) in userInfo.menuPermissionList" :key="menu.id">
+            <template #title>
+<el-icon><component :is="menu.icon"></component></el-icon>
+<span>{{menu.name}}</span>
+            </template>
+            <el-menu-item :index="subMenu.url" v-for="subMenu in menu.subPermissionList" :key="subMenu.id">
+                <el-icon><component :is="subMenu.icon"></component></el-icon>
+                {{subMenu.name}}
+            </el-menu-item>
+        </el-sub-menu>
+    </el-menu>
+</el-aside>
+~~~
+
+
+
+## 功能权限
+
+对于具体的功能（前端按钮），后端首先会有一个功能权限列表（权限标识符列表）。对于后端，可以结合SpringSecurity的权限注解使用，对具体的方法加上权限校验；对于前端，可以把功能权限列表在用户登录成功后返回给用户，前端就可以根据列表数据对功能按钮进行动态渲染了。
+
+例如：后端用SpringSecurity的权限注解，前端使用Vue的自定义指令来动态渲染按钮。
+
+~~~java
+@DeleteMapping("{id}")
+@PreAuthorize("hasAuthority('clue:delete')")
+public R deleteClue(@PathVariable Integer id) {
+    return clueService.deleteClue(id) ? R.OK() : R.FAIL();
+}
+~~~
+
+~~~js
+app.directive('hasPermission', {
+  mounted(el, binding) {
+    const { value } = binding
+    const { userInfo } = useUserStore()
+    if (!userInfo.permistionList.find(item => item === value)) {
+      el.style.display = 'none'
+    }
+  }
+})
+~~~
+
+~~~vue
+<el-button type="danger" @click="delHandle(scope.row.id)" v-hasPermission="'clue:delete'">删除</el-button>
 ~~~
 
