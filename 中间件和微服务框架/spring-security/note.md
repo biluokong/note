@@ -1069,7 +1069,200 @@ public PasswordEncoder passwordEncoder(){
 
 # JWT
 
-1. 配置类：（多种方式，这里是自定义SecurityFilterChain的Bean）
+## WebSecurityConfigurerAdapter
+
+继承WebSecurityConfigurerAdapter来实现。
+
+1. 配置类：
+
+~~~java
+@Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
+public class AuthSecurityConfig extends WebSecurityConfigurerAdapter {
+	private final UserDetailsService userDetailService;
+	private final StringRedisTemplate stringRedisTemplate;
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailService);
+	}
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		// 禁用跨站请求伪造（CSRF）保护
+		http.csrf().disable();
+		// 禁用CORS（跨源资源共享）功能
+		http.cors().disable();
+		// 禁用session
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		// 配置哪些请求需要认证
+		http.authorizeRequests().anyRequest().authenticated();
+		// 配置登录
+		http.formLogin()
+				.loginProcessingUrl(AuthConstants.LOGIN_URL)
+				// 登录成功处理
+				.successHandler((request, response, authentication) -> {
+					response.setContentType(HttpConstants.APPLICATION_JSON);
+					response.setCharacterEncoding(HttpConstants.UTF_8);
+
+					String token = UUID.randomUUID().toString();
+					// 获取认证对象
+					String userJson = JSONUtil.toJsonStr(authentication.getPrincipal());
+					stringRedisTemplate.opsForValue().set(AuthConstants.TOKEN_REDIS_PREFIX + token, userJson,
+							AuthConstants.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
+					Result<LoginResult> result = Result.success(new LoginResult(token, AuthConstants.TOKEN_EXPIRE_TIME));
+					PrintWriter writer = response.getWriter();
+
+					writer.write(JSONUtil.toJsonStr(result));
+					writer.flush();
+					writer.close();
+				})
+				// 登录失败处理
+				.failureHandler((request, response, exception) -> {
+					response.setContentType(HttpConstants.APPLICATION_JSON);
+					response.setCharacterEncoding(HttpConstants.UTF_8);
+
+					Result<Object> result = Result.fail();
+					if (exception instanceof BadCredentialsException) {
+						result.setMsg("用户名或密码错误");
+					} else if (exception instanceof UsernameNotFoundException) {
+						result.setMsg("用户不存在");
+					} else if (exception instanceof AccountExpiredException) {
+						result.setMsg("账号已过期");
+					} else if (exception instanceof AccountStatusException) {
+						result.setMsg("账号不可用");
+					} else if (exception instanceof InternalAuthenticationServiceException) {
+						result.setMsg(exception.getMessage());
+					}
+
+					PrintWriter writer = response.getWriter();
+					writer.write(JSONUtil.toJsonStr(result));
+					writer.flush();
+					writer.close();
+				});
+		// 配置登出
+		http.logout()
+				.logoutUrl(AuthConstants.LOGOUT_URL)
+				// 登出成功处理
+				.logoutSuccessHandler((request, response, authentication) -> {
+					response.setContentType(HttpConstants.APPLICATION_JSON);
+					response.setCharacterEncoding(HttpConstants.UTF_8);
+
+					String authorization = response.getHeader(AuthConstants.AUTH_HEADER_KEY);
+					String token = authorization.replaceFirst(AuthConstants.TOKEN_PREFIX, "");
+					stringRedisTemplate.delete(AuthConstants.TOKEN_REDIS_PREFIX + token);
+
+					Result<Object> result = Result.success();
+					PrintWriter writer = response.getWriter();
+					writer.write(JSONUtil.toJsonStr(result));
+					writer.flush();
+					writer.close();
+				});
+	}
+    	// token解析过滤器，将token转换为security安全框架能够认证的用户信息，再存放到当前资源服务器的容器中
+        http.addFilterBefore(tokenTranslationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // 配置处理携带token但权限不足的请求
+        http.exceptionHandling()
+                // 处理没有携带token的请求
+                .authenticationEntryPoint((request, response, authException) -> {
+                    // 设置响应头信息
+                    response.setContentType(HttpConstants.APPLICATION_JSON);
+                    response.setCharacterEncoding(HttpConstants.UTF_8);
+
+                    // 创建项目统一响应结果对象
+                    Result<Object> result = Result.fail(BusinessEnum.UN_AUTHORIZATION);
+                    String json = JSONUtil.toJsonStr(result);
+                    PrintWriter writer = response.getWriter();
+                    writer.write(json);
+                    writer.flush();
+                    writer.close();
+                })
+                // 处理携带token，但是权限不足的请求
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    // 设置响应头信息
+                    response.setContentType(HttpConstants.APPLICATION_JSON);
+                    response.setCharacterEncoding(HttpConstants.UTF_8);
+
+                    // 创建项目统一响应结果对象
+                    Result<Object> result = Result.fail(BusinessEnum.ACCESS_DENY_FAIL);
+                    String json = JSONUtil.toJsonStr(result);
+                    PrintWriter writer = response.getWriter();
+                    writer.write(json);
+                    writer.flush();
+                    writer.close();
+                });
+
+        // 配置其它请求
+        http.authorizeHttpRequests()
+                .antMatchers(ResourceConstants.RESOURCE_ALLOW_URLS)
+                .permitAll()
+                .anyRequest().authenticated();  // 除了需要放行的请求，都得需要进行身份的认证
+}
+~~~
+
+2. 处理token的过滤器
+
+~~~java
+@Component
+@RequiredArgsConstructor
+public class TokenTranslationFilter extends OncePerRequestFilter {
+	private final StringRedisTemplate stringRedisTemplate;
+
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
+		// 从请求头中获取Authorization的值，格式为:bearer token
+		String authorizationValue = request.getHeader(AuthConstants.AUTH_HEADER_KEY);
+		// 判断是否有值
+		if (StringUtils.hasText(authorizationValue)) {
+			// 获取token
+			String token = authorizationValue.replaceFirst(AuthConstants.TOKEN_PREFIX, "");
+			// 判断token是否有值
+			if (StringUtils.hasText(token)) {
+				// 解决token续签的问题
+				// 从redis中获取token的存活时长
+				String key = AuthConstants.TOKEN_REDIS_PREFIX + token;
+				Long expire = stringRedisTemplate.getExpire(key);
+				// 判断是否超过系统指定的阈值
+				if (expire < AuthConstants.TOKEN_EXPIRE_THRESHOLD_TIME) {
+					// 给当前用户的token续签（本质就是增加token在redis中的存活时长）
+					stringRedisTemplate.expire(key, AuthConstants.TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
+				}
+
+				// 从redis中获取json格式字符串的认证用户信息
+				String userJsonStr = stringRedisTemplate.opsForValue().get(key);
+				// 将json格式字符串的认证用户信息转换为认证用户对象
+				SecurityUser securityUser = JsonUtil.toObject(userJsonStr, SecurityUser.class);
+				// 处理权限
+				Set<SimpleGrantedAuthority> collect = securityUser.getPerms().stream()
+						.map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+				// 创建UsernamePasswordAuthenticationToken对象
+				UsernamePasswordAuthenticationToken authenticationToken =
+						new UsernamePasswordAuthenticationToken(securityUser, null, collect);
+
+				// 将认证用户对象存放到当前模块的上下方中
+				SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+			}
+		}
+		filterChain.doFilter(request, response);
+	}
+}
+~~~
+
+
+
+## SecurityFilterChain
+
+自定义SecurityFilterChain的Bean来实现。
+
+1. 配置类
 
 ~~~java
 @Configuration
