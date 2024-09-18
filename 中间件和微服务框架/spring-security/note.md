@@ -220,7 +220,7 @@ SecurityFilter的使用情况和调用顺序如下
 
 ## [登录流程图](https://shrink.fun/note/spring-security/#/?id=登录流程图)
 
-![img](noteimg/%E8%AE%A4%E8%AF%81%E6%B5%81%E7%A8%8B.png)
+![img](noteimg/fremwork.png)
 
 ## [用法](https://shrink.fun/note/spring-security/#/?id=用法)
 
@@ -1404,7 +1404,7 @@ public class TokenFilter extends OncePerRequestFilter {
 
 ## 数据权限
 
-可以通过AOP给SQL已经加上过滤条件。例如根据用户角色来拼接一个过滤条件：
+可以通过AOP给SQL语句加上过滤条件。例如根据用户角色来拼接一个过滤条件：
 
 1. 自定义用于数据过滤的注解：
 
@@ -1479,7 +1479,7 @@ public class BaseQuery {
 
 ## 菜单权限
 
-用户登录成功时，可以把用户的菜单权限列表返回给用户，前端可以根据该权限列表数据动态渲染页面菜单。
+用户登录成功时，可以把用户的菜单权限列表返回给前端，前端可以根据该权限列表数据动态渲染页面菜单。
 
 ~~~vue
 const { userInfo } = storeToRefs(userStore)
