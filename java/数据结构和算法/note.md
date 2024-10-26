@@ -717,6 +717,8 @@ public int searchInsert(int[] a, int target) {
 
 **参考答案**
 
+- 方法1：使用之前的leftMost和rightMost函数
+
 ```java
 public static int left(int[] a, int target) {
     int i = 0, j = a.length - 1;
@@ -761,6 +763,33 @@ public static int[] searchRange(int[] nums, int target) {
     }
 }
 ```
+
+- 方法2：找到满足条件的mid后，直接求两边的边界
+
+~~~go
+func SearchRange(nums []int, target int) []int {
+	size := len(nums)
+	left, right := 0, size-1
+	for left <= right {
+		mid := int(uint(left+right) >> 1)
+		if target < nums[mid] {
+			right = mid - 1
+		} else if target > nums[mid] {
+			left = mid + 1
+		} else {
+			l, r := mid, mid
+			for l >= 0 && nums[l] == target {
+				l -= 1
+			}
+			for r < size && nums[r] == target {
+				r += 1
+			}
+			return []int{l + 1, r - 1}
+		}
+	}
+	return []int{-1, -1}
+}
+~~~
 
 
 
@@ -1261,7 +1290,48 @@ int[] a2 = new int[a3.length];
 merge(a1, 0, 2, 3, 6, a2);
 ```
 
-
+> 注：该题现描述已变，主要两种方法解决
+>
+> - 方法1：双指针 + 中间数组	O(m+n)、O(m+n)
+> - 方法2：逆向双指针	O(m+n)、O(1)
+>
+> 自己想的（没想到可以用逆向）：
+>
+> ~~~go
+> func lc88F1(nums1 []int, m int, nums2 []int, n int) {
+> 	i, j := 0, 0
+> 	for j < n && i < m+j {
+> 		if nums1[i] <= nums2[j] {
+> 			i++
+> 		} else {
+> 			temp := append(make([]int, 0, m+j-i), nums1[i:m+j]...)
+> 			nums1[i] = nums2[j]
+> 			i++
+> 			copy(nums1[i:], temp)
+> 			j++
+> 		}
+> 	}
+> 	copy(nums1[i:], nums2[j:])
+> }
+> ~~~
+>
+> 逆向双指针（此方法可以递归实现）：
+>
+> ~~~go
+> func lc88F2(nums1 []int, m int, nums2 []int, n int) {
+> 	i, j, k := m-1, n-1, m+n-1
+> 	for j >= 0 {
+> 		if i >= 0 && nums1[i] > nums2[j] {
+> 			nums1[k] = nums1[i]
+> 			i--
+> 		} else {
+> 			nums1[k] = nums2[j]
+> 			j--
+> 		}
+> 		k--
+> 	}
+> }
+> ~~~
 
 ## 2.2 链表
 
@@ -2455,6 +2525,19 @@ fun recursion(p: ListNode?, count: AtomicInteger): ListNode? {
 	if (n == 0) return p.next
 	return p
 }
+
+//go版本
+func lc19Recursion(node *ListNode, count *int) *ListNode {
+	if node == nil {
+		return nil
+	}
+	node.Next = lc19Recursion(node.Next, count)
+	*count--
+	if *count == 0 {
+		return node.Next
+	}
+	return node
+}
 ```
 
 Q：p.next.next 不怕空指针吗？
@@ -2469,6 +2552,8 @@ A：
 **方法2**
 
 快慢指针，p1 指向待删节点的上一个，p2 先走 n + 1 步
+
+> 若总节点数为s，则倒数第n个，即从左到右第s-n+1个；当p2指向 n+1 时，p1从起点位置和p2一起右移，则当p2指向null时，又走了 s-(n+1)+1=s-n 步，所以p1此时会指向要删除节点的上一个节点。
 
 ```java
 i=0
@@ -2654,6 +2739,18 @@ public ListNode deleteDuplicates(ListNode p) {
         p.next = deleteDuplicates(p.next);
         return p;
     }
+}
+
+//类似版本（go）
+func lc83Recursion(node *ListNode) *ListNode {
+	if node == nil || node.Next == nil {
+		return node
+	}
+	node.Next = lc83Recursion(node.Next)
+	if node.Val == node.Next.Val {
+		return node.Next
+	}
+	return node
 }
 ```
 
@@ -15215,7 +15312,7 @@ fun union(x: Int, y: Int) {
 2. 如何判断一个问题是否适合用贪心算法解决？
 	答：一个问题如果可以用递归的方式分解成若干个子问题，且每个子问题都有明确的最优解(即局部最优),那么这个问题就可以用贪心算法解决。
 3. 贪心算法的时间复杂度是多少？
-	答：贪心算法的时间复杂度取决于问题的规模和具体实现。一般来说，对于规模较小的问题，贪心算法的时间复杂度可以达到O(nlogn)或O(n^2);对于规模较大的问题，可能需要O(n^3)或更高。
+	答：贪心算法的时间复杂度取决于问题的规模和具体实现。一般来说，对于规模较小的问题，贪心算法的时间复杂度可以达到O(nlogn)或O(n^2); 对于规模较大的问题，可能需要O(n^3)或更高。
 
 
 
@@ -15729,7 +15826,7 @@ public class HuffmanTree {
 ```java
 /**
  * <h3>连接棒材的最低费用</h3>
- * <p>为了装修新房，你需要加工一些长度为正整数的棒材。如果要将长度分别为 X 和 Y 的两根棒材连接在一起，你需要支付 X + Y 的费用。 返回讲所有棒材连成一根所需要的最低费用。</p>
+ * <p>为了装修新房，你需要加工一些长度为正整数的棒材。如果要将长度分别为 X 和 Y 的两根棒材连接在一起，你需要支付 X + Y 的费用。 返回将所有棒材连成一根所需要的最低费用。</p>
  */
 public class Leetcode1167 {
     /*

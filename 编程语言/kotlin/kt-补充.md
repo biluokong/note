@@ -479,7 +479,7 @@ fun main() = runBlocking<Unit> {
 }
 ~~~
 
-#### 继承定义
+#### 继承的定义
 
 新创建的协程，它的 `CoroutineContext` 会包含一个全新的Job，并返回，用于控制新协程的生命周期。而它上下文中剩下的元素会从 **创建该协程的CoroutineScope** 或 **父协程**的 `CoroutineContext` 继承。
 
@@ -502,7 +502,7 @@ fun main() = runBlocking<Unit> {
 }
 ~~~
 
-#### 继承公式
+#### 继承的公式
 
 协程的上下文 = **默认值** + **继承的CoroutineScope** + **参数**
 
