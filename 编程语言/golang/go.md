@@ -1,4 +1,4 @@
-# 入门
+#  入门
 
 ## 1. Go历史
 
@@ -862,7 +862,7 @@ var mystr string = "hello"
 2. `\r：`回车符
 3. `\t：`tab 键
 4. `\u 或 \U：`Unicode 字符
-5. \：反斜杠自身
+5. `\\`：反斜杠自身
 
 ```go
 var str = "码神之路\nGo大法好"
@@ -1236,7 +1236,7 @@ func main() {
 
 
 
-# 常量指针
+# 常量&指针&其他
 
 ##  1. 常量
 
@@ -1802,7 +1802,7 @@ func computeLevel() {
 }
 ```
 
-# 数组切片
+# 数组&切片&make
 
 ##  1. 数组
 
@@ -3230,7 +3230,7 @@ OuterLoop:
 }
 ```
 
-# 函数
+# 函数&异常&defer
 
 ## 1. 函数
 
@@ -4199,7 +4199,7 @@ func wait(ch chan struct{}) {
 }
 ```
 
-# 结构体
+# 结构体&方法&匿名字段
 
 ##  1. 结构体
 
@@ -4853,7 +4853,7 @@ func main() {
 }
 ```
 
-# 接口/IO操作
+# 接口&IO操作
 
 ## 1. 接口
 
@@ -4983,42 +4983,35 @@ T 可以是一个非接口类型，也可以是一个接口类型。
 	}
 	```
 
-
-
-	**当类型无法实现接口时，编译器会报错：**
-	
-	1. 函数名不一致导致的报错
-	2. 实现接口的方法签名不一致导致的报错
+> **当类型无法实现接口时，编译器会报错：**
+>
+> 1. 函数名不一致导致的报错
+>
+> 2. 实现接口的方法签名不一致导致的报错
+>
+> 	
 
 2. 接口中所有方法均被实现
 
-	当一个接口中有多个方法时，只有这些方法都被实现了，接口才能被正确编译并使用。
+  当一个接口中有多个方法时，只有这些方法都被实现了，接口才能被正确编译并使用。
 
-	```go
-	// 定义一个数据写入器
-	type DataWriter interface {
-	    WriteData(data interface{}) error
-	    // 新增一个方法 能否写入
-	    CanWrite() bool
-	}
-	```
+  > 在此运行下述的程序，就会报错：
+  >
+  > cannot use f (type *file) as type DataWriter in assignment:
+  >    *file does not implement DataWriter (missing CanWrite method)
 
+  ```go
+  // 定义一个数据写入器
+  type DataWriter interface {
+      WriteData(data interface{}) error
+      // 新增一个方法 能否写入
+      CanWrite() bool
+  }
+  ```
 
+需要在 file 中实现 CanWrite() 方法才能正常使用DataWriter()。
 
-	在此运行上述的程序，就会报错：
-	
-	```go
-	cannot use f (type *file) as type DataWriter in assignment:
-		*file does not implement DataWriter (missing CanWrite method)
-	```
-
-
-
-	需要在 file 中实现 CanWrite() 方法才能正常使用 DataWriter()。
-	
-	Go语言的接口实现是隐式的，无须让实现接口的类型写出实现了哪些接口。
-	
-	**这个设计被称为非侵入式设计。**
+Go语言的接口实现是隐式的，无须让实现接口的类型写出实现了哪些接口。**这个设计被称为非侵入式设计。**
 
 ### 1.4 类型与接口的关系
 
@@ -5075,7 +5068,18 @@ func main() {
 }
 ```
 
-
+> 注意：如果实现类的接收器是指针接收器，则接口类型变量接收的值为指针类型的实现类实例。（因为实现的方法是作用于该类型指针上的）
+>
+> ~~~go
+> var x Sayer
+> var y Mover
+> 
+> var a = dog{name: "旺财"}
+> x = &a
+> y = &a
+> ~~~
+>
+> 
 
 **多个类型实现同一接口**
 
@@ -5734,6 +5738,90 @@ func main() {
     }
 }
 ```
+
+## 3. 泛型
+
+泛型是go1.18新增的功能
+
+比如下面的代码：
+
+```go
+//求最小值，一个类型就要写一个函数
+func min(x, y int) int {
+	if x < y {
+		return x
+	}
+	return y
+}
+func minFloat(x, y float64) float64 {
+	if x < y {
+		return x
+	}
+	return y
+}
+```
+
+使用泛型可以：
+
+```go
+//T就是泛型 
+func min[T int | float64 | float32 | int64](x, y T) T {
+	if x < y {
+		return x
+	}
+	return y
+}
+func main() {
+    //可以通过给min提供类型参数 从而验证类型参数是否可用
+	mInt := min[int]
+	fmt.Println(mInt(2, 3))
+	fmt.Println(min(2.3, 4.5))
+}
+```
+
+
+
+```go
+//实际在接口中除了定义方法，也可以嵌入非接口类型
+type AllBaseType interface {
+	int | float64 | float32 | int64
+}
+
+func min[T AllBaseType](x, y T) T {
+	if x < y {
+		return x
+	}
+	return y
+}
+```
+
+我们还可以定义多个泛型：
+
+```go
+func min[T AllBaseType, E []T](x T, y E) T {
+	for _, v := range y {
+		if x < v {
+			return x
+		}
+	}
+	return y[0]
+}
+```
+
+> 有时我们会看到`~int`这样的表达式，`~`标记表示的是底层类型为int的所有类型，包括int
+
+```go
+//也可以用于结构体和接口中
+type User[T int] struct {
+	Name T
+}
+
+func main() {
+	user := User[int]{}
+}
+```
+
+
 
 # 包
 
@@ -7418,7 +7506,7 @@ func performTask(ctx context.Context, stop func() bool) {
 - `过度使用上下文：`上下文也并不是所有场景都使用，比如处理全局资源或者共享状态等，可能更使用使用锁或者channel
 - `上下文存储在结构体中`：应该将context显式的传递给需要的函数，否则可能会引起数据竞态，生命周期管理等问题
 
-# 网络编程
+# 网络编程进程操作系统
 
 ##  1. 互联网协议介绍
 
