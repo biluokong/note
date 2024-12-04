@@ -1974,3 +1974,114 @@ if A.x64==true then
 
 print(gg.getTargetPackage()) 
 打印结果: com.carrot.iceworld
+
+## 常量参数附录
+
+官方文档：[gg Class Reference - GG help - GameGuardian](https://gameguardian.net/help/classgg.html)
+
+### 内存范围
+
+| 名称         | 常量名=常量值               |
+| ------------ | --------------------------- |
+| Jh内存       | ['REGION_JAVA_HEAP'] = 2    |
+| Ch内存       | ['REGION_C_HEAP'] = 1       |
+| Ca内存       | ['REGION_C_ALLOC'] = 4      |
+| Cd内存       | ['REGION_C_DATA'] = 8       |
+| Cb内存       | ['REGION_C_BSS'] = 16       |
+| Ps内存       | ['REGION_PPSSPP'] = 262144  |
+| A内存        | ['REGION_ANONYMOUS'] = 32   |
+| J内存        | ['REGION_JAVA'] = 65536     |
+| S内存        | ['REGION_STACK'] = 64       |
+| As内存       | ['REGION_ASHMEM'] = 524288  |
+| V内存        | ['REGION_VIDEO'] = 1048576  |
+| O内存(慢)    | ['REGION_OTHER'] = -2080896 |
+| B内存(危险)  | ['REGION_BAD'] = 131072     |
+| Xa内存(危险) | ['REGION_CODE_APP'] = 16384 |
+| Xs内存(危险) | ['REGION_CODE_SYS'] = 32768 |
+
+### 数据类型
+
+| 类型          | 常量名=常量值        |
+| ------------- | -------------------- |
+| A：Auto（慢） | ['TYPE_AUTO'] = 127  |
+| D：Dword      | ['TYPE_DWORD'] = 4   |
+| F：Float      | ['TYPE_FLOAT'] = 16  |
+| E：Double     | ['TYPE_DOUBLE'] = 64 |
+| W：Word       | ['TYPE_WORD'] = 2    |
+| B：Byte       | ['TYPE_BYTE'] = 1    |
+| Q：Qword      | ['TYPE_QWORD'] = 32  |
+| X：Xor        | ['TYPE_XOR'] = 8     |
+| 其他省略...   |                      |
+
+### searchNumber
+
+gg.searchNumber的第4个参数：
+
+| 常量名                   | 解释              |
+| ------------------------ | ----------------- |
+| gg.SIGN_EQUAL            | 标记_相同的       |
+| gg.SIGN_GREATER_OR_EQUAL | 标记_更大或相同的 |
+| gg.SIGN_LESS_OR_EQUAL    | 标记_更小或相同的 |
+| gg.SIGN_NOT_EQUAL        | 标记_不相同的     |
+
+### searchFuzzy
+
+gg.searchFuzzy()的第2个参数：
+
+| 常量名                  | 解释   |
+| ----------------------- | ------ |
+| gg.SIGN_FUZZY_EQUAL     | 等于   |
+| gg.SIGN_FUZZY_NOT_EQUAL | 不等于 |
+| gg.SIGN_FUZZY_LESS      | 小于   |
+| gg.SIGN_FUZZY_GREATER   | 大于   |
+
+### 指针常量
+
+gg.getResults() 的参数8 :  形如 POINTER_
+
+| 常量名                      | 解释                       |
+| --------------------------- | -------------------------- |
+| POINTER_NO                  | 非指针                     |
+| POINTER_READ_ONLY           | 指向只读内存的指针         |
+| POINTER_WRITABLE            | 指向可写内存的指针         |
+| POINTER_EXECUTABLE          | 指向可执行内存的指针       |
+| POINTER_EXECUTABLE_WRITABLE | 指向可执行和可写内存的指针 |
+
+### IO权限
+
+| 字符串 | 解释                                                         |
+| ------ | ------------------------------------------------------------ |
+| r      | 以只读方式打开文件，该文件必须存在。                         |
+| w      | 打开只写文件，若文件存在则文件长度清为0，即该文件内容会消失。若文件不存在则建立该文件。 |
+| a      | 以附加的方式打开只写文件。若文件不存在，则会建立该文件，如果文件存在，写入的数据会被加到文件尾，即文件原先的内容会被保留。（EOF符保留） |
+| r+     | 以可读写方式打开文件，该文件必须存在。                       |
+| w+     | 打开可读写文件，若文件存在则文件长度清为零，即该文件内容会消失。若文件不存在则建立该文件。 |
+| a+     | 与a类似，但此文件可读可写                                    |
+| b      | 二进制模式，如果文件是二进制文件，可以加上b                  |
+| +      | 号表示对文件既可以读也可以写                                 |
+
+### 日期时间
+
+函数os.data的指示符：
+
+| 表达式 | 解释                                          |
+| ------ | --------------------------------------------- |
+| %y     | 取最后两位数的年份。 例如  98  ，范围 [00~99] |
+| %Y     | 完整的年份。例如  2022                        |
+| %m     | 月份数。 例如  09  ，范围 [01~12]             |
+| %d     | 一个月中的第几天。 例如  16  ，范围 [01~31]   |
+| %H     | 24小时制中的小时数。 例如  23  ，范围 [00~23] |
+| %I     | 12小时制中的小时数。 例如  11  ，范围 [01~12] |
+| %M     | 分钟数。 例如  49  ，范围 [00~59]             |
+| %S     | 秒数。 例如  10  ，范围 [00~59]               |
+| %p     | 上午是  AM      下午是  PM                    |
+| %j     | 一年中的第几天。 例如  259  ，范围 [001~366]  |
+| %w     | 一星期中的第几天。 例如  3  ，范围 [0~6]      |
+| %a     | 一星期中天数的简写。 例如  Wed                |
+| %A     | 一星期中天数的全称。 例如 Wednesday           |
+| %b     | 月份的简写。 例如  Sep                        |
+| %B     | 月份的全称。 例如  September                  |
+| %c     | 日期和时间。 例如   Thu Jul 21 11:11:05 2022  |
+| %x     | 日期。 例如   07/21/22                        |
+| %X     | 时间。 例如   23:48:10                        |
+

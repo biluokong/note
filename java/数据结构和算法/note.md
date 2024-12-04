@@ -6748,7 +6748,7 @@ public class PriorityQueue2<E extends Priority> implements Queue<E> {
 	* 节点 $i$ 的父节点为 $floor(i/2)$，当 $i > 1$ 时
 	* 节点 $i$ 的左子节点为 $2i$，右子节点为 $2i+1$，同样得 $< size$
 
-代码
+代码（大顶堆）
 
 ```java
 public class PriorityQueue4<E extends Priority> implements Queue<E> {
@@ -7423,7 +7423,7 @@ public class BlockingQueue2<E> implements BlockingQueue<E> {
             if (++tail == array.length) {
                 tail = 0;
             }            
-            c = size.getAndIncrement();
+            c = size.getAndIncrement(); //返回值为更新前的值
             // a. 队列不满, 但不是从满->不满, 由此offer线程唤醒其它offer线程
             if (c + 1 < array.length) {
                 tailWaits.signal();
@@ -8159,6 +8159,23 @@ public double findMedian() {
 > * 以上用队列来层序遍历是针对  TreeNode 这种方式表示的二叉树
 >
 > * 对于数组表现的二叉树，则直接遍历数组即可，自然为层序遍历的顺序
+
+~~~go
+func (t treeNode) bfs(cb func(curr *treeNode)) {
+	arrayQueue := queue.NewArrayQueue[treeNode](10)
+	arrayQueue.Offer(t)
+	for !arrayQueue.IsEmpty() {
+		curr := arrayQueue.Poll()
+		cb(curr)
+		if curr.left != nil {
+			arrayQueue.Offer(*curr.left)
+		}
+		if curr.right != nil {
+			arrayQueue.Offer(*curr.right)
+		}
+	}
+}
+~~~
 
 
 
@@ -9288,8 +9305,8 @@ public Object successor(int key) {
 2. 删除节点没有右孩子，将左孩子托孤给 Parent
 3. 删除节点左右孩子都没有，已经被涵盖在情况1、情况2 当中，把 null 托孤给 Parent
 4. 删除节点左右孩子都有，可以将它的后继节点（称为 S）托孤给 Parent，设 S 的父亲为 SP，又分两种情况
-	1. SP 就是被删除节点，此时 D 与 S 紧邻，只需将 S 托孤给 Parent
-	2. SP 不是被删除节点，此时 D 与 S 不相邻，此时需要将 S 的后代托孤给 SP，再将 S 托孤给 Parent
+	1. SP 就是被删除节点，此时 D 与 S 紧邻，只需将 S 托孤给 Parent（即 S 替代 D）
+	2. SP 不是被删除节点，此时 D 与 S 不相邻，此时需要将 S 的后代托孤给 SP，再将 S 托孤给 Parent（S 替代 D）
 
 **非递归实现**
 
@@ -9412,6 +9429,8 @@ public BSTNode doDelete(BSTNode node, int key, ArrayList<Object> result) {
 
 递归：
 
+- kotlin
+
 ~~~kotlin
 fun less(key: Int): List<Any?> {
     return mutableListOf<Any?>().apply { getLess(root, key, this) }
@@ -9420,9 +9439,34 @@ fun less(key: Int): List<Any?> {
 private fun getLess(node: BSTNode?, key: Int, list: MutableList<Any?>) {
     if (node == null) return
     getLess(node.left, key, list)
+    // 当找到第一个不下于key的值时，后面的值都是大于key的，因为是中序遍历，所以直接return即可
     if (node.key >= key) return
     else list.add(node.value)
     getLess(node.right, key, list)
+}
+~~~
+
+- go
+
+~~~go
+func (b *bstNode) less(key int) []*any {
+	list := make([]*any, 0, 10)
+	// 递归方法
+	getLess(b, key, &list)
+	return list
+}
+
+func getLess(node *bstNode, key int, list *[]*any) {
+	if node == nil {
+		return
+	}
+	getLess(node.left, key, list)
+	if node.key < key {
+		*list = append(*list, &node.value)
+	} else {
+		return
+	}
+	getLess(node.right, key, list)
 }
 ~~~
 
@@ -10182,6 +10226,8 @@ private AVLNode rightRotate(AVLNode red) {
     AVLNode green = yellow.right;
     yellow.right = red;
     red.left = green;
+    //updateHeight(red)
+    //updateHeight(yellow)
     return yellow;
 }
 ```
@@ -10210,6 +10256,8 @@ private AVLNode leftRotate(AVLNode red) {
     AVLNode green = yellow.left;
     yellow.left = red;
     red.right = green;
+    //updateHeight(red)
+    //updateHeight(yellow)
     return yellow;
 }
 ```
@@ -10406,7 +10454,6 @@ fun remove2(key: Int): Any? {
         else curr = curr.right
     }
     if (curr == null) return null
-    // 删除节点为root时，让parent=root
     var parent = stack.lastOrNull()
     if (curr.left == null) shift(curr, parent, curr.right)
     else if (curr.right == null) shift(curr, parent, curr.left)
@@ -10638,6 +10685,80 @@ AVL树的缺点：
 
 ### 实现
 
+#### 旋转
+
+##### 右旋
+
+~~~mermaid
+graph TD;
+	A[8-pink-red]-->B[5-yellow-black]
+	A-->C[10-black]
+	B-->E[3-red]
+	B-->D[6-green-black]
+	
+    B2-->E2[3-red]
+	B2[5-yellow-black]-->A2[8-pink-red]
+	A2-->D2[6-green-black]
+	A2-->C2[10-black]
+~~~
+
+1. 节点新位置的调整和 parent 的处理
+
+~~~go
+func (r *RedBlackTree) rightRotate(pink *RedBlackNode) {
+	yellow := pink.left
+	green := yellow.right
+	if green != nil {
+		green.parent = pink
+	}
+	yellow.right = pink
+	yellow.parent = pink.parent
+	pink.left = green
+	pink.parent = yellow
+}
+~~~
+
+~~~mermaid
+graph TD;
+	A[8-black]-->B[5-pink-red]
+	A-->C[10-black]
+	B--left-->D[3-yellow-black]
+	D--left-->E[2-red]
+	
+	A2[8-black]-->B2[3-yellow-black]
+	A2-->C2[10-black]
+	B2-->E2[2-red]
+	B2-->D2[5-pink-red]
+~~~
+
+2. 处理旋转后新根的父子关系
+
+~~~go
+func (r *RedBlackTree) rightRotate(pink *RedBlackNode) {
+	parent := pink.parent
+	yellow := pink.left
+	green := yellow.right
+	if green != nil {
+		green.parent = pink
+	}
+	yellow.right = pink
+	yellow.parent = parent
+	pink.left = green
+	pink.parent = yellow
+	// 如果旋转前 pink 就是 root，则 parent = nil
+	if parent == nil {
+		r.root = yellow
+	}
+	if parent.left == pink {
+		parent.left = yellow
+	} else {
+		parent.right = yellow
+	}
+}
+~~~
+
+
+
 #### 插入情况
 
 插入节点均视为红色:red_circle:
@@ -10662,7 +10783,7 @@ case 3：叔叔为红色:red_circle:
 case 4：叔叔为黑色:black_circle:
 
 1. 父亲为左孩子，插入节点也是左孩子，此时即 LL 不平衡
-	* 让父亲变黑:black_circle:，为了保证这颗子树黑色不变，将祖父变成红:red_circle:，但叔叔子树少了一个黑色
+	* 让父亲变黑:black_circle:，为了保证这颗子树黑色节点数不变，将祖父变成红:red_circle:，但叔叔子树少了一个黑色
 	* 祖父右旋，补齐一个黑色给叔叔，父亲旋转上去取代祖父，由于它是黑色，不会再次触发红红相邻
 2. 父亲为左孩子，插入节点是右孩子，此时即 LR 不平衡
 	* 父亲左旋，变成 LL 情况，按 1. 来后续处理
@@ -10676,58 +10797,152 @@ case 4：叔叔为黑色:black_circle:
 
 #### 删除情况
 
-case0：如果删除节点有两个孩子
+1. 如果被删除节点有两个孩子：
 
-* 交换删除节点和后继节点的 key，value，递归删除后继节点，直到该节点没有孩子或只剩一个孩子
-
-
-
-如果删除节点没有孩子或只剩一个孩子
-
-case 1：删的是根节点
-
-* 删完了，直接将 root = null
-* 用剩余节点替换了根节点的 key，value，根节点孩子 = null，颜色保持黑色:black_circle:不变
+>  交换删除节点和后继节点的 key，value，递归删除后继节点，直到该节点没有孩子或只剩一个孩子
 
 
 
-删黑色会失衡，删红色不会失衡，但删黑色有一种简单情况
-
-case 2：删的是黑:black_circle:，剩下的是红:red_circle:，剩下这个红节点变黑:black_circle:
+注：被删除节点和剩下节点都是黑:black_circle:，触发双黑，双黑意思是，**少了一个黑**
 
 
 
-删除节点和剩下节点都是黑:black_circle:，触发双黑，双黑意思是，**少了一个黑**
+2. 如果被删除节点没有孩子
 
-case 3：被调整节点的兄弟为红:red_circle:，此时两个侄子定为黑 :black_circle:
+> - 删的是根节点：直接将 root = null
+> - 删的是红色：不会失衡，让孩子（null值）替换父亲
+> - 删的是黑色：触发双黑，需要进行双黑处理（null值也视为黑色节点）
 
-* 删除节点是左孩子，父亲左旋
-* 删除节点是右孩子，父亲右旋
-* 父亲和兄弟要变色，保证旋转后颜色平衡
-* 旋转的目的是让黑侄子变为删除节点的黑兄弟，对删除节点再次递归，进入 case 4 或 case 5
 
-case 4：被调整节点的兄弟为黑:black_circle:，两个侄子都为黑 :black_circle:
 
-* 将兄弟变红:red_circle:，目的是将删除节点和兄弟那边的黑色高度同时减少 1
-* 如果父亲是红:red_circle:，则需将父亲变为黑，避免红红，此时路径黑节点数目不变
-* 如果父亲是黑:black_circle:，说明这条路径还是少黑，再次让父节点触发双黑
+3. 如果被删除节点只有一个孩子
 
-case 5：被调整节点的兄弟为黑:black_circle:，至少一个红:red_circle:侄子
+> - 删的是根节点：用剩余节点替换了根节点的 key，value，根节点孩子 = null，颜色保持黑色:black_circle:不变
+> - 删的是红色：那么孩子只可能黑色，只需让孩子替换父亲
+> - 删的是黑色：
+> 	- 孩子是黑色：触发双黑，进行双黑处理
+> 	- 孩子是红色：只需让孩子变成黑色，再替换父亲
 
-* 如果兄弟是左孩子，左侄子是红:red_circle:，LL 不平衡
-	* 将来删除节点这边少个黑，所以最后旋转过来的父亲需要变成黑:black_circle:，平衡起见，左侄子也是黑:black_circle:
-	* 原来兄弟要成为父亲，需要保留父亲颜色
-* 如果兄弟是左孩子，右侄子是红:red_circle:，LR 不平衡
-	* 将来删除节点这边少个黑，所以最后旋转过来的父亲需要变成黑:black_circle:
-	* 右侄子会取代原来父亲，因此它保留父亲颜色
-	* 兄弟已经是黑了:black_circle:，无需改变
-* 如果兄弟是右孩子，右侄子是红:red_circle:，RR 不平衡
-	* 将来删除节点这边少个黑，所以最后旋转过来的父亲需要变成黑:black_circle:，平衡起见，右侄子也是黑:black_circle:
-	* 原来兄弟要成为父亲，需要保留父亲颜色
-* 如果兄弟是右孩子，左侄子是红:red_circle:，RL 不平衡
-	* 将来删除节点这边少个黑，所以最后旋转过来的父亲需要变成黑:black_circle:
-	* 左侄子会取代原来父亲，因此它保留父亲颜色
-	* 兄弟已经是黑了:black_circle:，无需改变
+
+
+4. 双黑调整
+
+> 1. 被调整节点的兄弟为红:red_circle:，此时两个侄子定为黑 :black_circle:
+>
+> 	- 删除节点是左孩子，父亲左旋
+>
+> 	- 删除节点是右孩子，父亲右旋
+>
+> 	- 父亲和兄弟要变色，保证旋转后颜色平衡
+>
+> 	- 旋转的目的是让黑侄子变为删除节点的黑兄弟，对删除节点再次递归，进入 情况 2 或 情况 3
+>
+> 2. 被调整节点的兄弟为黑:black_circle:，两个侄子都为黑 :black_circle:
+>
+> 	- 将兄弟变红:red_circle:，目的是将删除节点和兄弟那边的黑色高度同时减少 1
+>
+> 	- 如果父亲是红:red_circle:，则需将父亲变为黑，避免红红，此时所有路径黑节点数目不变
+>
+> 	- 如果父亲是黑:black_circle:，说明这条路径还是少黑，再次让父节点触发双黑
+>
+> 3. 被调整节点的兄弟为黑:black_circle:，至少一个红:red_circle:侄子
+>
+> 	- 如果兄弟是左孩子，左侄子是红:red_circle:，LL 不平衡
+>
+> 		- 将来删除节点这边少个黑，所以最后旋转过来的父亲需要变成黑:black_circle:，平衡起见，原来的左侄子也变黑:black_circle:
+> 		- 原来的兄弟成为了父亲，它需要保留父亲颜色
+>
+> 		> 注：如果父亲是红色，右旋后已经平衡了；如果父亲是黑色，右旋后需要进行变色操作才能平衡。以上操作的意义在于可以统一处理这两种情况，以保证平衡。
+>
+> 	- 如果兄弟是左孩子，右侄子是红:red_circle:，LR 不平衡
+>
+> 		- 将来删除节点这边少个黑，所以最后旋转过来的父亲需要变成黑:black_circle:
+> 		- 右侄子会取代原来父亲，因此它需要变成父亲的颜色
+> 		- 兄弟已经是黑了:black_circle:，无需改变
+>
+> 		> 注意：由于旋转后，右侄子可能变为null，需要右侄子的变色需要再旋转之前进行
+>
+> 	- 如果兄弟是右孩子，右侄子是红:red_circle:，RR 不平衡
+> 		- 将来删除节点这边少个黑，所以最后旋转过来的父亲需要变成黑:black_circle:，平衡起见，右侄子也是黑:black_circle:
+> 		- 原来兄弟要成为父亲，需要保留父亲颜色
+>
+> 	- 如果兄弟是右孩子，左侄子是红:red_circle:，RL 不平衡
+>
+> 		- 将来删除节点这边少个黑，所以最后旋转过来的父亲需要变成黑:black_circle:
+> 		- 左侄子会取代原来父亲，因此它需要变成父亲的颜色
+> 		- 兄弟已经是黑了:black_circle:，无需改变
+>
+> 		> 注意：由于旋转后，左侄子可能变为null，需要左侄子的变色需要再旋转之前进行
+
+
+
+~~~go
+func (r *RedBlackTree) remove(key int) {
+	deleted := r.root.find(key)
+	if deleted == nil {
+		return
+	}
+	r.doRemove(deleted)
+}
+
+func (r *RedBlackTree) doRemove(deleted *RedBlackNode) {
+	var s *RedBlackNode = nil
+	if deleted.left == nil {
+		s = deleted.right
+	} else if deleted.right == nil {
+		s = deleted.left
+	} else {
+		s = deleted.right
+		for s.left != nil {
+			s = s.left
+		}
+	}
+	parent := deleted.parent
+	if s == nil { // 如果没有左右孩子
+		if deleted == r.root { // 如果删除的是根节点
+			r.root = nil
+		} else {
+			if deleted.isBlack() { // 双黑调整（删除少了个黑）
+				r.fixDoubleBlack(deleted)
+			} else {
+				//如果删除节点是红色，不会失衡，不需要做处理
+			}
+			// 删除节点
+			if deleted.isLeftChild() {
+				parent.left = nil
+			} else {
+				parent.right = nil
+			}
+		}
+		return
+	}
+	if deleted.left == nil || deleted.right == nil { // 只有一个孩子
+		if deleted == r.root { // 删除的是根节点
+			deleted.key = s.key
+			deleted.value = s.value
+			deleted.left, deleted.right = nil, nil
+		} else {
+			if deleted.isLeftChild() {
+				parent.left = s
+			} else {
+				parent.right = s
+			}
+			s.parent = parent
+			deleted.left, deleted.right, deleted.parent = nil, nil, nil
+			if deleted.isBlack() && s.isBlack() { // 被删除和孩子都是黑色
+				r.fixDoubleBlack(s)
+			} else { // 被删除是黑色，孩子是红色；被删除是红色，孩子只能是黑色
+				s.color = BLACK
+			}
+		}
+		return
+	}
+	// 有两个孩子，则需要将其变成有一个孩子或没有孩子的情况
+	deleted.key, s.key = s.key, deleted.key
+	deleted.value, s.value = s.value, deleted.value
+	r.doRemove(s)
+}
+~~~
 
 
 
@@ -11077,7 +11292,7 @@ public class RedBlackTree {
                     // 双黑调整
                     fixDoubleBlack(deleted);
                 } else {
-                    // 红色叶子, 无需任何处理
+                    // 删红色, 无需任何处理
                 }
                 if (deleted.isLeftChild()) {
                     parent.left = null;
@@ -11104,7 +11319,6 @@ public class RedBlackTree {
                 replaced.parent = parent;
                 deleted.left = deleted.right = deleted.parent = null;
                 if (isBlack(deleted) && isBlack(replaced)) {
-                    // @TODO 实际不会有这种情况 因为只有一个孩子时 被删除节点是黑色 那么剩余节点只能是红色不会触发双黑
                     fixDoubleBlack(replaced);
                 } else {
                     // case 2 删除是黑，剩下是红
@@ -11196,9 +11410,13 @@ ai 问题列表
 
 特性2：每个非叶子节点中的孩子数是 $n+1$、叶子节点没有孩子；若根节点不是叶子结点，则至少有两个孩子。
 
+> n 个 key（关键字数）对应 n+1 个孩子，
+
 特性3：$m$ 阶B树的每个节点最多有 $m$ 个孩子，除根节点和叶子节点外，其他节点至少有 $\lceil m/2 \rceil$ 个孩子。则有：$\lceil m/2 \rceil -1 \leq n \leq m-1$
 
 特性4：最小度 $t$（节点的孩子数称为度）和节点中key-键数量 $n$ 的关系如下：$t-1 \leq n \leq 2t-1$
+
+> 因为 孩子数 = n+1，则孩子数在 t 到 2t 之间
 
 特性5：叶子节点的深度都相同
 
@@ -11234,11 +11452,11 @@ ai 问题列表
 
 ```java
 static class Node {
-    boolean leaf = true;
-    int keyNumber;
-    int t;
-    int[] keys;
-    Node[] children;    
+    boolean leaf = true;	// 是否是叶子节点
+    int keyNumber;	// 有效关键字个数；若keys是动态集合，则不需要此属性，直接获取集合的长度即可
+    int t;	// 最小度数
+    int[] keys;	// 关键字
+    Node[] children;	// 孩子
 
     public Node(int t) {
         this.t = t;
@@ -11277,9 +11495,11 @@ Node get(int key) {
     if (i < keyNumber && keys[i] == key) {
         return this;
     }
-    if (leaf) {
+    // 执行到这，说明 keys[i]>key 或 i==keyNumber
+    if (leaf) {	// 如果是叶子节点
         return null;
     }
+    // 如果当前节点不是叶子节点
     return children[i].get(key);
 }
 ```
@@ -11363,9 +11583,9 @@ private void doPut(Node parent, int index, Node node, int key) {
 }
 ```
 
-* 首先查找本节点中的插入位置 i，如果没有空位（key 被找到），应该走更新的逻辑，目前什么没做
-* 接下来分两种情况
-	* 如果节点是叶子节点，可以直接插入了
+* 首先查找本节点中的插入位置 i，如果key已存在，就走更新的逻辑（更新vlue值），然后return即可
+* 如果key不存在，接下来分两种情况
+	* 如果节点是叶子节点，直接插入即可
 	* 如果节点是非叶子节点，需要继续在 children[i] 处继续递归插入
 * 无论哪种情况，插入完成后都可能超过节点 keys 数目限制，此时应当执行节点分裂
 	* 参数中的 parent 和 index 都是给分裂方法用的，代表当前节点父节点，和分裂节点是第几个孩子
@@ -11391,6 +11611,7 @@ void split(Node parent, int index , Node left) {
         root = newRoot;
         parent = newRoot;
     }
+    // 1.创建right，把left中t之后的key和child移动过去
     Node right = new Node(this.t);
     right.leaf = left.leaf;
     right.keyNumber = t - 1;
@@ -11399,8 +11620,10 @@ void split(Node parent, int index , Node left) {
         System.arraycopy(left.children, t, right.children, 0, t);
     }
     left.keyNumber = t - 1;
+    // 2.中间的key插入到父节点去
     int mid = left.keys[t - 1];
     parent.insertKey(mid, index);
+    // 3.right节点变为父节点的孩子
     parent.insertChild(right, index + 1);
 
 }
@@ -11408,15 +11631,105 @@ void split(Node parent, int index , Node left) {
 
 分两种情况：
 
-* 如果 parent == null 表示要分裂的是根节点，此时需要创建新根，原来的根节点作为新根的 0 孩子
+* 如果 parent == null 表示要分裂的是根节点，此时需要创建新根，原来的根节点作为新根的孩子
 * 否则（原left节点是要分裂的节点）
-	* 创建 right 节点（分裂后大于当前 left 节点的），把 t 以后的 key 和 child 都拷贝过去
+	* 创建 right 节点（分裂后大于当前 left 节点的），其 leaf 属性值和 left 一致（在同一层），然后把 t 以后的 key 和 child 都拷贝过去
 	* t-1 处的 key 插入到 parent 的 index 处，index 指 left 作为孩子时的索引
 	* right 节点作为 parent 的孩子插入到 index + 1 处
 
 
 
 #### 删除
+
+> 需要前置一些方法，需要注意的是：如果不是用的Java的arrayCopy方法，则由于`child数 = key数+1`，会导致编写代码是需要注意一些细节
+>
+> ~~~go
+> // 注：比起自己通过循环移动元素，copy方法更高效，底层有优化
+> func (b *BNode) insertKey(key, index int) {
+> 	/*for i := b.keyNumber - 1; i >= index; i-- {
+> 		b.keys[i+1] = b.keys[i]
+> 	}*/
+> 	copy(b.keys[index+1:], b.keys[index:b.keyNumber])
+> 	b.keys[index] = key
+> 	b.keyNumber++
+> }
+> 
+> func (b *BNode) insertChild(child *BNode, index int) {
+> 	// 因为child=key+1，所以即使先调用insertKey方法使keyNumber++后，仍然是i=keyNumber-2
+> 	/*for i := b.keyNumber - 1; i >= index; i-- {
+> 		b.children[i+1] = b.children[i]
+> 	}*/
+> 	copy(b.children[index+1:], b.children[index:b.keyNumber])
+> 	b.children[index] = child
+> }
+> 
+> func (b *BNode) removeKey(index int) (removed int) {
+> 	removed = b.keys[index]
+> 	for i := index + 1; i < b.keyNumber; i++ {
+> 		b.keys[i-1] = b.keys[i]
+> 	}
+> 	//或copy(b.keys[index:], b.keys[index+1:b.keyNumber])
+> 	b.keyNumber--
+> 	return
+> }
+> 
+> func (b *BNode) removeLeftMostKey() int {
+> 	return b.removeKey(0)
+> }
+> 
+> func (b *BNode) removeRightMostKey() int {
+> 	return b.removeKey(b.keyNumber - 1)
+> }
+> 
+> func (b *BNode) removeChild(index int) (removed *BNode) {
+> 	removed = b.children[index]
+> 	// 会先调用removeKey方法使keyNumber--，但child=key+1，所以这里是i<keyNumber+2
+> 	for i := index + 1; i < b.keyNumber+2; i++ {
+> 		b.children[i-1] = b.children[i]
+> 	}
+> 	//或copy(b.children[index:], b.children[index+1:b.keyNumber+2])
+> 	b.children[b.keyNumber] = nil
+> 	return
+> }
+> 
+> func (b *BNode) removeLeftMostChild() *BNode {
+> 	return b.removeChild(0)
+> }
+> 
+> func (b *BNode) removeRightMostChild() *BNode {
+> 	return b.removeChild(b.keyNumber)
+> }
+> 
+> // 调用该方法需要保证index处的孩子节点存在
+> func (b *BNode) childLeftSibling(index int) *BNode {
+> 	if index > 0 {
+> 		return b.children[index-1]
+> 	} else {
+> 		return nil
+> 	}
+> }
+> 
+> // 调用该方法需要保证index处的孩子节点存在
+> func (b *BNode) childRightSibling(index int) *BNode {
+> 	if index == b.keyNumber {
+> 		return nil
+> 	} else {
+> 		return b.children[index+1]
+> 	}
+> }
+> 
+> // 复制当前节点的所有key和child到target
+> func (b *BNode) moveToTarget(target *BNode) {
+> 	start := target.keyNumber
+> 	if !b.leaf { // child=key+1
+> 		copy(target.children[start:], b.children[:b.keyNumber+1])
+> 	}
+> 	copy(target.keys[start:], b.keys[:b.keyNumber])
+> 	target.keyNumber += b.keyNumber
+> }
+> ~~~
+>
+> 
 
 case 1：当前节点是叶子节点，没找到
 
@@ -11448,7 +11761,7 @@ case 5：删除后 key 数目 < 下限（不平衡）
 > 	* 有孩子类似情况1
 > * 两边都不富裕，向左/右合并（方便起见，统一向左合并）
 > 	* 有左兄弟：把父节点的一个key和被调节节点的所有key和child合并到左兄弟节点上
-> 	* 没有左兄弟：把父节点的一个key和有兄弟的所有key和child合并到被调节节点上
+> 	* 没有左兄弟：把父节点的一个key和有兄弟的所有key和child合并到被调整节点上
 
 case 6：根节点不平衡
 
@@ -11458,6 +11771,77 @@ case 6：根节点不平衡
 >
 > - 有孩子(必只有一个，合并操作)：root=child
 > - 没有孩子（删除操作导致）：直接返回
+
+~~~go
+func (b *BTree) remove(key int) {
+	b.doRemove(b.root, key, nil, 0)
+}
+
+func (b *BTree) doRemove(node *BNode, key int, parent *BNode, index int) {
+	i := 0
+	for ; i < node.keyNumber && key > node.keys[i]; i++ {
+	}
+	if node.leaf {
+		if i < node.keyNumber && key == node.keys[i] {
+			node.removeKey(i)
+		} else {
+			return
+		}
+	} else {
+		if i < node.keyNumber && key == node.keys[i] {
+			s := node.children[i+1]
+			for !s.leaf {
+				s = s.children[0]
+			}
+			// 用后继替换待删除key
+			sKey := s.keys[0]
+			node.keys[i] = sKey
+			b.doRemove(node.children[i+1], sKey, node, i+1)
+		} else {
+			b.doRemove(node.children[i], key, node, i)
+		}
+	}
+	if node.keyNumber < b.minKeyNumber {
+		b.balance(node, parent, index)
+	}
+}
+
+func (b *BTree) balance(node *BNode, parent *BNode, i int) {
+	if node == b.root {
+		if node.keyNumber == 0 && node.children[0] != nil {
+			b.root = node.children[0]
+		}
+		return
+	}
+	left := parent.childLeftSibling(i)
+	right := parent.childRightSibling(i)
+	if left != nil && left.keyNumber > b.minKeyNumber {
+		node.insertKey(parent.keys[i-1], 0)
+		if !left.leaf {
+			node.insertChild(left.removeRightMostChild(), 0)
+		}
+		parent.keys[i-1] = left.removeRightMostKey()
+		return
+	}
+	if right != nil && right.keyNumber > b.minKeyNumber {
+		node.insertKey(parent.keys[i], node.keyNumber)
+		if !right.leaf {
+			node.insertChild(right.removeLeftMostChild(), node.keyNumber)
+		}
+		parent.keys[i] = right.removeLeftMostKey()
+		return
+	}
+	if left != nil { // 左
+		parent.removeChild(i)
+		left.insertKey(parent.removeKey(i-1), left.keyNumber)
+		node.moveToTarget(left)
+	} else {
+		parent.removeChild(i + 1)
+		node.insertKey(parent.removeKey(i), node.keyNumber)
+		right.moveToTarget(node)
+	}
+}
+~~~
 
 
 
@@ -11558,22 +11942,25 @@ public class BTree {
             return removeChild(keyNumber);
         }
 
-        void moveToLeft(Node left) {
+        // 复制当前节点的所有key和child到target
+        void moveToTarget(Node target) {
             int start = left.keyNumber;
-            if (!leaf) {
+            if (!leaf) {	// child=key+1，所以这里是<=；并且因为此方法被调用前会前让target的key+1，所以不是i=1
                 for (int i = 0; i <= keyNumber; i++) {
-                    left.children[start + i] = children[i];
+                    target.children[start + i] = children[i];
                 }
             }
             for (int i = 0; i < keyNumber; i++) {
-                left.keys[left.keyNumber++] = keys[i];
+                target.keys[target.keyNumber++] = keys[i];
             }
         }
 
+        // 调用该方法需要保证index处的孩子节点存在
         Node leftSibling(int index) {
             return index > 0 ? children[index - 1] : null;
         }
 
+        // 调用该方法需要保证index处的孩子节点存在
         Node rightSibling(int index) {
             return index == keyNumber ? null : children[index + 1];
         }
@@ -11731,7 +12118,7 @@ public class BTree {
     private void mergeToLeft(Node left, Node parent, int i) {
         Node right = parent.removeChild(i + 1);
         left.insertKey(parent.removeKey(i), left.keyNumber);
-        right.moveToLeft(left);
+        right.moveToTarget(left);
     }
 
     private void rightRotate(Node node, Node leftSibling, Node parent, int i) {
@@ -11744,8 +12131,8 @@ public class BTree {
 
     private void leftRotate(Node node, Node rightSibling, Node parent, int i) {
         node.insertKey(parent.keys[i], node.keyNumber);
-        if (!rightSibling.leaf) {
-            node.insertChild(rightSibling.removeLeftmostChild(), node.keyNumber + 1);
+        if (!rightSibling.leaf) { // 这里keyNumber不用加一，因为insertKey中已经加一了
+            node.insertChild(rightSibling.removeLeftmostChild(), node.keyNumber);
         }
         parent.keys[i] = rightSibling.removeLeftmostKey();
     }
@@ -11770,9 +12157,7 @@ public class BTree {
 
 未考虑 hash 码的生成，假定该 hash 码由我们提供。
 
-负载因子（load facotr）：$(\alpha) = \frac{n}{m}$，当 `n=3, n=4` 时，比较适合扩容（α=0.75
-
-）
+负载因子（load facotr）：$(\alpha) = \frac{n}{m}$，当 `n=3, n=4` 时，比较适合扩容（α=0.75）
 
  ```java
 public class HashTable {
@@ -11793,8 +12178,8 @@ public class HashTable {
 
     Entry[] table = new Entry[16];
     int size = 0; // 元素个数
-    float loadFactor = 0.75f; // 12 阈值
-    int threshold = (int) (loadFactor * table.length);
+    float loadFactor = 0.75f; // 负载因子
+    int threshold = (int) (loadFactor * table.length);	// 12 阈值
 
     /* 求模运算替换为位运算
         - 前提：数组长度是 2 的 n 次方
@@ -11942,6 +12327,19 @@ hash 算法是将任意对象，分配一个**编号**的过程，其中编号�
 
 * Object 的 hashCode 方法默认是生成随机数作为 hash 值（会缓存在对象头当中）
 * 缺点是包含相同**值**的不同对象，他们的 hashCode 不一样，不能够用 hash 值来反映对象的**值**特征，因此诸多子类都会重写 hashCode 方法
+
+~~~java
+// 给HashTable加上两个新方法
+public void put(key Object, value Object) {
+    put(key.hashCode(), key, value);
+}
+
+public Object remove(Object key) {
+    return remove(key.hashCode(), key);
+}
+~~~
+
+
 
 **String.hashCode**
 

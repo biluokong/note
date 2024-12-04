@@ -4469,7 +4469,7 @@ func main() {
 
 接收器类型可以是（几乎）任何类型，不仅仅是结构体类型，任何类型都可以有方法，甚至可以是函数类型，可以是 int、bool、string 或数组的别名类型，但是接收器不能是一个接口类型，因为接口是一个抽象定义，而方法却是具体实现，如果这样做了就会引发一个编译错误`invalid receiver type…`
 
-接收器也不能是一个指针类型，但是它可以是任何其他允许类型的指针。
+接收器类型可以是任何其他允许类型的指针。
 
 **一个类型加上它的方法等价于面向对象中的一个类**
 
@@ -4569,31 +4569,24 @@ func main() {
 
 当方法作用于非指针接收器时，Go语言会在代码运行时将接收器的值复制一份，在非指针接收器的方法中可以获取接收器的成员值，但`修改后无效`。
 
-点（Point）使用结构体描述时，为点添加 Add() 方法，这个方法不能修改 Point 的成员 X、Y 变量，而是在计算后返回新的 Point 对象，Point 属于小内存对象，在函数返回值的复制过程中可以极大地提高代码运行效率:
-
 ```go
 package main
-import (
-    "fmt"
-)
-// 定义点结构
-type Point struct {
-    X int
-    Y int
+
+import "strconv"
+
+type Person struct {
+	age  int
 }
-// 非指针接收器的加方法
-func (p Point) Add(other Point) Point {
-    // 成员值与参数相加后返回新的结构
-    return Point{p.X + other.X, p.Y + other.Y}
+
+func (p Person) SetAge(age int) {
+	p.age = age
+	println("修改后的age：" + strconv.Itoa(p.age))
 }
+
 func main() {
-    // 初始化点
-    p1 := Point{1, 1}
-    p2 := Point{2, 2}
-    // 与另外一个点相加
-    result := p1.Add(p2)
-    // 输出结果
-    fmt.Println(result)
+	person := Person{4}
+	person.SetAge(10) // age：10
+	println("实际age：" + strconv.Itoa(person.age))	// age：4
 }
 ```
 
@@ -6243,15 +6236,13 @@ func main() {
 
 这一次的执行结果只打印了main goroutine done!，并没有打印Hello Goroutine!。
 
-```
 为什么呢？
-```
 
-在程序启动时，Go程序就会为main()函数创建一个默认的goroutine。
-
-当main()函数返回的时候该goroutine就结束了，所有在main()函数中启动的goroutine会一同结束，main函数所在的goroutine就像是权利的游戏中的夜王，其他的goroutine都是异鬼，夜王一死它转化的那些异鬼也就全部GG了。
-
-所以我们要想办法让main函数等一等hello函数，最简单粗暴的方式就是time.Sleep了。
+> 在程序启动时，Go程序就会为main()函数创建一个默认的goroutine。
+>
+> 当main()函数返回的时候该goroutine就结束了，所有在main()函数中启动的goroutine会一同结束，main函数所在的goroutine就像是权利的游戏中的夜王，其他的goroutine都是异鬼，夜王一死它转化的那些异鬼也就全部GG了。
+>
+> 所以我们要想办法让main函数等一等hello函数，最简单粗暴的方式就是time.Sleep了。
 
 ```go
 func main() {
@@ -6296,7 +6287,7 @@ func main()  {
 
 > 问题：主协程 退出了，子协程还会执行吗？
 
-**OS线程（操作系统线程）一般都有固定的栈内存（通常为2MB）,一个goroutine的栈在其生命周期开始时只有很小的栈（典型情况下2KB），goroutine的栈不是固定的，他可以按需增大和缩小，goroutine的栈大小限制可以达到1GB，虽然极少会用到这个大。所以在Go语言中一次创建十万左右的goroutine也是可以的。**
+**OS线程（操作系统线程）一般都有固定的栈内存（通常为2MB）,一个goroutine的栈在其生命周期开始时只有很小的栈（典型情况下2KB），goroutine的栈不是固定的，他可以按需增大和缩小，goroutine的栈大小限制可以达到1GB，虽然极少会用到这么大。所以在Go语言中一次创建十万左右的goroutine也是可以的。**
 
 ### 2.1 GMP
 
@@ -6610,8 +6601,6 @@ func main() {
 
 我们可以使用内置的len函数获取通道内元素的数量，使用cap函数获取通道的容量，虽然我们很少会这么做。
 
-### 
-
 可以通过内置的close()函数关闭channel（如果你的管道不往里存值或者取值的时候一定记得关闭管道）
 
 ```go
@@ -6908,6 +6897,7 @@ var lock sync.Mutex
 func add() {
     for i := 0; i < 5000; i++ {
         lock.Lock() // 加锁
+        //defer lock.Unlock() //类似java中finally
         x = x + 1
         lock.Unlock() // 解锁
     }
@@ -6982,6 +6972,129 @@ func main() {
 
 
 需要注意的是读写锁非常适合读多写少的场景，如果读和写的操作差别不大，读写锁的优势就发挥不出来。
+
+### 6.3 其他
+
+#### WaitGroup（等待组）
+
+- **作用**：用于等待一组goroutine的结束，常用于主goroutine等待其他goroutine完成任务。
+- **使用场景**：当主goroutine需要等待多个工作goroutine完成时使用。
+- **示例**：
+
+```go
+import "sync"
+ 
+var wg sync.WaitGroup
+ 
+func main() {
+    for i := 0; i < 10; i++ {
+        wg.Add(1)
+        go func(i int) {
+            defer wg.Done()
+            // 执行任务
+        }(i)
+    }
+    wg.Wait() // 等待所有goroutine完成
+}
+```
+
+#### Cond（条件变量）
+
+- **作用**：用于在goroutine之间进行等待和通知，常用于协调并发操作。
+- **使用场景**：当需要在多个goroutine之间进行复杂的同步操作时使用。
+- **示例**：
+
+```go
+import "sync"
+ 
+var cond *sync.Cond
+var mutex sync.Mutex
+var condition bool
+ 
+func main() {
+    cond = sync.NewCond(&mutex)
+    go func() {
+        mutex.Lock()
+        cond.Wait() // 等待条件变为true
+        mutex.Unlock()
+    }()
+    go func() {
+        mutex.Lock()
+        condition = true
+        cond.Signal() // 唤醒等待的goroutine
+        mutex.Unlock()
+    }()
+}
+```
+
+#### Once（执行一次）
+
+- **作用**：用于确保某个操作只执行一次，常用于单例模式或初始化只执行一次的场景。
+- **使用场景**：在并发环境下创建单例对象，或确保某个初始化函数只执行一次。
+- **示例**：
+
+```go
+import "sync"
+ 
+var once sync.Once
+var singleton *MySingletonType
+ 
+func GetSingleton() *MySingletonType {
+    once.Do(func() {
+        singleton = &MySingletonType{}
+    })
+    return singleton
+}
+```
+
+#### Pool（对象池）
+
+- **作用**：是一个可以存储和复用临时对象的线程安全的对象池。
+- **使用场景**：适用于对象创建和销毁成本较高，且对象可以被复用的情况。
+- **示例**：
+
+```go
+import "sync"
+ 
+var pool = sync.Pool{
+    New: func() interface{} {
+        return new(MyType)
+    },
+}
+ 
+func main() {
+    // 获取一个对象
+    obj := pool.Get().(*MyType)
+    // 使用对象
+    // ...
+    // 归还对象
+    pool.Put(obj)
+}
+```
+
+#### Map
+
+- **作用**：是一种并发安全的map，适用于需要并发读写map的场景。
+- **使用场景**：当需要在多个goroutine之间共享和修改map时使用。
+- **示例**：
+
+```go
+import "sync"
+ 
+var m sync.Map
+ 
+func main() {
+    m.Store("key", "value") // 存储键值对
+    if value, ok := m.Load("key"); ok {
+        // 使用value
+    }
+    m.Delete("key") // 删除键值对
+    m.Range(func(k, v interface{}) bool {
+        // 遍历Map
+        return true
+    })
+}
+```
 
 ## 7. 原子操作
 
