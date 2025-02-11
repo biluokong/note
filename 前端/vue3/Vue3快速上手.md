@@ -1,4 +1,7 @@
+课程：【尚硅谷Vue3入门到实战，最新版vue3+TypeScript前端开发教程】 https://www.bilibili.com/video/BV1Za4y1r7KE/?p=69&share_source=copy_web&vd_source=f31a4c5bdc03bbf8b6e28a1fdaaa4a9c
+
 # 1. Vue3简介
+
 - 2020年9月18日，`Vue.js`发布版`3.0`版本，代号：`One Piece`（n
 - 经历了：[4800+次提交](https://github.com/vuejs/core/commits/main)、[40+个RFC](https://github.com/vuejs/rfcs/tree/master/active-rfcs)、[600+次PR](https://github.com/vuejs/vue-next/pulls?q=is%3Apr+is%3Amerged+-author%3Aapp%2Fdependabot-preview+)、[300+贡献者](https://github.com/vuejs/core/graphs/contributors)
 - 官方发版地址：[Release v3.0.0 One Piece · vuejs/core](https://github.com/vuejs/core/releases/tag/v3.0.0)
@@ -729,7 +732,10 @@ function test(){
   })
 </script>
 ```
+> vue3.4之前无法关闭reactive的隐式深度监视，3.4后则可以通过设置 `deep: false` 关闭了
+
 ### * 情况四
+
 监视`ref`或`reactive`定义的【对象类型】数据中的**某个属性**，注意点如下：
 
 1. 若该属性值**不是**【对象类型】，需要写成函数形式。
@@ -792,7 +798,13 @@ function test(){
   },{deep:true})
 </script>
 ```
+> 在监视响应式对象中的某个对象属性时，有两种情况：
+>
+> - 直接监视：该对象属性值发送变化时可以监视到，但当该对象本身改变引用时，则无法监视到
+> - 通过函数监视：只能监视到该对象本身改变引用的情况，但如果加上`deep: true`，则其属性的改变也可以监视到
+
 ### * 情况五
+
 监视上述的多个数据
 ```vue
 <template>
@@ -993,7 +1005,7 @@ function test(){
 </script>
 ```
 
-
+> `define`开头的函数是宏函数，不需要导入就可以直接使用。
 
 ## 3.12. 【props】
 
@@ -1968,8 +1980,11 @@ export const useTalkStore = defineStore('talk',()=>{
    ```
 
    ```js
-   //子组件中，触发事件：
+   //子组件中，触发事件：(vue2)
    this.$emit('send-toy', 具体数据)
+   //vue3
+   const emit = defineEmits(['send-toy'])
+   emit('send-toy', data)
    ```
 
 ## 6.3. 【mitt】
@@ -2557,6 +2572,8 @@ export default function(initValue:string,delay:number){
     </div>
 </teleport>
 ```
+
+> to的值可以为标签名、id选择器(#xxx)、类选择器(.xxx)......
 
 ## 8.2. 【Suspense】
 

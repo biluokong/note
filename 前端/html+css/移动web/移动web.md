@@ -14,6 +14,29 @@
 
 平面转换也叫 2D 转换，属性是 **transform**
 
+~~~css
+transition: property duration timing-function delay;
+~~~
+
+- `property`：指定要应用过渡效果的CSS属性，可以使用`all`来包含所有可过渡属性。
+
+- `duration`：过渡效果持续的时间，单位为秒（s）或毫秒（ms）。
+
+- `timing-function`：指定过渡效果的速度曲线，例如`ease`、`linear`、`ease-in`、`ease-out`等，或使用`cubic-bezier`函数定义自定义曲线。
+
+	> 1. 预定义的关键字：
+	> 	- `ease`：默认值，表示动画开始时速度较慢，然后加速，最后再减速。
+	> 	- `linear`：表示动画以恒定速度进行。
+	> 	- `ease-in`：表示动画开始时速度较慢，然后逐渐加速。
+	> 	- `ease-out`：表示动画开始时速度较快，然后逐渐减速。
+	> 	- `ease-in-out`：表示动画开始时速度较慢，中间加速，然后再减速。
+	> 2. 步进函数：
+	> 	- `steps(number_of_steps, direction)`：将动画持续时间分为多个相等的步长，并在每个步长结束时跳到下一个状态。`number_of_steps` 指定步长的数量，`direction` 指定动画的开始时间（`start` 或 `end`）。
+	> 3. 三次贝兹曲线函数：
+	> 	- `cubic-bezier(x1, y1, x2, y2)`：使用四个控制点（`p0`, `p1`, `p2`, `p3`）中的两个（`p1` 和 `p2`）来定义一条三次贝兹曲线，从而控制动画的速度曲线。`p0` 和 `p3` 分别是动画的开始点和结束点，它们的坐标固定为 `(0,0)` 和 `(1,1)`。`x1`, `y1`, `x2`, `y2` 分别指定了 `p1` 和 `p2` 的坐标。
+
+- `delay`：过渡效果开始之前的延迟时间，单位为秒（s）或毫秒（ms），默认值为0。
+
 ### 平移
 
 ```css
