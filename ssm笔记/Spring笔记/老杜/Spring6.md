@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
 
 这样一来就违背了开闭原则OCP。开闭原则是这样说的：在软件开发过程中应当对扩展开放，对修改关闭。也就是说，如果在进行功能扩展的时候，添加额外的类是没问题的，但因为功能扩展而修改之前运行正常的程序，这是忌讳的，不被允许的。因为一旦修改之前运行正常的程序，就会导致项目整体要进行全方位的重新测试。这是相当麻烦的过程。导致以上问题的主要原因是：代码和代码之间的耦合度太高。如下图所示：
 
-![img](Spring6img/1663658802926-4c783887-3bd3-4a35-b32a-b2cd57d0061c.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_18%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663658802926-4c783887-3bd3-4a35-b32a-b2cd57d0061c.png)
 
 可以很明显的看出，**上层**是依赖**下层**的。UserController依赖UserServiceImpl，而UserServiceImpl依赖UserDaoImplForMySQL，这样就会导致**下面只要改动**，**上面必然会受牵连（跟着也会改）**，所谓牵一发而动全身。这样也就同时违背了另一个开发原则：依赖倒置原则。
 
@@ -112,11 +112,11 @@ public class UserServiceImpl implements UserService {
 
 你可能会说，上面的代码已经面向接口编程了呀：
 
-![img](Spring6img/1663663167652-73de3acd-61de-4f32-8a78-6c7698e910d3.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_25%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663663167652-73de3acd-61de-4f32-8a78-6c7698e910d3.png)
 
 确实已经面向接口编程了，但对象的创建是：new UserDaoImplForOracle()显然并没有完全面向接口编程，还是使用到了具体的接口实现类。什么叫做完全面向接口编程？什么叫做完全符合依赖倒置原则呢？请看以下代码：
 
-![img](Spring6img/1663663356201-4e57a395-503b-41ec-b98a-c3cd38f9279a.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_26%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663663356201-4e57a395-503b-41ec-b98a-c3cd38f9279a.png)
 
 如果代码是这样编写的，才算是完全面向接口编程，才符合依赖倒置原则。那你可能会问，这样userDao是null，在执行的时候就会出现空指针异常呀。你说的有道理，确实是这样的，所以我们要解决这个问题。解决空指针异常的问题，其实就是解决两个核心的问题：
 
@@ -129,7 +129,7 @@ public class UserServiceImpl implements UserService {
 
 在Spring框架中，它可以帮助我们new对象，并且它还可以将new出来的对象赋到属性上。换句话说，Spring框架可以帮助我们创建对象，并且可以帮助我们维护对象和对象之间的关系。比如：
 
-![img](Spring6img/1663664672011-b1f5c534-5c8b-412b-adb3-f7c60a3ab359.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_26%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663664672011-b1f5c534-5c8b-412b-adb3-f7c60a3ab359.png)
 
 Spring可以new出来UserDaoImplForMySQL对象，也可以new出来UserDaoImplForOracle对象，并且还可以让new出来的dao对象和service对象产生关系（产生关系其实本质上就是给属性赋值）。
 
@@ -157,7 +157,7 @@ IoC可以认为是一种**全新的设计模式**，但是理论和时间成熟�
 
 ## 2.1 Spring简介
 
-![img](Spring6img/1663722326376-02a67b9e-f80f-4717-ac33-1253723135f3.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_37%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663722326376-02a67b9e-f80f-4717-ac33-1253723135f3.png)
 
 来自百度百科
 
@@ -175,7 +175,7 @@ Spring是一个开源框架，它由Rod Johnson创建。它是为了解决企业
 
 注意：Spring5版本之后是8个模块。在Spring5中新增了WebFlux模块。
 
-![img](Spring6img/1663726169861-b5acb757-17e0-4d3d-a811-400eb7edd1b3.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_29%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663726169861-b5acb757-17e0-4d3d-a811-400eb7edd1b3.png)
 
 1. Spring Core模块
 
@@ -207,7 +207,7 @@ Spring为构建Web应用提供了一个功能全面的MVC框架。虽然Spring�
 
 Spring Framework 中包含的原始 Web 框架 Spring Web MVC 是专门为 Servlet API 和 Servlet 容器构建的。反应式堆栈 Web 框架 Spring WebFlux 是在 5.0 版的后期添加的。它是完全非阻塞的，支持反应式流(Reactive Stream)背压，并在Netty，Undertow和Servlet 3.1+容器等服务器上运行。
 
-![img](Spring6img/1663740062570-1823e8ac-1794-4590-87de-87e4a139a722.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_24%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663740062570-1823e8ac-1794-4590-87de-87e4a139a722.png)
 
 1. Spring Web模块
 
@@ -252,15 +252,15 @@ Web 上下文模块建立在应用程序上下文模块之上，为基于 Web �
 
 官网地址：<https://spring.io/>
 
-![img](Spring6img/1663750070460-6f435325-6d12-42fe-85be-886f92c7c40f.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_45%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663750070460-6f435325-6d12-42fe-85be-886f92c7c40f.png)
 
 官网地址（中文）：<http://spring.p2hp.com/>
 
-![img](Spring6img/1663749872857-84b6d914-ea8d-4758-97a7-b9d4dd61ebff.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_45%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663749872857-84b6d914-ea8d-4758-97a7-b9d4dd61ebff.png)
 
 打开Spring官网后，可以看到Spring Framework，以及通过Spring Framework衍生的其它框架：
 
-![img](Spring6img/1663749081947-b895cb4e-b7f6-4120-a1fe-a14651044847.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_22%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663749081947-b895cb4e-b7f6-4120-a1fe-a14651044847.png)
 
 我们即将要学习的就是Spring Framework。
 
@@ -268,37 +268,37 @@ Web 上下文模块建立在应用程序上下文模块之上，为基于 Web �
 
 - 第一步：进入github
 
-![img](Spring6img/1663751885843-1a92db90-28df-4f6a-a782-c3be716148af.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_36%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663751885843-1a92db90-28df-4f6a-a782-c3be716148af.png)
 
 - 第二步：找到下图位置，点击超链接
 
-![img](Spring6img/1663751963085-dd8e5354-bccb-4776-b85d-4b9234f46b59.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_33%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663751963085-dd8e5354-bccb-4776-b85d-4b9234f46b59.png)
 
 - 第三步：找到下图位置，点击超链接
 
-![img](Spring6img/1663752041647-c9b73ddb-b533-46bc-9894-593a899b599e.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_35%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663752041647-c9b73ddb-b533-46bc-9894-593a899b599e.png)
 
 - 第四步：按照下图步骤操作
 
-![img](Spring6img/1663752134067-1018b3b1-0f1f-47f7-a1a1-f662d2f67308.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_25%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663752134067-1018b3b1-0f1f-47f7-a1a1-f662d2f67308.png)
 
 - 第五步：继续在springframework目录下找下图的spring，点开之后你会看到很多不同的版本
 
-![img](Spring6img/1663752209054-96544282-8f58-4903-a274-2bb67a9dcae8.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_12%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663752209054-96544282-8f58-4903-a274-2bb67a9dcae8.png)
 
 - 第六步：选择对应的版本
 
-![img](Spring6img/1663752303938-9477a726-a07a-40ae-9b74-e5e4780cc6d1.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_38%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663752303938-9477a726-a07a-40ae-9b74-e5e4780cc6d1.png)
 
 - 第七步：点击上图的url
 
-![img](Spring6img/1663752388207-ead56023-2117-4b68-b70e-2929767b4b67.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_24%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663752388207-ead56023-2117-4b68-b70e-2929767b4b67.png)
 
 点击spring-5.3.9-dist.zip下载spring框架。
 
 将下载的zip包解压：
 
-![img](Spring6img/1663753313903-f48e2caf-73f1-4aaf-a503-e275795e67ba.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_11%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663753313903-f48e2caf-73f1-4aaf-a503-e275795e67ba.png)
 
 docs：spring框架的API帮助文档
 
@@ -310,7 +310,7 @@ schema：spring框架的XML配置文件相关的约束文件
 
 打开libs目录，会看到很多jar包：
 
-![img](Spring6img/1663809473261-c5c10c35-7407-44d4-81da-8f0baa236179.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_13%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663809473261-c5c10c35-7407-44d4-81da-8f0baa236179.png)
 
 spring-core-5.3.9.jar：字节码（**这个是支撑程序运行的jar包**）
 
@@ -320,7 +320,7 @@ spring-core-5.3.9-sources.jar：源码
 
 我们来看一下spring框架都有哪些jar包：
 
-![img](Spring6img/1663809688152-48c02538-b2c0-4649-a415-3ae25feeadab.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_12%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663809688152-48c02538-b2c0-4649-a415-3ae25feeadab.png)
 
 | **JAR文件**                      | **描述**                                                     |
 | -------------------------------- | ------------------------------------------------------------ |
@@ -379,19 +379,19 @@ spring-core-5.3.9-sources.jar：源码
 
 - 打开IDEA创建Empty Project：spring6
 
-![img](Spring6img/1663815378480-59b3dcb2-e8d5-40e5-802d-6df67ffe3811.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_22%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663815378480-59b3dcb2-e8d5-40e5-802d-6df67ffe3811.png)
 
 - 设置JDK版本17，编译器版本17
 
-![img](Spring6img/1663817569379-a769d553-1e24-43a6-8293-de0fd01f3e73.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_29%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663817569379-a769d553-1e24-43a6-8293-de0fd01f3e73.png)
 
 - 设置IDEA的Maven：关联自己的maven
 
-![img](Spring6img/1663815467638-04a7795c-8e9d-4751-8087-e326bd7c74a3.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_28%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663815467638-04a7795c-8e9d-4751-8087-e326bd7c74a3.png)
 
 - 在空的工程spring6中创建第一个模块：spring6-001-first
 
-![img](Spring6img/1663815542642-bf7fa2e5-ccea-4311-aa4e-f5571fe206e1.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_22%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663815542642-bf7fa2e5-ccea-4311-aa4e-f5571fe206e1.png)
 
 **第一步：添加spring context的依赖，pom.xml配置如下**
 
@@ -446,7 +446,7 @@ spring jcl：spring的日志包
 
 spring expression：spring表达式
 
-![img](Spring6img/1664508240591-8299d105-f5d0-428e-a982-91cee00f3074.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_13%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1664508240591-8299d105-f5d0-428e-a982-91cee00f3074.png)
 
 **第二步：添加junit依赖**
 
@@ -511,7 +511,7 @@ public class User {
 
 **第四步：编写spring的配置文件：beans.xml。****该文件放在类的根路径下****。**
 
-![img](Spring6img/1663816617460-ee35243c-fddc-4771-af28-0017f8af2ab5.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663816617460-ee35243c-fddc-4771-af28-0017f8af2ab5.png)
 
 上图是使用IDEA工具自带的spring配置文件的模板进行创建。
 
@@ -556,7 +556,7 @@ public class Spring6Test {
 
 **第七步：运行测试程序**
 
-![img](Spring6img/1663818370960-22cf8670-7e79-48d2-b4fe-008ead1a6607.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_22%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663818370960-22cf8670-7e79-48d2-b4fe-008ead1a6607.png)
 
 ## 3.4 第一个Spring程序详细剖析
 
@@ -591,7 +591,7 @@ public class Vip {
 
 运行测试程序：
 
-![img](Spring6img/1663829044856-faaf4569-26f0-475b-a8c3-ba28b1753873.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_46%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663829044856-faaf4569-26f0-475b-a8c3-ba28b1753873.png)
 
 **通过测试得出：在spring的配置文件中id是不能重名。**
 
@@ -617,7 +617,7 @@ public class User {
 
 运行测试程序：
 
-![img](Spring6img/1663829191565-09e55ce2-e426-4f34-a49d-1ecde4c66dd2.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_17%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663829191565-09e55ce2-e426-4f34-a49d-1ecde4c66dd2.png)
 
 **通过测试得知：创建对象时确实调用了无参数构造方法。**
 
@@ -645,7 +645,7 @@ public class User {
 
 运行测试程序：
 
-![img](Spring6img/1663829413955-bda77d32-bf39-44e2-bbd8-0ed87f72bd7e.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_46%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663829413955-bda77d32-bf39-44e2-bbd8-0ed87f72bd7e.png)
 
 **通过测试得知：spring是通过调用类的无参数构造方法来创建对象的，所以要想让spring给你创建对象，必须保证无参数构造方法是存在的。**
 
@@ -660,7 +660,7 @@ Object obj = clazz.newInstance();
 
 1. **把创建好的对象存储到一个什么样的数据结构当中了呢？**
 
-![img](Spring6img/1663829973365-59ca2f4c-4d81-471f-8e4c-aa272f8c2b81.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_13%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663829973365-59ca2f4c-4d81-471f-8e4c-aa272f8c2b81.png)
 
 1. **spring配置文件的名字必须叫做beans.xml吗？**
 
@@ -706,11 +706,11 @@ public class Spring6Test {
 
 运行测试程序：
 
-![img](Spring6img/1663830539482-a0454bc6-9d9b-41cb-81c3-1c02e58d3669.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663830539482-a0454bc6-9d9b-41cb-81c3-1c02e58d3669.png)
 
 通过测试得知，spring的配置文件可以有多个，在ClassPathXmlApplicationContext构造方法的参数上传递文件路径即可。这是为什么呢？通过源码可以看到：
 
-![img](Spring6img/1663830614508-d00ecc07-5b51-4d2d-bc1d-8f2cb4f0c785.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_30%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663830614508-d00ecc07-5b51-4d2d-bc1d-8f2cb4f0c785.png)
 
 1. **在配置文件中配置的类必须是自定义的吗，可以使用JDK中的类吗，例如：java.util.Date？**
 
@@ -752,17 +752,17 @@ public class Spring6Test {
 
 运行测试程序：
 
-![img](Spring6img/1663830975135-0fce3972-3b4e-4f54-878a-a4058f8d6ca6.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_17%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663830975135-0fce3972-3b4e-4f54-878a-a4058f8d6ca6.png)
 
 通过测试得知，在spring配置文件中配置的bean可以任意类，只要这个类不是抽象的，并且提供了无参数构造方法。
 
 1. **getBean()方法调用时，如果指定的id不存在会怎样？**
 
-![img](Spring6img/1663831841228-eda809d8-3e51-4b08-913c-76ff78efae1f.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_40%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663831841228-eda809d8-3e51-4b08-913c-76ff78efae1f.png)
 
 运行测试程序：
 
-![img](Spring6img/1663831885196-43acddcf-29e5-46b7-814c-33c4dfe78386.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_36%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663831885196-43acddcf-29e5-46b7-814c-33c4dfe78386.png)
 
 通过测试得知，当id不存在的时候，会出现异常。
 
@@ -774,7 +774,7 @@ User user = applicationContext.getBean("userBean", User.class);
 
 1. **ClassPathXmlApplicationContext是从类路径中加载配置文件，如果没有在类路径当中，又应该如何加载配置文件呢？**
 
-![img](Spring6img/1663832523920-8df601e0-1fd3-43c2-92ad-dc57207b006a.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_11%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663832523920-8df601e0-1fd3-43c2-92ad-dc57207b006a.png)
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -1013,7 +1013,7 @@ public class DITest {
 
 运行结果：
 
-![img](Spring6img/1663905094332-411b6249-dcf5-48df-830f-33335846bed8.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_16%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663905094332-411b6249-dcf5-48df-830f-33335846bed8.png)
 
 重点内容是，什么原理：
 
@@ -1046,7 +1046,7 @@ property标签的ref是要注入的bean对象的id。**(通过ref属性来完成
 
 **可以把set方法注释掉，再测试一下**：
 
-![img](Spring6img/1663905304326-b982124b-3dea-4a3a-b808-53403627a791.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_26%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663905304326-b982124b-3dea-4a3a-b808-53403627a791.png)
 
 通过测试得知，底层实际上调用了setUserDao()方法。所以需要确保这个方法的存在。
 
@@ -1081,7 +1081,7 @@ public class UserService {
 
 运行测试程序：
 
-![img](Spring6img/1663913608149-ae3df3f6-cff3-4189-9b57-9b6e41e5e157.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_13%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663913608149-ae3df3f6-cff3-4189-9b57-9b6e41e5e157.png)
 
 通过测试看到程序仍然可以正常执行，说明property标签的name是：setUserDao()方法名演变得到的。演变的规律是：
 
@@ -1157,7 +1157,7 @@ public void testConstructorDI(){
 
 运行结果如下：
 
-![img](Spring6img/1663916302936-91af70a1-30f4-4527-b92c-f9d3c83128ca.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1663916302936-91af70a1-30f4-4527-b92c-f9d3c83128ca.png)
 
 **如果构造方法有两个参数：**
 
@@ -1207,7 +1207,7 @@ spring配置文件：
 
 执行测试程序：
 
-![img](Spring6img/1664347904052-41cd13ad-f38f-41f0-949d-a339a30a24f0.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1664347904052-41cd13ad-f38f-41f0-949d-a339a30a24f0.png)
 
 **不使用参数下标，使用参数的名字可以吗？**
 
@@ -1225,7 +1225,7 @@ spring配置文件：
 
 执行测试程序：
 
-![img](Spring6img/1664348053136-ecd18e6d-af92-416b-9c60-8025d929c202.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_13%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1664348053136-ecd18e6d-af92-416b-9c60-8025d929c202.png)
 
 **不指定参数下标，不指定参数名字，可以吗？**
 
@@ -1242,7 +1242,7 @@ spring配置文件：
 
 执行测试程序：
 
-![img](Spring6img/1664348190304-b4da661d-2fa7-4acb-8d32-b60b0112113e.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1664348190304-b4da661d-2fa7-4acb-8d32-b60b0112113e.png)
 
 **配置文件中构造方法参数的类型顺序和构造方法参数的类型顺序不一致呢？**
 
@@ -1260,7 +1260,7 @@ spring配置文件：
 
 执行测试程序：
 
-![img](Spring6img/1664348350392-94e354b2-143e-4ebf-8af3-23e957d6a434.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_13%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1664348350392-94e354b2-143e-4ebf-8af3-23e957d6a434.png)
 
 通过测试得知，通过构造方法注入的时候：
 
@@ -1320,7 +1320,7 @@ public void testInnerBean(){
 
 执行测试程序：
 
-![img](Spring6img/1664443574869-143a6d21-9b3f-4eaa-bd9c-6d9b0e9908b5.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1664443574869-143a6d21-9b3f-4eaa-bd9c-6d9b0e9908b5.png)
 
 这种方式作为了解。
 
@@ -1417,7 +1417,7 @@ public void testSimpleType(){
 
 第四步：运行测试程序
 
-![img](Spring6img/1664444978134-0cdbca10-4322-4e31-a2f8-a177d3ae2e75.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1664444978134-0cdbca10-4322-4e31-a2f8-a177d3ae2e75.png)
 
 **需要特别注意：如果给简单类型赋值，使用value属性或value标签。而不是ref。**
 
@@ -1440,7 +1440,7 @@ public class BeanUtils{
 	 * @see org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#checkDependencies
 	 * @see #isSimpleValueType(Class)
 	 */
-	public static boolean isSimpleProperty(Class<?> type) {
+	public static boolean isSimpleProperty(Class<) {
 		Assert.notNull(type, "'type' must not be null");
 		return isSimpleValueType(type) || (type.isArray() && isSimpleValueType(type.getComponentType()));
 	}
@@ -1454,7 +1454,7 @@ public class BeanUtils{
 	 * @return whether the given type represents a "simple" value type
 	 * @see #isSimpleProperty(Class)
 	 */
-	public static boolean isSimpleValueType(Class<?> type) {
+	public static boolean isSimpleValueType(Class<) {
 		return (Void.class != type && void.class != type &&
 				(ClassUtils.isPrimitiveOrWrapper(type) ||
 				Enum.class.isAssignableFrom(type) ||
@@ -1580,7 +1580,7 @@ public class MyDataSource implements DataSource {
     }
 
     @Override
-    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+    public boolean isWrapperFor(Class<) throws SQLException {
         return false;
     }
 }
@@ -1617,7 +1617,7 @@ public void testDataSource(){
 
 执行测试程序：
 
-![img](Spring6img/1664445950974-57eb35af-c4ad-47c7-9a70-341d61596656.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_41%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1664445950974-57eb35af-c4ad-47c7-9a70-341d61596656.png)
 
 你学会了吗？
 
@@ -1735,7 +1735,7 @@ public void testAllSimpleType(){
 
 执行结果如下：
 
-![img](Spring6img/1664524514681-c680e261-eeaf-4536-b5db-e4f28361a03d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_44%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1664524514681-c680e261-eeaf-4536-b5db-e4f28361a03d.png)
 
 **需要注意的是：**
 
@@ -1844,7 +1844,7 @@ public void testCascade(){
 
 运行结果：
 
-![img](Spring6img/1665196735272-17e84eb6-8dcd-4c69-9ed7-e35c7c8ad36d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_16%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665196735272-17e84eb6-8dcd-4c69-9ed7-e35c7c8ad36d.png)
 
 **要点：**
 
@@ -2004,7 +2004,7 @@ public void testArray(){
 
 执行结果：
 
-![img](Spring6img/1665193773078-0a30da90-244d-460e-bc2c-901d99873668.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_18%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665193773078-0a30da90-244d-460e-bc2c-901d99873668.png)
 
 **要点：**
 
@@ -2068,7 +2068,7 @@ public void testCollection(){
 
 执行结果：
 
-![img](Spring6img/1665199057422-a5f94a7c-711e-4846-9d69-2caf05d11e88.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665199057422-a5f94a7c-711e-4846-9d69-2caf05d11e88.png)
 
 **注意：注入List集合的时候使用list标签，如果List集合中是简单类型使用value标签，反之使用ref标签。**
 
@@ -2129,7 +2129,7 @@ public class People {
 
 执行结果：
 
-![img](Spring6img/1665199868843-bc721edd-e89a-4298-b41a-7c5ac8c93530.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_21%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665199868843-bc721edd-e89a-4298-b41a-7c5ac8c93530.png)
 
 **要点：**
 
@@ -2192,7 +2192,7 @@ public class People {
 
 执行结果：
 
-![img](Spring6img/1665200352800-0b980533-2d1f-4222-8aaf-1b253cb19a39.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_35%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665200352800-0b980533-2d1f-4222-8aaf-1b253cb19a39.png)
 
 **要点：**
 
@@ -2258,7 +2258,7 @@ public class People {
 
 执行测试程序：
 
-![img](Spring6img/1665201002733-ae9273da-1fb9-495c-907e-e6c8489a7ec5.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_40%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665201002733-ae9273da-1fb9-495c-907e-e6c8489a7ec5.png)
 
 **要点：**
 
@@ -2320,7 +2320,7 @@ public void testNull(){
 
 执行结果：
 
-![img](Spring6img/1665202057919-ba40e1bb-405b-455e-9719-0c56f1f9144b.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_13%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665202057919-ba40e1bb-405b-455e-9719-0c56f1f9144b.png)
 
 - 怎么注入null呢？
 
@@ -2339,7 +2339,7 @@ public void testNull(){
 
 执行结果：
 
-![img](Spring6img/1665202218759-f35ed2da-e136-4ef0-92e5-8ae4ea029620.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_13%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665202218759-f35ed2da-e136-4ef0-92e5-8ae4ea029620.png)
 
 第二种方式：使用<null/>
 
@@ -2360,7 +2360,7 @@ public void testNull(){
 
 执行结果：
 
-![img](Spring6img/1665202218759-f35ed2da-e136-4ef0-92e5-8ae4ea029620.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_13%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665202218759-f35ed2da-e136-4ef0-92e5-8ae4ea029620.png)
 
 ### 4.3.11 注入的值中含有特殊符号
 
@@ -2368,7 +2368,7 @@ XML中有5个特殊字符，分别是：<、>、'、"、&
 
 以上5个特殊符号在XML中会被特殊对待，会被当做XML语法的一部分进行解析，如果这些特殊符号直接出现在注入的字符串当中，会报错。
 
-![img](Spring6img/1665209144602-479d8a8d-d79d-4da8-bb13-6a9c7e76a949.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_26%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665209144602-479d8a8d-d79d-4da8-bb13-6a9c7e76a949.png)
 
 解决方案包括两种：
 
@@ -2428,7 +2428,7 @@ public void testSpecial(){
 
 执行结果：
 
-![img](Spring6img/1665210216232-b41609a9-2ead-4179-9f0c-dd9a9a4e033e.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665210216232-b41609a9-2ead-4179-9f0c-dd9a9a4e033e.png)
 
 我们再来使用CDATA方式：
 
@@ -2452,7 +2452,7 @@ public void testSpecial(){
 
 执行结果：
 
-![img](Spring6img/1665210754241-75f884a4-a77b-4918-b398-9f7be2a58873.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665210754241-75f884a4-a77b-4918-b398-9f7be2a58873.png)
 
 ## 4.4 p命名空间注入
 
@@ -2511,11 +2511,11 @@ public void testP(){
 
 执行结果：
 
-![img](Spring6img/1665215638858-c5ae8aef-43ec-455d-90a3-ac3f97c92746.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_13%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665215638858-c5ae8aef-43ec-455d-90a3-ac3f97c92746.png)
 
 把setter方法去掉：
 
-![img](Spring6img/1665215713205-fcebda06-c4bb-486b-a2d7-6a238088625b.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_30%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665215713205-fcebda06-c4bb-486b-a2d7-6a238088625b.png)
 
 所以p命名空间实际上是对set注入的简化。
 
@@ -2579,11 +2579,11 @@ public void testC(){
 
 执行结果：
 
-![img](Spring6img/1665216171317-2dc02c42-3f3e-42f5-80e7-c578888e2fbb.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665216171317-2dc02c42-3f3e-42f5-80e7-c578888e2fbb.png)
 
 把构造方法注释掉：
 
-![img](Spring6img/1665216339051-c5eecc20-6801-46dd-a331-e5b33c66c7ed.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_34%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665216339051-c5eecc20-6801-46dd-a331-e5b33c66c7ed.png)
 
 所以，c命名空间是依靠构造方法的。
 
@@ -2595,7 +2595,7 @@ public void testC(){
 
 使用util命名空间的前提是：在spring配置文件头部添加配置信息。如下：
 
-![img](Spring6img/1665218059794-30411b76-a22c-4339-ab60-acad8f02ab28.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_43%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665218059794-30411b76-a22c-4339-ab60-acad8f02ab28.png)
 
 ```java
 package com.powernode.spring6.beans;
@@ -2682,7 +2682,7 @@ public void testUtil(){
 
 执行结果：
 
-![img](Spring6img/1665218430727-c81e399e-294e-4bb5-b98b-2c8875b0884f.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_43%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665218430727-c81e399e-294e-4bb5-b98b-2c8875b0884f.png)
 
 ## 4.7 基于XML的自动装配
 
@@ -2761,7 +2761,7 @@ public void testAutowireByName(){
 
 执行结果：
 
-![img](Spring6img/1665535913374-7031648f-fad4-4fa1-a3f1-68dcf2318bef.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_13%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665535913374-7031648f-fad4-4fa1-a3f1-68dcf2318bef.png)
 
 我们来测试一下，byName装配是和属性名有关还是和set方法名有关系：
 
@@ -2797,7 +2797,7 @@ public class UserService {
 
 在执行测试程序：
 
-![img](Spring6img/1665536092171-afa2acd5-68c8-4289-95bd-ab8c0f88a66d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_38%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665536092171-afa2acd5-68c8-4289-95bd-ab8c0f88a66d.png)
 
 通过测试得知，aaa属性并没有赋值成功。也就是并没有装配成功。
 
@@ -2818,7 +2818,7 @@ public class UserService {
 
 执行测试程序：
 
-![img](Spring6img/1665536194436-6efd0c08-72da-437e-b3ad-143cdb00834d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_13%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665536194436-6efd0c08-72da-437e-b3ad-143cdb00834d.png)
 
 这说明，如果根据名称装配(byName)，底层会调用set方法进行注入。
 
@@ -2882,11 +2882,11 @@ public void testAutowireByType(){
 
 执行结果：
 
-![img](Spring6img/1665537096983-d3c25b4c-21e1-499f-b348-6f829bc84a48.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665537096983-d3c25b4c-21e1-499f-b348-6f829bc84a48.png)
 
 我们把UserService中的set方法注释掉，再执行：
 
-![img](Spring6img/1665537145356-cf979b68-e11b-4b4f-b1b4-7c20649aa199.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_41%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665537145356-cf979b68-e11b-4b4f-b1b4-7c20649aa199.png)
 
 可以看到无论是byName还是byType，在装配的时候都是基于set方法的。所以set方法是必须要提供的。提供构造方法是不行的，大家可以测试一下。这里就不再赘述。
 
@@ -2908,7 +2908,7 @@ public void testAutowireByType(){
 
 执行测试程序：
 
-![img](Spring6img/1665537341888-57af14a1-eeb4-4070-8713-b4368003251d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_45%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665537341888-57af14a1-eeb4-4070-8713-b4368003251d.png)
 
 测试结果说明了，当byType进行自动装配的时候，配置文件中某种类型的Bean必须是唯一的，不能出现多个。
 
@@ -3026,7 +3026,7 @@ public void testProperties(){
 
 执行结果：
 
-![img](Spring6img/1665540422630-223562fd-e97b-40fe-96e7-df2c8744e2c2.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_44%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665540422630-223562fd-e97b-40fe-96e7-df2c8744e2c2.png)
 
 
 
@@ -3069,7 +3069,7 @@ public void testScope(){
 
 执行结果：
 
-![img](Spring6img/1665220014331-a1e4cac5-c749-4b67-bab8-43d6957c35e4.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_17%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665220014331-a1e4cac5-c749-4b67-bab8-43d6957c35e4.png)
 
 通过测试得知：Spring的IoC容器中，默认情况下，Bean对象是单例的。
 
@@ -3102,7 +3102,7 @@ public void testScope(){
 
 执行测试程序：
 
-![img](Spring6img/1665220250081-036fe814-8328-4b58-adf4-b3a37eb0cb4d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665220250081-036fe814-8328-4b58-adf4-b3a37eb0cb4d.png)
 
 通过测试得知，默认情况下，Bean对象的创建是在初始化Spring上下文的时候就完成的。
 
@@ -3133,7 +3133,7 @@ public void testScope(){
 
 执行结果：
 
-![img](Spring6img/1665220593171-19b1a750-551c-441d-8f8f-9c7aa7601e77.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_18%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665220593171-19b1a750-551c-441d-8f8f-9c7aa7601e77.png)
 
 我们可以把测试代码中的getBean()方法所在行代码注释掉：
 
@@ -3146,7 +3146,7 @@ public void testScope(){
 
 执行结果：
 
-![img](Spring6img/1665220698959-ff4ad909-670e-4745-960d-5c215e2af71e.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665220698959-ff4ad909-670e-4745-960d-5c215e2af71e.png)
 
 可以看到这一次在初始化Spring上下文的时候，并没有创建Bean对象。
 
@@ -3175,7 +3175,7 @@ public void testScope(){
 
 执行结果：
 
-![img](Spring6img/1665221074412-9b48c6e3-44f0-492c-a712-37b4baa24341.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_16%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665221074412-9b48c6e3-44f0-492c-a712-37b4baa24341.png)
 
 通过测试得知，没有指定scope属性时，默认是singleton单例的。
 
@@ -3245,7 +3245,7 @@ public void testCustomScope(){
 
 执行结果：
 
-![img](Spring6img/1665297614749-ae92b97d-85fd-4792-af87-e72d35784187.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_17%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665297614749-ae92b97d-85fd-4792-af87-e72d35784187.png)
 
 
 
@@ -3445,7 +3445,7 @@ public class Client {
 
 执行结果：
 
-![img](Spring6img/1665304945315-8bd0c855-6eff-44a8-8051-42a2c1edb712.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_11%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665304945315-8bd0c855-6eff-44a8-8051-42a2c1edb712.png)
 
 简单工厂模式的优点：
 
@@ -3587,7 +3587,7 @@ public class Client {
 
 执行客户端程序：
 
-![img](Spring6img/1665362593949-73061a01-391f-4926-ba24-575903fd11bb.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665362593949-73061a01-391f-4926-ba24-575903fd11bb.png)
 
 如果想扩展一个新的产品，只要新增一个产品类，再新增一个该产品对应的工厂即可，例如新增：匕首
 
@@ -3652,7 +3652,7 @@ public class Client {
 
 执行结果如下：
 
-![img](Spring6img/1665362890109-5db8f42d-677b-450d-bc76-6842abe9640a.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_13%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665362890109-5db8f42d-677b-450d-bc76-6842abe9640a.png)
 
 我们可以看到在进行功能扩展的时候，不需要修改之前的源代码，显然工厂方法模式符合OCP原则。
 
@@ -3681,7 +3681,7 @@ public class Client {
 
 抽象工厂模式的类图如下：
 
-![img](Spring6img/1665370116084-46b714b8-95d2-45c5-89b6-564057c45694.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_33%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665370116084-46b714b8-95d2-45c5-89b6-564057c45694.png)
 
 抽象工厂模式代码如下：
 
@@ -3911,7 +3911,7 @@ public class Client {
 
 执行结果：
 
-![img](Spring6img/1665370862172-3753f689-d7c7-40d8-8a50-1e4144f2be97.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_16%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665370862172-3753f689-d7c7-40d8-8a50-1e4144f2be97.png)
 
 抽象工厂模式的优缺点：
 
@@ -3981,7 +3981,7 @@ public class SpringInstantiationTest {
 
 执行结果：
 
-![img](Spring6img/1665373293580-f86edf28-3303-44bd-a9a1-855dcd575e0d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665373293580-f86edf28-3303-44bd-a9a1-855dcd575e0d.png)
 
 ## 7.2 通过简单工厂模式实例化
 
@@ -4037,7 +4037,7 @@ public void testSimpleFactory(){
 
 执行结果：
 
-![img](Spring6img/1665373835672-90312dd8-81e3-4d0a-8b2d-06f90a3e9203.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665373835672-90312dd8-81e3-4d0a-8b2d-06f90a3e9203.png)
 
 ## 7.3 通过factory-bean实例化
 
@@ -4096,7 +4096,7 @@ public void testSelfFactoryBean(){
 
 执行结果：
 
-![img](Spring6img/1665374686365-c2f211e2-8594-4994-8b37-09259057ad8d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665374686365-c2f211e2-8594-4994-8b37-09259057ad8d.png)
 
 ## 7.4 通过FactoryBean接口实例化
 
@@ -4142,7 +4142,7 @@ public class PersonFactoryBean implements FactoryBean<Person> {
     }
 
     @Override
-    public Class<?> getObjectType() {
+    public Class<) {
         return null;
     }
 
@@ -4177,7 +4177,7 @@ public void testFactoryBean(){
 
 执行结果：
 
-![img](Spring6img/1665382305162-81e16b33-be0f-4256-ae49-89a59c946823.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665382305162-81e16b33-be0f-4256-ae49-89a59c946823.png)
 
 **FactoryBean在Spring中是一个接口。被称为“工厂Bean”。“工厂Bean”是一种特殊的Bean。所有的“工厂Bean”都是用来协助Spring框架来创建其他Bean对象的。**
 
@@ -4240,7 +4240,7 @@ public void testDate(){
 
 执行结果：
 
-![img](Spring6img/1665383744481-75de8e77-ac4e-46b8-90dc-1cd5264f66f2.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665383744481-75de8e77-ac4e-46b8-90dc-1cd5264f66f2.png)
 
 如果把日期格式修改一下：
 
@@ -4252,7 +4252,7 @@ public void testDate(){
 
 执行结果：
 
-![img](Spring6img/1665383871708-89cd2ac9-6d31-40fc-a4a8-27d27cd35ad2.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_37%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665383871708-89cd2ac9-6d31-40fc-a4a8-27d27cd35ad2.png)
 
 这种情况下，我们就可以使用FactoryBean来完成这个骚操作。
 
@@ -4289,7 +4289,7 @@ public class DateFactoryBean implements FactoryBean<Date> {
     }
 
     @Override
-    public Class<?> getObjectType() {
+    public Class<) {
         return null;
     }
 }
@@ -4309,7 +4309,7 @@ public class DateFactoryBean implements FactoryBean<Date> {
 
 执行测试程序：
 
-![img](Spring6img/1665384407377-3fb70ee0-09d6-4d44-904a-10af88cb1a2a.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665384407377-3fb70ee0-09d6-4d44-904a-10af88cb1a2a.png)
 
 
 
@@ -4351,7 +4351,7 @@ Bean生命周期可以粗略的划分为五大步：
 - 第四步：使用Bean
 - 第五步：销毁Bean
 
-![img](Spring6img/1665388735200-444405f6-283d-4b3a-8cdf-8c3e01743618.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_24%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665388735200-444405f6-283d-4b3a-8cdf-8c3e01743618.png)
 
 编写测试程序：
 
@@ -4429,7 +4429,7 @@ public class BeanLifecycleTest {
 
 执行结果：
 
-![img](Spring6img/1665392526476-d0efb004-51bf-4eef-bc8c-d3b6a315ee39.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665392526476-d0efb004-51bf-4eef-bc8c-d3b6a315ee39.png)
 
 需要注意的：
 
@@ -4481,17 +4481,17 @@ public class LogBeanPostProcessor implements BeanPostProcessor {
 
 执行测试程序：
 
-![img](Spring6img/1665393219244-4763ce2a-1cec-4b67-b3b4-54c2d28bc46a.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_16%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665393219244-4763ce2a-1cec-4b67-b3b4-54c2d28bc46a.png)
 
 如果加上Bean后处理器的话，Bean的生命周期就是7步了：
 
-![img](Spring6img/1665393936765-0ea5dcdd-859a-4ac5-9407-f06022c498b9.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_29%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665393936765-0ea5dcdd-859a-4ac5-9407-f06022c498b9.png)
 
 ## 8.5 Bean生命周期之10步
 
 如果根据源码跟踪，可以划分更细粒度的步骤，10步：
 
-![img](Spring6img/1665394697870-15de433a-8d50-4b31-9b75-b2ca7090c1c6.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_12%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665394697870-15de433a-8d50-4b31-9b75-b2ca7090c1c6.png)
 
 上图中检查Bean是否实现了Aware的相关接口是什么意思？
 
@@ -4596,7 +4596,7 @@ public class LogBeanPostProcessor implements BeanPostProcessor {
 
 执行结果：
 
-![img](Spring6img/1665395466500-d95b1a58-24e1-46f0-b72a-aa7764b0336a.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_29%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665395466500-d95b1a58-24e1-46f0-b72a-aa7764b0336a.png)
 
 **通过测试可以看出来：**
 
@@ -4636,7 +4636,7 @@ Spring 根据Bean的作用域来选择管理方式。
 
 执行测试程序：
 
-![img](Spring6img/1665395807399-a3b71b4d-d871-4230-8fe4-b939ed03b301.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_29%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665395807399-a3b71b4d-d871-4230-8fe4-b939ed03b301.png)
 
 通过测试一目了然。只执行了前8步，第9和10都没有执行。
 
@@ -4688,7 +4688,7 @@ public class RegisterBeanTest {
 
 执行结果：
 
-![img](Spring6img/1666262245551-b00bbba7-4107-4d44-8441-fbcd6f799293.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666262245551-b00bbba7-4107-4d44-8441-fbcd6f799293.png)
 
 
 
@@ -4700,7 +4700,7 @@ A对象中有B属性。B对象中有A属性。这就是循环依赖。我依赖�
 
 比如：丈夫类Husband，妻子类Wife。Husband中有Wife的引用。Wife中有Husband的引用。
 
-![img](Spring6img/1665452274046-82594b87-2974-4e08-a6ab-2218d001d14f.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_16%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665452274046-82594b87-2974-4e08-a6ab-2218d001d14f.png)
 
 ```java
 package com.powernode.spring6.bean;
@@ -4843,7 +4843,7 @@ public class CircularDependencyTest {
 
 执行结果：
 
-![img](Spring6img/1665453201014-160bb88e-08d4-4d37-a1d9-44d4911a32df.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665453201014-160bb88e-08d4-4d37-a1d9-44d4911a32df.png)
 
 **通过测试得知：在singleton + set注入的情况下，循环依赖是没有问题的。Spring可以解决这个问题。**
 
@@ -4888,7 +4888,7 @@ Caused by: org.springframework.beans.factory.**BeanCurrentlyInCreationException*
 
 为什么两个Bean都是prototype时会出错呢？
 
-![img](Spring6img/1665454469042-69668f45-5d71-494f-8537-18142d354abd.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_32%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665454469042-69668f45-5d71-494f-8537-18142d354abd.png)
 
 ## 9.4 singleton下的构造注入产生的循环依赖
 
@@ -5018,7 +5018,7 @@ Spring为什么可以解决set + singleton模式下循环依赖？
 
 那么在Spring框架底层源码级别上是如何实现的呢？请看：
 
-![img](Spring6img/1665456331018-18c45ae3-fa4c-4cd8-aabf-d9bace567693.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_41%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665456331018-18c45ae3-fa4c-4cd8-aabf-d9bace567693.png)
 
 在以上类中包含三个重要的属性：
 
@@ -5032,11 +5032,11 @@ Spring为什么可以解决set + singleton模式下循环依赖？
 
 我们再来看，在该类中有这样一个方法addSingletonFactory()，这个方法的作用是：将创建Bean对象的ObjectFactory对象提前曝光。
 
-![img](Spring6img/1665460724682-2222366d-cc07-43db-a8d0-fb27712b20a4.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_31%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665460724682-2222366d-cc07-43db-a8d0-fb27712b20a4.png)
 
 再分析下面的源码：
 
-![img](Spring6img/1665460240687-3d0794c4-e6ed-4653-9463-767a7f943ff9.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_34%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665460240687-3d0794c4-e6ed-4653-9463-767a7f943ff9.png)
 
 从源码中可以看到，spring会先从一级缓存中获取Bean，如果获取不到，则从二级缓存中获取Bean，如果二级缓存还是获取不到，则从三级缓存中获取之前曝光的ObjectFactory对象，通过ObjectFactory对象获取Bean实例，这样就解决了循环依赖的问题。
 
@@ -5098,14 +5098,14 @@ public class ReflectTest01 {
         // 调用方法并接收方法的返回值
         boolean success = systemService.login("admin", "admin123");
 
-        System.out.println(success ? "登录成功" : "登录失败");
+        System.out.println(success );
     }
 }
 ```
 
 执行结果：
 
-![img](Spring6img/1665469402327-e4cdba7c-2441-4c37-bb6d-c7138ac19bc4.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665469402327-e4cdba7c-2441-4c37-bb6d-c7138ac19bc4.png)
 
 通过以上第16行代码可以看出，调用一个方法，一般涉及到4个要素：
 
@@ -5295,7 +5295,7 @@ public class ReflectTest02 {
 
 执行结果：
 
-![img](Spring6img/1665471501974-88a80910-1c8e-495b-956f-d6b7a82bf5b4.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_11%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665471501974-88a80910-1c8e-495b-956f-d6b7a82bf5b4.png)
 
 那如果调用既没有参数，又没有返回值的logout方法，应该怎么做？
 
@@ -5322,7 +5322,7 @@ public class ReflectTest03 {
 
 执行结果：
 
-![img](Spring6img/1665471647046-386be2b3-e848-4a3d-82ea-7faf1c802a04.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665471647046-386be2b3-e848-4a3d-82ea-7faf1c802a04.png)
 
 ## 10.4 假设你知道属性名
 
@@ -5395,7 +5395,7 @@ public class UserTest {
         String propertyName = "age";
 
         // 通过反射机制给User对象的age属性赋值20岁
-        Class<?> clazz = Class.forName(className);
+        Class<);
         Object obj = clazz.newInstance(); // 创建对象
 
         // 根据属性名获取setter方法名
@@ -5414,7 +5414,7 @@ public class UserTest {
 
 执行结果：
 
-![img](Spring6img/1665472287604-1994754e-51c1-4bd4-8a50-2fc0b0995ea6.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_11%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665472287604-1994754e-51c1-4bd4-8a50-2fc0b0995ea6.png)
 
 给User的name属性赋值zhangsan，这个大家可以尝试自己完成哦！！！
 
@@ -5430,7 +5430,7 @@ Spring IoC容器的实现原理：工厂模式 + 解析XML + 反射机制。
 
 采用Maven方式新建Module：myspring
 
-![img](Spring6img/1665475207334-bd779f04-b490-4237-9ab1-306989458f22.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_22%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665475207334-bd779f04-b490-4237-9ab1-306989458f22.png)
 
 打包方式采用jar，并且引入dom4j和jaxen的依赖，因为要使用它解析XML文件，还有junit依赖。
 
@@ -5722,8 +5722,8 @@ public ClassPathXmlApplicationContext(String resource) {
             String className = beanElt.attributeValue("class");
             try {
                 // 通过反射机制创建对象
-                Class<?> clazz = Class.forName(className);
-                Constructor<?> defaultConstructor = clazz.getDeclaredConstructor();
+                Class<);
+                Constructor<);
                 Object bean = defaultConstructor.newInstance();
                 // 存储到Map集合
                 beanMap.put(id, bean);
@@ -5768,7 +5768,7 @@ public class MySpringTest {
 
 执行结果：
 
-![img](Spring6img/1665478707450-7e52f70c-97b2-4e6d-b96f-cc5bea8b51a4.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_18%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665478707450-7e52f70c-97b2-4e6d-b96f-cc5bea8b51a4.png)
 
 通过测试Bean已经实例化成功了，属性的值是null，这是我们能够想到的，毕竟我们调用的是无参数构造方法，所以属性都是默认值。
 
@@ -5825,8 +5825,8 @@ public class ClassPathXmlApplicationContext implements ApplicationContext{
                 String className = beanElt.attributeValue("class");
                 try {
                     // 通过反射机制创建对象
-                    Class<?> clazz = Class.forName(className);
-                    Constructor<?> defaultConstructor = clazz.getDeclaredConstructor();
+                    Class<);
+                    Constructor<);
                     Object bean = defaultConstructor.newInstance();
                     // 存储到Map集合
                     beanMap.put(id, bean);
@@ -5849,7 +5849,7 @@ public class ClassPathXmlApplicationContext implements ApplicationContext{
                         // 获取属性名
                         String propertyName = propertyElt.attributeValue("name");
                         // 获取属性类型
-                        Class<?> propertyType = beanMap.get(beanId).getClass().getDeclaredField(propertyName).getType();
+                        Class<);
                         // 获取set方法名
                         String setMethodName = "set" + propertyName.toUpperCase().charAt(0) + propertyName.substring(1);
                         // 获取set方法
@@ -5920,21 +5920,21 @@ public class ClassPathXmlApplicationContext implements ApplicationContext{
 
 执行测试程序：
 
-![img](Spring6img/1665481050714-a41f73d9-67bb-40b9-9137-601a0775450d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_28%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665481050714-a41f73d9-67bb-40b9-9137-601a0775450d.png)
 
 ## 第十步：打包发布
 
 将多余的类以及配置文件删除，使用maven打包发布。
 
-![img](Spring6img/1665481384984-b9b107a7-6566-473a-95df-fc7fcb613f18.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_11%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665481384984-b9b107a7-6566-473a-95df-fc7fcb613f18.png)
 
-![img](Spring6img/1665481462831-bbd5bfd3-d647-4c04-990a-9c39a4116d21.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665481462831-bbd5bfd3-d647-4c04-990a-9c39a4116d21.png)
 
 ## 第十一步：站在程序员角度使用myspring框架
 
 新建模块：myspring-test
 
-![img](Spring6img/1665481605553-46ba6264-a360-4700-a696-1aa536c44cf1.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_22%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665481605553-46ba6264-a360-4700-a696-1aa536c44cf1.png)
 
 引入myspring框架的依赖：
 
@@ -6056,7 +6056,7 @@ public class MySpringTest {
 
 执行结果
 
-![img](Spring6img/1665482096446-2015f7a8-3e86-4d74-a26b-a3d417c250fa.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_12%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665482096446-2015f7a8-3e86-4d74-a26b-a3d417c250fa.png)
 
 
 
@@ -6181,7 +6181,7 @@ public class Test {
         Arrays.stream(files).forEach(f -> {
             String className = packageName + "." + f.getName().split("\\.")[0];
             try {
-                Class<?> clazz = Class.forName(className);
+                Class<);
                 if (clazz.isAnnotationPresent(Component.class)) {
                     Component component = clazz.getAnnotation(Component.class);
                     String beanId = component.value();
@@ -6200,7 +6200,7 @@ public class Test {
 
 执行结果：
 
-![img](Spring6img/1665543007882-24036142-350b-4209-bb20-46a61e35716d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_17%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665543007882-24036142-350b-4209-bb20-46a61e35716d.png)
 
 ## 12.2 声明Bean的注解
 
@@ -6297,7 +6297,7 @@ public @interface Repository {
 
 他们都是只有一个value属性。value属性用来指定bean的id，也就是bean的名字。
 
-![img](Spring6img/1665545099269-ebd7e446-bc2f-4442-89b8-3f513e546a8b.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_21%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665545099269-ebd7e446-bc2f-4442-89b8-3f513e546a8b.png)
 
 ## 12.3 Spring注解的使用
 
@@ -6312,7 +6312,7 @@ public @interface Repository {
 
 我们可以看到当加入spring-context依赖之后，会关联加入aop的依赖。所以这一步不用做。
 
-![img](Spring6img/1665545268001-e3fb24f3-6688-4f52-a8c7-7c3084fa10a2.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_12%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665545268001-e3fb24f3-6688-4f52-a8c7-7c3084fa10a2.png)
 
 **第二步：在配置文件中添加context命名空间**
 
@@ -6374,7 +6374,7 @@ public class AnnotationTest {
 
 执行结果：
 
-![img](Spring6img/1665545669944-c067eacb-f65b-45ab-b68b-2320647cdfb4.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665545669944-c067eacb-f65b-45ab-b68b-2320647cdfb4.png)
 
 **如果注解的属性名是value，那么value是可以省略的。**
 
@@ -6405,7 +6405,7 @@ public class AnnotationTest {
 
 执行结果：
 
-![img](Spring6img/1665545860738-8bae2a45-efa8-40eb-9213-0dbd2ae1b54a.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665545860738-8bae2a45-efa8-40eb-9213-0dbd2ae1b54a.png)
 
 **如果把value属性彻底去掉，spring会被Bean自动取名吗？会的。并且默认名字的规律是：Bean类名首字母小写即可。**
 
@@ -6443,7 +6443,7 @@ public class AnnotationTest {
 
 执行结果：
 
-![img](Spring6img/1665546100844-e0ffc213-8126-419a-ab67-7f433ad43105.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665546100844-e0ffc213-8126-419a-ab67-7f433ad43105.png)
 
 我们将Component注解换成其它三个注解，看看是否可以用：
 
@@ -6459,7 +6459,7 @@ public class BankDao {
 
 执行结果：
 
-![img](Spring6img/1665546198246-f9d6adc1-ecc8-4e8c-babf-49f2ed7b87cd.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665546198246-f9d6adc1-ecc8-4e8c-babf-49f2ed7b87cd.png)
 
 剩下的两个注解大家可以测试一下。
 
@@ -6520,7 +6520,7 @@ public class AnnotationTest {
 
 执行结果：
 
-![img](Spring6img/1665546710304-8ebbe95d-1d1d-44fa-9605-9dad43e487b7.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665546710304-8ebbe95d-1d1d-44fa-9605-9dad43e487b7.png)
 
 我们再来看看，指定共同的父包行不行：
 
@@ -6537,7 +6537,7 @@ public class AnnotationTest {
 
 执行测试程序：
 
-![img](Spring6img/1665546777022-4eb8c5e3-22ed-4baf-8722-a5fa98df253d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665546777022-4eb8c5e3-22ed-4baf-8722-a5fa98df253d.png)
 
 ## 12.4 选择性实例化Bean
 
@@ -6626,7 +6626,7 @@ public void testChoose(){
 
 执行结果：
 
-![img](Spring6img/1665556059297-de0d7dbc-aa37-46a3-9b1d-1d4c246b0ffc.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665556059297-de0d7dbc-aa37-46a3-9b1d-1d4c246b0ffc.png)
 
 也可以将use-default-filters设置为true（不写就是true），并且采用exclude-filter方式排出哪些注解标注的Bean不参与实例化：
 
@@ -6640,7 +6640,7 @@ public void testChoose(){
 
 执行测试程序：
 
-![img](Spring6img/1665556372417-14f2208c-4151-4bcd-9f22-80db5e3ed837.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665556372417-14f2208c-4151-4bcd-9f22-80db5e3ed837.png)
 
 ## 12.5 负责注入的注解
 
@@ -6699,7 +6699,7 @@ public void testValue(){
 
 执行结果：
 
-![img](Spring6img/1665557109935-e0300b67-fd35-4d66-99d1-dac41cb0f13d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665557109935-e0300b67-fd35-4d66-99d1-dac41cb0f13d.png)
 
 通过以上代码可以发现，我们并没有给属性提供setter方法，但仍然可以完成属性赋值。
 
@@ -6740,7 +6740,7 @@ public class User {
 
 执行结果：
 
-![img](Spring6img/1665557275282-82ba995b-6395-4d32-b322-d976ac3299d1.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665557275282-82ba995b-6395-4d32-b322-d976ac3299d1.png)
 
 通过测试可以得知，@Value注解可以直接使用在属性上，也可以使用在setter方法上。都是可以的。都可以完成属性的赋值。
 
@@ -6778,7 +6778,7 @@ public class User {
 
 执行结果：
 
-![img](Spring6img/1665557643220-1010bea9-5578-4388-8868-4beb11dfbe95.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_13%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665557643220-1010bea9-5578-4388-8868-4beb11dfbe95.png)
 
 通过测试得知：@Value注解可以出现在属性上、setter方法上、以及构造方法的形参上。可见Spring给我们提供了多样化的注入。太灵活了。
 
@@ -6874,7 +6874,7 @@ public void testAutowired(){
 
 执行结果：
 
-![img](Spring6img/1665561365140-b0200308-0c25-4a29-96be-5a93594e2d2b.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665561365140-b0200308-0c25-4a29-96be-5a93594e2d2b.png)
 
 以上构造方法和setter方法都没有提供，经过测试，仍然可以注入成功。
 
@@ -6905,7 +6905,7 @@ public class UserService {
 
 执行结果：
 
-![img](Spring6img/1665562770986-e19377a6-af3e-4082-9463-16c795742ad5.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665562770986-e19377a6-af3e-4082-9463-16c795742ad5.png)
 
 **我们再来看看能不能出现在构造方法上：**
 
@@ -6934,7 +6934,7 @@ public class UserService {
 
 执行结果：
 
-![img](Spring6img/1665562985700-7820d3d8-cf43-43af-8c81-46f301ea2835.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_13%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665562985700-7820d3d8-cf43-43af-8c81-46f301ea2835.png)
 
 **再来看看，这个注解能不能只标注在构造方法的形参上：**
 
@@ -6962,7 +6962,7 @@ public class UserService {
 
 执行结果：
 
-![img](Spring6img/1665563225083-172d5675-cfcb-4f63-9b83-ce85b29b953e.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665563225083-172d5675-cfcb-4f63-9b83-ce85b29b953e.png)
 
 **还有更劲爆的，当有参数的构造方法只有一个时，@Autowired注解可以省略。**
 
@@ -6989,7 +6989,7 @@ public class UserService {
 
 执行结果：
 
-![img](Spring6img/1665563320900-df9e4cb3-c046-4f5c-b482-42951f18fb16.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665563320900-df9e4cb3-c046-4f5c-b482-42951f18fb16.png)
 
 **当然，如果有多个构造方法，@Autowired肯定是不能省略的。**
 
@@ -7020,7 +7020,7 @@ public class UserService {
 
 执行结果：
 
-![img](Spring6img/1665563410134-267b2484-54a3-4204-8e02-a9499ecbe614.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_40%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665563410134-267b2484-54a3-4204-8e02-a9499ecbe614.png)
 
 到此为止，我们已经清楚@Autowired注解可以出现在哪些位置了。
 
@@ -7042,7 +7042,7 @@ public class UserDaoForOracle implements UserDao{
 
 当你写完这个新的实现类之后，此时IDEA工具已经提示错误信息了：
 
-![img](Spring6img/1665563729880-0421bc02-19ca-4353-8a10-5b0ef9972b90.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_29%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665563729880-0421bc02-19ca-4353-8a10-5b0ef9972b90.png)
 
 错误信息中说：不能装配，UserDao这个Bean的数量大于1.
 
@@ -7088,7 +7088,7 @@ public class UserService {
 
 执行结果：
 
-![img](Spring6img/1665564055076-ffda3ad0-f957-4216-bf6c-957d62724d5f.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665564055076-ffda3ad0-f957-4216-bf6c-957d62724d5f.png)
 
 总结：
 
@@ -7129,7 +7129,7 @@ public class UserService {
 
 @Resource注解的源码如下：
 
-![img](Spring6img/1665565515435-2ad5614a-8572-4c6f-80c1-efa236dbe35f.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_30%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665565515435-2ad5614a-8572-4c6f-80c1-efa236dbe35f.png)
 
 测试一下：
 
@@ -7165,7 +7165,7 @@ public class UserService {
 
 执行测试程序：
 
-![img](Spring6img/1665622877352-0ae69e3c-e7f3-452d-a405-392901612465.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_13%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665622877352-0ae69e3c-e7f3-452d-a405-392901612465.png)
 
 **我们把UserDaoForOracle的名字xyz修改为userDao，让这个Bean的名字和UserService类中的UserDao属性名一致：**
 
@@ -7201,7 +7201,7 @@ public class UserService {
 
 执行测试程序：
 
-![img](Spring6img/1665623044796-c4051a04-c56b-4ce9-b627-333ab7ca7b6a.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665623044796-c4051a04-c56b-4ce9-b627-333ab7ca7b6a.png)
 
 通过测试得知，当@Resource注解使用时没有指定name的时候，还是根据name进行查找，这个name是属性名。
 
@@ -7228,7 +7228,7 @@ public class UserService {
 
 执行结果：
 
-![img](Spring6img/1665623273523-aff8ef45-b484-4462-bacc-fba7e14c8fee.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_45%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665623273523-aff8ef45-b484-4462-bacc-fba7e14c8fee.png)
 
 根据异常信息得知：显然当通过name找不到的时候，自然会启动byType进行注入。以上的错误是因为UserDao接口下有两个实现类导致的。所以根据类型注入就会报错。
 
@@ -7261,7 +7261,7 @@ public class UserService {
 
 执行结果：
 
-![img](Spring6img/1665623530366-79b8e09d-2559-4657-83eb-0b722261045f.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665623530366-79b8e09d-2559-4657-83eb-0b722261045f.png)
 
 当然，也可以指定name：
 
@@ -7290,7 +7290,7 @@ public class UserService {
 
 执行结果：
 
-![img](Spring6img/1665623611980-a66591e7-bd29-4327-a43c-6c6492c8612f.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665623611980-a66591e7-bd29-4327-a43c-6c6492c8612f.png)
 
 一句话总结@Resource注解：默认byName注入，没有指定name时把属性名当做name，根据name找不到时，才会byType注入。byType注入时，某种类型的Bean只能有一个。
 
@@ -7324,7 +7324,7 @@ public void testNoXml(){
 
 执行结果：
 
-![img](Spring6img/1665624710824-61ee0ae9-ae96-49bf-b189-4a1f358e084a.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665624710824-61ee0ae9-ae96-49bf-b189-4a1f358e084a.png)
 
 
 
@@ -7340,11 +7340,11 @@ JdbcTemplate是Spring提供的一个JDBC模板类，是对JDBC的封装，简化
 
 数据库表：t_user
 
-![img](Spring6img/1665633536319-466a1b96-90ff-4a87-82ad-fb14f32a8d12.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_23%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665633536319-466a1b96-90ff-4a87-82ad-fb14f32a8d12.png)
 
 IDEA中新建模块：spring6-007-jdbc
 
-![img](Spring6img/1665633731889-aa224eae-8ff7-47af-aaf5-70500c7cf37e.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_22%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665633731889-aa224eae-8ff7-47af-aaf5-70500c7cf37e.png)
 
 引入相关依赖：
 
@@ -7479,9 +7479,9 @@ JdbcTemplate是Spring提供好的类，这类的完整类名是：org.springfram
 
 我们来看一下这个JdbcTemplate源码：
 
-![img](Spring6img/1665641540149-8f44a8b1-35b6-4c8a-bd27-f08ebd911e01.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_28%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665641540149-8f44a8b1-35b6-4c8a-bd27-f08ebd911e01.png)
 
-![img](Spring6img/1665641567361-50fd782b-cea4-4ca2-9818-01696aca0eb0.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_33%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665641567361-50fd782b-cea4-4ca2-9818-01696aca0eb0.png)
 
 可以看到JdbcTemplate中有一个DataSource属性，这个属性是数据源，我们都知道连接数据库需要Connection对象，而生成Connection对象是数据源负责的。所以我们需要给JdbcTemplate设置数据源属性。
 
@@ -7577,7 +7577,7 @@ public class MyDataSource implements DataSource {
     }
 
     @Override
-    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+    public boolean isWrapperFor(Class<) throws SQLException {
         return false;
     }
 }
@@ -7631,7 +7631,7 @@ public class JdbcTest {
         JdbcTemplate jdbcTemplate = applicationContext.getBean("jdbcTemplate", JdbcTemplate.class);
         // 执行插入操作
         // 注意：insert delete update的sql语句，都是执行update方法。
-        String sql = "insert into t_user(id,real_name,age) values(?,?,?)";
+        String sql = "insert into t_user(id,real_name,age) values()";
         int count = jdbcTemplate.update(sql, null, "张三", 30);
         System.out.println("插入的记录条数：" + count);
     }
@@ -7660,7 +7660,7 @@ public void testUpdate(){
 
 执行结果：
 
-![img](Spring6img/1665642952562-a030937f-b3f5-4018-b92e-02d25ab390d7.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665642952562-a030937f-b3f5-4018-b92e-02d25ab390d7.png)
 
 ## 13.4 删除
 
@@ -7679,7 +7679,7 @@ public void testDelete(){
 
 执行结果：
 
-![img](Spring6img/1665643115536-fb7949b8-9bcd-4d45-8032-40c3658911fd.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665643115536-fb7949b8-9bcd-4d45-8032-40c3658911fd.png)
 
 ## 13.5 查询一个对象
 
@@ -7698,7 +7698,7 @@ public void testSelectOne(){
 
 执行结果：
 
-![img](Spring6img/1665643791948-c5a4f422-4c49-426a-88f3-004907f696dd.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665643791948-c5a4f422-4c49-426a-88f3-004907f696dd.png)
 
 queryForObject方法三个参数：
 
@@ -7723,7 +7723,7 @@ public void testSelectAll(){
 
 执行结果：
 
-![img](Spring6img/1665644613140-cc029b6f-7dbe-40fa-896c-ba8674da014c.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_24%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665644613140-cc029b6f-7dbe-40fa-896c-ba8674da014c.png)
 
 ## 13.7 查询一个值
 
@@ -7742,7 +7742,7 @@ public void testSelectOneValue(){
 
 执行结果：
 
-![img](Spring6img/1665644735494-3aff4263-8172-4e33-b5e4-564dda88a704.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665644735494-3aff4263-8172-4e33-b5e4-564dda88a704.png)
 
 ## 13.8 批量添加
 
@@ -7753,7 +7753,7 @@ public void testAddBatch(){
     ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
     JdbcTemplate jdbcTemplate = applicationContext.getBean("jdbcTemplate", JdbcTemplate.class);
     // 批量添加
-    String sql = "insert into t_user(id,real_name,age) values(?,?,?)";
+    String sql = "insert into t_user(id,real_name,age) values()";
 
     Object[] objs1 = {null, "小花", 20};
     Object[] objs2 = {null, "小明", 21};
@@ -7770,7 +7770,7 @@ public void testAddBatch(){
 
 执行结果：
 
-![img](Spring6img/1665645369060-9a473341-e4d2-4c26-bdd4-7d83fd93cc82.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665645369060-9a473341-e4d2-4c26-bdd4-7d83fd93cc82.png)
 
 ## 13.9 批量修改
 
@@ -7797,7 +7797,7 @@ public void testUpdateBatch(){
 
 执行结果：
 
-![img](Spring6img/1665645613528-7edf2796-3f40-4c6d-bedc-9022fb16d7da.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665645613528-7edf2796-3f40-4c6d-bedc-9022fb16d7da.png)
 
 ## 13.10 批量删除
 
@@ -7823,7 +7823,7 @@ public void testDeleteBatch(){
 
 执行结果：
 
-![img](Spring6img/1665645815657-de657db3-cb20-4758-a40e-2c049175d89e.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665645815657-de657db3-cb20-4758-a40e-2c049175d89e.png)
 
 ## 13.11 使用回调函数
 
@@ -7858,7 +7858,7 @@ public void testCallback(){
 
 执行结果：
 
-![img](Spring6img/1665646365875-6ff081a4-74a0-469d-a3ed-b579235743ee.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665646365875-6ff081a4-74a0-469d-a3ed-b579235743ee.png)
 
 ## 13.12 使用德鲁伊连接池
 
@@ -7897,7 +7897,7 @@ public void testCallback(){
 
 测试结果：
 
-![img](Spring6img/1665647176481-660d65ae-f65a-4448-a34d-81ec96ee3b08.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_29%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665647176481-660d65ae-f65a-4448-a34d-81ec96ee3b08.png)
 
 
 
@@ -7925,7 +7925,7 @@ public void testCallback(){
 
 代理模式的类图：
 
-![img](Spring6img/1665651817094-af9ecbad-24ae-4c11-9fa2-efe46653df25.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665651817094-af9ecbad-24ae-4c11-9fa2-efe46653df25.png)
 
 代理模式在代码实现上，包括两种形式：
 
@@ -8196,7 +8196,7 @@ public class Client {
 
 运行结果：
 
-![img](Spring6img/1665711099963-e31eb7f2-4355-43c6-985a-2ed9223a7aee.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_10%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665711099963-e31eb7f2-4355-43c6-985a-2ed9223a7aee.png)
 
 以上就是代理模式中的静态代理，其中OrderService接口是代理类和目标类的共同接口。OrderServiceImpl是目标类。OrderServiceProxy是代理类。
 
@@ -8467,7 +8467,7 @@ public class Client {
 
 执行结果：
 
-![img](Spring6img/1665715879232-21eb379f-c3a4-4ffc-868f-441079541feb.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_10%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665715879232-21eb379f-c3a4-4ffc-868f-441079541feb.png)
 
 学到这里可能会感觉有点懵，折腾半天，到最后这不是还得写一个接口的实现类吗？没省劲儿呀？
 
@@ -8481,7 +8481,7 @@ public class Client {
 
 不过我们看以下这个代码确实有点繁琐，对于客户端来说，用起来不方便：
 
-![img](Spring6img/1665716434406-4e092df4-b1a7-4d16-bbc1-1f134b8f51f7.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_37%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665716434406-4e092df4-b1a7-4d16-bbc1-1f134b8f51f7.png)
 
 我们可以提供一个工具类：ProxyUtil，封装一个方法：
 
@@ -8541,7 +8541,7 @@ public class Client {
 
 执行结果：
 
-![img](Spring6img/1665716690080-a1fac908-d6d8-4605-b24d-2fd9fd19a7e6.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_13%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665716690080-a1fac908-d6d8-4605-b24d-2fd9fd19a7e6.png)
 
 ### 14.3.2 CGLIB动态代理
 
@@ -8715,14 +8715,14 @@ public class Client {
 
 对于高版本的JDK，如果使用CGLIB，需要在启动项中添加两个启动参数：
 
-![img](Spring6img/1665719287350-761d69a9-2666-40b3-9332-91d695f1eb86.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_20%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665719287350-761d69a9-2666-40b3-9332-91d695f1eb86.png)
 
 - --add-opens java.base/java.lang=ALL-UNNAMED
 - --add-opens java.base/sun.net.util=ALL-UNNAMED
 
 执行结果：
 
-![img](Spring6img/1665719690752-0b38d1ec-f4fd-4a8e-878c-3496da353fe2.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665719690752-0b38d1ec-f4fd-4a8e-878c-3496da353fe2.png)
 
 
 
@@ -8753,7 +8753,7 @@ Spring的AOP使用的动态代理是：JDK动态代理 + CGLIB动态代理技术
 
 请看下图，可以帮助你快速理解AOP的思想：
 
-![img](Spring6img/1665732609757-d8ae52ba-915e-49cf-9ef4-c7bcada0d601.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_25%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665732609757-d8ae52ba-915e-49cf-9ef4-c7bcada0d601.png)
 
 **用一句话总结AOP：将与核心业务无关的代码独立的抽取出来，形成一个独立的组件，然后以横向交叉的方式应用到业务流程当中的过程被称为AOP。**
 
@@ -8829,7 +8829,7 @@ public class UserService{
 
 通过下图，大家可以很好的理解AOP的相关术语：
 
-![img](Spring6img/1665735638342-44194599-66e2-4c02-a843-8a8b3ba5b0c8.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_17%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665735638342-44194599-66e2-4c02-a843-8a8b3ba5b0c8.png)
 
 ## 15.3 切点表达式
 
@@ -9083,7 +9083,7 @@ public class AOPTest {
 
 运行结果：
 
-![img](Spring6img/1665843923087-e1116f09-2470-46cb-b21a-1526f62cab50.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665843923087-e1116f09-2470-46cb-b21a-1526f62cab50.png)
 
 #### 通知类型
 
@@ -9169,7 +9169,7 @@ public class AOPTest {
 
 执行结果：
 
-![img](Spring6img/1665892617792-22cc74a2-6876-4cd1-bb17-87d3b5211cae.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_19%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665892617792-22cc74a2-6876-4cd1-bb17-87d3b5211cae.png)
 
 通过上面的执行结果就可以判断他们的执行顺序了，这里不再赘述。
 
@@ -9195,7 +9195,7 @@ public class OrderService {
 
 再次执行测试程序，结果如下：
 
-![img](Spring6img/1665892847715-75045cd0-63b1-47f9-a77e-05911dc72339.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_24%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665892847715-75045cd0-63b1-47f9-a77e-05911dc72339.png)
 
 通过测试得知，当发生异常之后，最终通知也会执行，因为最终通知@After会出现在finally语句块中。
 
@@ -9294,11 +9294,11 @@ public class MyAspect {
 
 执行测试程序：
 
-![img](Spring6img/1665893738167-b3c55a19-6129-4615-813f-9b8dc0f17f40.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_28%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665893738167-b3c55a19-6129-4615-813f-9b8dc0f17f40.png)
 
 通过修改@Order注解的整数值来切换顺序，执行测试程序：
 
-![img](Spring6img/1665893833282-2cbc59cc-15a5-44c4-bb20-cbdac65a750d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_28%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665893833282-2cbc59cc-15a5-44c4-bb20-cbdac65a750d.png)
 
 #### 优化使用切点表达式
 
@@ -9410,7 +9410,7 @@ public class MyAspect {
 
 执行测试程序：
 
-![img](Spring6img/1665893833282-2cbc59cc-15a5-44c4-bb20-cbdac65a750d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_28%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665893833282-2cbc59cc-15a5-44c4-bb20-cbdac65a750d.png)
 
 #### 全注解式开发AOP
 
@@ -9443,7 +9443,7 @@ public void testAOPWithAllAnnotation(){
 
 执行结果如下：
 
-![img](Spring6img/1665893833282-2cbc59cc-15a5-44c4-bb20-cbdac65a750d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_28%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665893833282-2cbc59cc-15a5-44c4-bb20-cbdac65a750d.png)
 
 ### 15.4.3 基于XML配置方式的AOP（了解）
 
@@ -9532,7 +9532,7 @@ public class AOPTest3 {
 
 执行结果：
 
-![img](Spring6img/1665902800121-49540c48-d6c2-4909-874d-e1a485e67ea5.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_23%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665902800121-49540c48-d6c2-4909-874d-e1a485e67ea5.png)
 
 ## 15.5 AOP的实际案例：事务处理
 
@@ -9773,7 +9773,7 @@ public class AOPTest2 {
 
 执行结果：
 
-![img](Spring6img/1665899075177-6660d491-06d4-4296-b69a-b54716179c9d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_24%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665899075177-6660d491-06d4-4296-b69a-b54716179c9d.png)
 
 通过测试可以看到，所有的业务方法都添加了事务控制的代码。
 
@@ -9878,7 +9878,7 @@ public void testSecurity(){
 
 执行结果：
 
-![img](Spring6img/1665901327786-9bfab382-61a3-4d1e-abe5-728b242eb3a2.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_24%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1665901327786-9bfab382-61a3-4d1e-abe5-728b242eb3a2.png)
 
 
 
@@ -9914,7 +9914,7 @@ public void testSecurity(){
 
 采用三层架构搭建：
 
-![img](Spring6img/1666495641174-069ee06f-097c-4f44-9a29-ca3e701d666b.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_26%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666495641174-069ee06f-097c-4f44-9a29-ca3e701d666b.png)
 
 模块名：spring6-013-tx-bank（依赖如下）
 
@@ -9993,11 +9993,11 @@ public void testSecurity(){
 
 表结构：
 
-![img](Spring6img/1666496097440-75d21db2-588b-4f6a-bd40-149c3de6f27d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_23%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666496097440-75d21db2-588b-4f6a-bd40-149c3de6f27d.png)
 
 表数据：
 
-![img](Spring6img/1666496136146-5cc1d848-0ad4-425d-a1fc-8b59b5d0b91f.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666496136146-5cc1d848-0ad4-425d-a1fc-8b59b5d0b91f.png)
 
 ### 第二步：创建包结构
 
@@ -10248,11 +10248,11 @@ public class BankTest {
 
 执行结果：
 
-![img](Spring6img/1666497683531-b14430f2-b90e-4555-8552-1de9747c9fcc.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_16%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666497683531-b14430f2-b90e-4555-8552-1de9747c9fcc.png)
 
 数据变化：
 
-![img](Spring6img/1666497727323-b2ca34c9-99c6-4b23-8d3b-8dbe3009d3e9.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_10%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666497727323-b2ca34c9-99c6-4b23-8d3b-8dbe3009d3e9.png)
 
 ### 模拟异常
 
@@ -10304,11 +10304,11 @@ public class AccountServiceImpl implements AccountService {
 
 执行结果：
 
-![img](Spring6img/1666497808309-c50af959-1a57-480c-9f31-76f6ce3b555a.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_32%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666497808309-c50af959-1a57-480c-9f31-76f6ce3b555a.png)
 
 数据库表中数据：
 
-![img](Spring6img/1666497824308-bdd8f11f-8f99-4195-81c4-c37721627f4c.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_13%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666497824308-bdd8f11f-8f99-4195-81c4-c37721627f4c.png)
 
 **丢了1万。**
 
@@ -10329,7 +10329,7 @@ public class AccountServiceImpl implements AccountService {
 
 Spring对事务的管理底层实现方式是基于AOP实现的。采用AOP的方式进行了封装。所以Spring专门针对事务开发了一套API，API的核心接口如下：
 
-![img](Spring6img/1666504216275-1b6a9ac4-6958-4cdf-9323-7a79a08d059d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_16%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666504216275-1b6a9ac4-6958-4cdf-9323-7a79a08d059d.png)
 
 PlatformTransactionManager接口：spring事务管理器的核心接口。在**Spring6**中它有两个实现：
 
@@ -10421,15 +10421,15 @@ public class AccountServiceImpl implements AccountService {
 
 当前数据库表中的数据：
 
-![img](Spring6img/1666505321919-85dd9adb-bceb-49ef-826f-5a3ddf7699a0.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_10%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666505321919-85dd9adb-bceb-49ef-826f-5a3ddf7699a0.png)
 
 执行测试程序：
 
-![img](Spring6img/1666505358758-2a264b1c-3435-4f90-a42f-801001170a2b.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_33%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666505358758-2a264b1c-3435-4f90-a42f-801001170a2b.png)
 
 虽然出现异常了，再次查看数据库表中数据：
 
-![img](Spring6img/1666505321919-85dd9adb-bceb-49ef-826f-5a3ddf7699a0.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_10%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666505321919-85dd9adb-bceb-49ef-826f-5a3ddf7699a0.png)
 
 通过测试，发现数据没有变化，事务起作用了。
 
@@ -10437,7 +10437,7 @@ public class AccountServiceImpl implements AccountService {
 
 #### 事务属性包括哪些
 
-![img](Spring6img/1666506552984-8a4f9d42-73ba-4ded-853d-564d27340db5.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_24%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666506552984-8a4f9d42-73ba-4ded-853d-564d27340db5.png)
 
 事务中的重点属性：
 
@@ -10456,7 +10456,7 @@ public class AccountServiceImpl implements AccountService {
 
 事务传播行为在spring框架中被定义为枚举类型：
 
-![img](Spring6img/1666505960049-06173489-15fc-4d16-94f3-1a9025f85d8c.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_20%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666505960049-06173489-15fc-4d16-94f3-1a9025f85d8c.png)
 
 一共有七种传播行为：
 
@@ -10548,7 +10548,7 @@ public void save(Account act) {
 
 隔离级别在spring中以枚举类型存在：
 
-![img](Spring6img/1666508609641-2c838566-7334-4cf1-b452-0fed9aaebf3d.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_11%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666508609641-2c838566-7334-4cf1-b452-0fed9aaebf3d.png)
 
 ```java
 @Transactional(isolation = Isolation.READ_COMMITTED)
@@ -10799,11 +10799,11 @@ public void testNoXml(){
 
 执行结果：
 
-![img](Spring6img/1666511446141-925a1a0e-05ab-4306-996f-532878d5c5a3.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_32%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666511446141-925a1a0e-05ab-4306-996f-532878d5c5a3.png)
 
 数据库表中数据：
 
-![img](Spring6img/1666511460275-5ede53ce-9ad1-4bce-935a-32436a46c83a.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666511460275-5ede53ce-9ad1-4bce-935a-32436a46c83a.png)
 
 ### 声明式事务之XML实现方式
 
@@ -10898,11 +10898,11 @@ public void testTransferXml(){
 
 执行结果：
 
-![img](Spring6img/1666510211960-60399e1d-ae1c-4e73-9593-3ce0086bf143.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_32%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666510211960-60399e1d-ae1c-4e73-9593-3ce0086bf143.png)
 
 数据库表中记录：
 
-![img](Spring6img/1666510230350-5150f5ca-3812-40d6-8817-adc102516e7e.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_10%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666510230350-5150f5ca-3812-40d6-8817-adc102516e7e.png)
 
 通过测试可以看到配置XML已经起作用了。
 
@@ -11051,7 +11051,7 @@ public class SpringJUnit4Test {
 
 执行结果如下：
 
-![img](Spring6img/1666602069724-ec6288cc-bb7b-417e-995e-8e1978ee6943.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_16%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666602069724-ec6288cc-bb7b-417e-995e-8e1978ee6943.png)
 
 Spring提供的方便主要是这几个注解：
 
@@ -11226,9 +11226,9 @@ public class SpringJUnit5Test {
 
 连接数据库的工具有很多，除了之前我们使用的navicat for mysql之外，也可以使用IDEA工具自带的DataBase插件。可以根据下图提示自行配置：
 
-![img](Spring6img/1666659555476-977c1aec-6bcb-4b2b-a5d1-932a8b66cbac.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_14%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666659555476-977c1aec-6bcb-4b2b-a5d1-932a8b66cbac.png)
 
-![img](Spring6img/1666659459681-56e377a7-3b9e-4649-b29d-9da3c81fe46f.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_11%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666659459681-56e377a7-3b9e-4649-b29d-9da3c81fe46f.png)
 
 - 第二步：IDEA中创建一个模块，并引入依赖
 
@@ -11303,7 +11303,7 @@ public class SpringJUnit5Test {
 
 - 第三步：基于三层架构实现，所以提前创建好所有的包
 
-![img](Spring6img/1666660021872-5935b222-7e72-41d9-a9e1-c532ca29ef10.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_11%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666660021872-5935b222-7e72-41d9-a9e1-c532ca29ef10.png)
 
 - 第四步：编写pojo
 
@@ -11411,7 +11411,7 @@ public interface AccountMapper {
 
 一定要注意，按照下图提示创建这个目录。注意是斜杠不是点儿。在resources目录下新建。并且要和Mapper接口包对应上。
 
-![img](Spring6img/1666660299388-b2e278e1-497d-4357-835c-ca95bfd87f0e.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_15%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666660299388-b2e278e1-497d-4357-835c-ca95bfd87f0e.png)
 
 如果接口叫做AccountMapper，配置文件必须是AccountMapper.xml
 
@@ -11727,7 +11727,7 @@ FactoryBean是典型的工厂方法模式。在配置文件中通过factory-meth
 
 Spring用的是双重判断加锁的单例模式。请看下面代码，我们之前讲解Bean的循环依赖的时候见过：
 
-![img](Spring6img/1666663352271-4ba8d737-1e32-4f0e-b01a-aa305ad3abea.png?x-oss-process=image%2Fwatermark%2Ctype_d3F5LW1pY3JvaGVp%2Csize_34%2Ctext_5Yqo5Yqb6IqC54K5%2Ccolor_FFFFFF%2Cshadow_50%2Ct_80%2Cg_se%2Cx_10%2Cy_10)
+![img](Spring6img/1666663352271-4ba8d737-1e32-4f0e-b01a-aa305ad3abea.png)
 
 ## 19.4 代理模式
 

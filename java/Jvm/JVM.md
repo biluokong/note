@@ -509,13 +509,13 @@ public class main1 {
 
 
 ​    
-​            String x4=new String("e")+new String("f");
-​            x4.intern();
-​            String x3="ef";
-​            System.out.println(x3==x4);//true
-​    
-​        }
-​    }
+            String x4=new String("e")+new String("f");
+            x4.intern();
+            String x3="ef";
+            System.out.println(x3==x4);//true
+    
+        }
+    }
 
 
 ### 5-7 StringTable 位置
@@ -1762,9 +1762,9 @@ Java代码：
 
 
 ​    
-​    public class Main {
-​        public Main() {
-​    
+    public class Main {
+        public Main() {
+    
         }
     
         private void test1() {
@@ -3467,4 +3467,3 @@ JVM 会进行代码的**逃逸分析**，例如某个加锁对象是方法内局
 如果撤销偏向到达某个阈值，整个类的所有对象都会变为不可偏向的
 
 *   可以主动使用 `-XX:-UseBiasedLocking` 禁用偏向锁
-

@@ -1,4 +1,4 @@
-# SpringMVC_day01
+# day01
 
 **今日内容**
 
@@ -3052,7 +3052,7 @@ public class SpringMvcConfig {
 </html>
 ```
 
-# SpringMVC_day02
+# day02
 
 **今日内容**
 

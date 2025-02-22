@@ -14,7 +14,7 @@ dubbo-admin 是一个前后端分离的项目。前端使用vue，后端使用sp
 https://nodejs.org/en/
 ```
 
-![1578298201398](images\1578298201398.png)
+![1578298201398](images/1578298201398.png)
 
 
 
@@ -28,11 +28,11 @@ https://github.com/apache/dubbo-admin
 
 下载：
 
-![1578297063167](images\1578297063167.png)
+![1578297063167](images/1578297063167.png)
 
 **3、把下载的zip包解压到指定文件夹(解压到那个文件夹随意)**
 
-![1578297477356](images\1578297477356.png)
+![1578297477356](images/1578297477356.png)
 
 
 
@@ -40,11 +40,11 @@ https://github.com/apache/dubbo-admin
 
 解压后我们进入…\dubbo-admin-develop\dubbo-admin-server\src\main\resources目录，找到 **application.properties** 配置文件 进行配置修改
 
-![1578297603008](images\1578297603008.png)
+![1578297603008](images/1578297603008.png)
 
 修改zookeeper地址
 
-![1578297758655](images\1578297758655.png)
+![1578297758655](images/1578297758655.png)
 
 ```shell
 # centers in dubbo2.7
@@ -66,7 +66,7 @@ admin.metadata-report.address元数据中心
 mvn  clean package
 ```
 
-![1578300464726](images\1578300464726.png)
+![1578300464726](images/1578300464726.png)
 
 **6、启动后端**
 
@@ -82,7 +82,7 @@ dubbo-Admin-develop\dubbo-admin-distribution\target>
 java -jar .\dubbo-admin-0.1.jar
 ```
 
-![1578300551892](F:\Dubbo\dubbo\资料\images\1578300551892.png)
+![1578300551892](F:\Dubbo\dubbo\资料\images/1578300551892.png)
 
 **7、前台后端**
 
@@ -92,7 +92,7 @@ dubbo-admin-ui 目录下执行命令
 npm run dev
 ```
 
-![1578300677041](images\1578300677041.png)
+![1578300677041](images/1578300677041.png)
 
 **8、访问**
 
@@ -102,7 +102,7 @@ npm run dev
 http://localhost:8081/
 ```
 
-![1578300774258](images\1578300774258.png)
+![1578300774258](images/1578300774258.png)
 
 ## 二、dubbo-admin简单使用
 
@@ -124,7 +124,7 @@ http://localhost:8081/
 
 **2、查询结果**
 
-![1578301528363](images\1578301528363.png)
+![1578301528363](images/1578301528363.png)
 
 
 
@@ -163,4 +163,4 @@ B区域：主要包含了生产者、消费者一些基本信息
 
 这样我们的元数据信息就出来了
 
-![1578301892712](images\1578301892712.png)
+![1578301892712](images/1578301892712.png)
