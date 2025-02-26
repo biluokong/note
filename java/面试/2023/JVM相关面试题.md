@@ -416,7 +416,7 @@ public class Demo1_9 {
 
 **类加载器**
 
-JVM只会运行二进制文件，而类加载器（ClassLoader）的主要作用就是将**字节码文件加载到JVM中**，从而让Java程序能够启动起来。现有的类加载器基本上都是java.lang.ClassLoader的子类，该类的只要职责就是用于将指定的类找到或生成对应的字节码文件，同时类加载器还会负责加载程序所需要的资源
+JVM只会运行二进制文件，而类加载器（ClassLoader）的主要作用就是将**字节码文件加载到JVM中**，从而让Java程序能够启动起来。现有的类加载器基本上都是java.lang.ClassLoader的子类，该类的主要职责就是用于将指定的类找到或生成对应的字节码文件，同时类加载器还会负责加载程序所需要的资源
 
 **类加载器种类**
 
@@ -809,12 +809,12 @@ public class Demo {
 ![image-20230506131415418](JVM相关面试题.assets/image-20230506131415418.png)
 
 - 当伊甸园内存不足，标记伊甸园与 from（现阶段没有）的存活对象
-
 - 将存活对象采用复制算法复制到 to 中，复制完毕后，伊甸园和 from 内存都得到释放
+- 交换from和to的指向
 
 ![image-20230506131442503](JVM相关面试题.assets/image-20230506131442503.png)
 
-- 经过一段时间后伊甸园的内存又出现不足，标记eden区域to区存活的对象，将存活的对象复制到from区
+- 经过一段时间后伊甸园的内存又出现不足，标记eden区域from区存活的对象，将存活的对象复制到to区
 
 ![image-20230506131544447](JVM相关面试题.assets/image-20230506131544447.png)
 
@@ -1108,7 +1108,7 @@ https://www.oracle.com/java/technologies/javase/vmoptions-jsp.html
 （2）-XX:+UseParallelOldGC:设置老年代使用并行垃圾回收收集器。
 ```
 
-9）尝试使用大的内存分页：使用大的内存分页增加CPU的内存寻址能力，从而系统的性能。
+9）尝试使用大的内存分页：使用大的内存分页增加CPU的内存寻址能力，从而提高系统的性能。
 
 ```
 -XX:+LargePageSizeInBytes 设置内存页的大小
@@ -1159,7 +1159,7 @@ public class Application {
 
 ```
 
-使用jstack查看进行堆栈运行信息
+使用jstack查看堆栈的运行信息
 
 ![image-20220904111059602](JVM相关面试题.assets/image-20220904111059602.png)
 
