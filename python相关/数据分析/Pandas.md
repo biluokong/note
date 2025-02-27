@@ -1,13 +1,5 @@
 ### Pandas
 
-> 作者：iJeff
->
-> 版本：QF1.0
->
-> 版权：千锋Python教研院
->
-> 公众号：Python专栏
-
 #### 强大的数据处理和分析工具
 
 <img src="./images/pandas1.png" style="zoom:150%;" />

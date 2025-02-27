@@ -1,13 +1,5 @@
 ## PyEcharts数据可视化
 
-> 作者：iJeff ( 锋哥 ) 
->
-> 版本：QF1.0
->
-> 版权：千锋Python教研院
->
-> 公众号：Python专栏
-
 ####   强大的数据分析可视化工具
 
 ![image-1](images/logo.png)
