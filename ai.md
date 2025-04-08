@@ -1,6 +1,6 @@
-# Chatgpt
+# 模型
 
-## 免费
+## ChatGPT
 
 ### chatanywhere
 
@@ -21,7 +21,11 @@
 	- 转发Host1: `https://api.chatanywhere.tech`
 	- 转发Host2: `https://api.chatanywhere.com.cn`
 
-## 插件
+- 
+
+# 插件
+
+## 浏览器
 
 ### sider.ai
 
@@ -29,7 +33,24 @@
 
 自身有一定免费次数
 
-# spring-ai
+## IDEA
+
+- 通义灵码-阿里
+- CodeGeeX-清华大学+智谱AI 需申请内侧资格
+- Bito 付费
+- Amazon CodeWhisperer-亚马逊
+- GitHub Copilot - 买不起
+- Codeium
+- AIXcoder
+- iflyCode星火
+
+## VSCode
+
+- CodeGeeX
+
+# 框架
+
+## spring-ai
 
 依赖管理：
 
@@ -79,7 +100,7 @@
 
 
 
-## openai
+### openai
 
 依赖和配置：
 
@@ -167,7 +188,13 @@ ChatResponse response = chatModel.call(new Prompt(List.of(message), OpenAiChatOp
 System.out.println(response.getResult().getOutput().getContent());
 ~~~
 
-# ollama
+# 工具
+
+## AI搜索
+
+- [秘塔AI搜索 (metaso.cn)](https://metaso.cn/)
+
+## ollama
 
 ollama是一个用于快速部署和运行各种开源大模型的工具。
 
@@ -197,7 +224,7 @@ ollama cp llama3 my-model	# 复制
 
 
 
-## spring-ai
+### spring-ai
 
 依赖和配置：
 
@@ -227,7 +254,7 @@ Api接口（类似openai）：
 private OllamaChatModel ollamaChatModel;
 ~~~
 
-## web&desktop
+### web&desktop
 
 ollama的`web&desktop`非常多，比较流行的是`Open WebUI`，在ollama的github主页上可以看到支持ollama的`web&desktop`有哪些。
 
@@ -244,7 +271,24 @@ docker run -d -p 3210:3210 \
   lobehub/lobe-chat
 ~~~
 
+## Cursor
 
+Cursor是一款AI驱动的代码编辑器，主要面向专业开发者，提供从代码生成、调试到文档审查的全面支持。它基于VSCode进行了二次开发，继承了VSCode的强大功能和用户界面，同时集成了多种AI模型（如Claude、GPT-4等），能够实现智能代码补全、上下文理解、实时代码生成与重构等功能。
 
+官网：https://www.cursor.com
 
+Cursor的核心功能包括：
+
+- **智能代码补全**：通过上下文感知提供实时代码建议，帮助开发者快速完成代码编写；并且能推测光标位置。
+- **代码生成与重构**：支持根据简短描述自动生成代码块，并提供代码优化建议。
+- **错误检测与调试**：自动检测潜在错误并提供修复建议，帮助开发者及时发现并解决问题。
+- **多语言支持**：支持Python、Java、C#等多种主流编程语言。
+- **插件与扩展**：兼容VSCode的插件生态系统，用户可以轻松安装和管理扩展。
+- 支持MCP
+
+# MCP
+
+Model Context Protocol (MCP) 是一个开放协议，它使 LLM 应用与外部数据源和工具之间的无缝集成成为可能。无论你是构建 AI 驱动的 IDE、改善 chat 交互，还是构建自定义的 AI 工作流，MCP 提供了一种标准化的方式，将 LLM 与它们所需的上下文连接起来。
+
+中文文档地址：[MCP 中文文档 (mcp-docs.cn)](https://mcp-docs.cn)
 
