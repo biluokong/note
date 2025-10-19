@@ -46,7 +46,7 @@ Go 语言起源 2007 年，并于 2009 年正式对外发布。它从 2009 年 9
 
 `Ken Thompson（肯·汤普逊）`:1983年图灵奖、1998年美国国家技术奖得主，他与Dennis Ritchie是Unix系统的原创者。Thompson也发明了C语言、B语言，同时也是C语言的主要发明人。 `Rob Pike（罗布·派克）`： 加拿大人，曾是贝尔实验室的Unix团队和Plan 9操作计划的成员。他与Thompson共事多年，并共创出广泛使用的UTF-8字符编码。（ps：Go语言的图标-gopher 囊地鼠，是Rob Pike老婆制作的） `Robert Griesemer(罗伯特·格里泽默)`：曾协助制作Java的HotSpot编译器，和Chrom浏览器的JavaScript引擎V8.
 
-![image-20220109102129263](https://www.mszlu.com/assets/image-20220109102129263.49207fae.png)
+![image-20220109102129263](goimg/image-20220109102129263.49207fae.png)
 
 ## 2. 为什么使用Go
 
@@ -72,11 +72,11 @@ Go 语言起源 2007 年，并于 2009 年正式对外发布。它从 2009 年 9
 
 > 下载后，将压缩包解压
 
-![image-20240225225505975](https://www.mszlu.com/assets/image-20240225225505975.765d46a9.png)接下来需要配置几个环境变量：
+![image-20240225225505975](goimg/image-20240225225505975.765d46a9.png)接下来需要配置几个环境变量：
 
 1. `GOROOT`：go语言所在的目录，用于全局执行go相关的命令
 
-	![image-20240225225757483](https://www.mszlu.com/assets/image-20240225225757483.7da531d9.png)
+	![image-20240225225757483](goimg/image-20240225225757483.7da531d9.png)
 
 	path中也需要配置
 
@@ -84,7 +84,7 @@ Go 语言起源 2007 年，并于 2009 年正式对外发布。它从 2009 年 9
 
 2. `GOPATH`：工作目录，工程代码存放的位置，此目录下，一个文件夹就是一个工程
 
-	![image-20240225230025960](https://www.mszlu.com/assets/image-20240225230025960.201e82ae.png)
+	![image-20240225230025960](goimg/image-20240225230025960.201e82ae.png)
 
 	path中也需要配置
 
@@ -92,7 +92,7 @@ Go 语言起源 2007 年，并于 2009 年正式对外发布。它从 2009 年 9
 
 3. `GOPROXY`：代理，由于go需要翻墙使用，需要配置代理，有好心人做了代理
 
-![image-20240225230209876](https://www.mszlu.com/assets/image-20240225230209876.b008022e.png)
+![image-20240225230209876](goimg/image-20240225230209876.b008022e.png)
 
 `go env` 可以检查环境变量的配置是否正确
 
@@ -104,7 +104,7 @@ Go 语言起源 2007 年，并于 2009 年正式对外发布。它从 2009 年 9
 
 进入hello目录，运行cmd命令
 
-![image-20220109105824922](https://www.mszlu.com/assets/image-20220109105824922.120dae4f.png)
+![image-20220109105824922](goimg/image-20220109105824922.120dae4f.png)
 
 ```go
 # 运行下面的命令
@@ -113,9 +113,9 @@ go mod init hello
 
 
 
-![image-20220109110047308](https://www.mszlu.com/assets/image-20220109110047308.86b0ea5c.png)
+![image-20220109110047308](goimg/image-20220109110047308.86b0ea5c.png)
 
-![image-20220109110126510](https://www.mszlu.com/assets/image-20220109110126510.d52d236f.png)
+![image-20220109110126510](goimg/image-20220109110126510.d52d236f.png)
 
 会生成一个go.mod文件，用于管理依赖的。
 
@@ -157,11 +157,11 @@ go run main.go
 
 注意在设置中，go相关的配置
 
-![image-20240225230951944](https://www.mszlu.com/assets/image-20240225230951944.932b3601.png)
+![image-20240225230951944](goimg/image-20240225230951944.932b3601.png)
 
 因为我比较熟悉Goland，但Goland不是唯一选择，我们也可以选择`VSCode`
 
-![image-20240225231146645](https://www.mszlu.com/assets/image-20240225231146645.3279db59.png)
+![image-20240225231146645](goimg/image-20240225231146645.3279db59.png)
 
 # 变量
 
@@ -1153,9 +1153,7 @@ int16 range: -32768 32767
 int32 range: -2147483648 2147483647
 int64 range: -9223372036854775808 9223372036854775807
 int32: 0x3e6f54ff 1047483647
-int16: 0x54ff 21759
-3
-```
+int16: 0x54ff 21759```
 
 
 
@@ -7167,7 +7165,7 @@ atomic包提供了底层的原子级内存操作，对于同步算法的实现�
 
 一切的程序只能串行发生。
 
-![image-20220117211726117](https://www.mszlu.com/assets/image-20220117211726117.0dfb1289.png)
+![image-20220117211726117](goimg/image-20220117211726117.0dfb1289.png)
 
 早期的单进程操作系统，面临 2 个问题：
 
@@ -7180,7 +7178,7 @@ atomic包提供了底层的原子级内存操作，对于同步算法的实现�
 
 **多进程 / 线程时代有了调度器需求**
 
-![image-20220117211807937](https://www.mszlu.com/assets/image-20220117211807937-16424254885341.66774905.png)
+![image-20220117211807937](goimg/image-20220117211807937-16424254885341.66774905.png)
 
 在多进程 / 多线程的操作系统中，就解决了阻塞的问题，因为一个进程阻塞 cpu 可以立刻切换到其他进程中去执行，而且调度 cpu 的算法可以保证在运行的进程都可以被分配到 cpu 的运行时间片。这样从宏观来看，似乎多个进程是在同时被运行。
 
@@ -7190,7 +7188,7 @@ atomic包提供了底层的原子级内存操作，对于同步算法的实现�
 
 对于 Linux 操作系统来讲，cpu 对进程的态度和线程的态度是一样的。
 
-![image-20220117211843478](https://www.mszlu.com/assets/image-20220117211843478.e4fd0a25.png)
+![image-20220117211843478](goimg/image-20220117211843478.e4fd0a25.png)
 
 很明显，CPU 调度切换的是进程和线程。尽管线程看起来很美好，但实际上多线程开发设计会变得更加复杂，要考虑很多同步竞争等问题，如锁、竞争冲突等。
 
@@ -7207,11 +7205,11 @@ atomic包提供了底层的原子级内存操作，对于同步算法的实现�
 
 一个 “用户态线程” 必须要绑定一个 “内核态线程”，但是 CPU 并不知道有 “用户态线程” 的存在，它只知道它运行的是一个 “内核态线程”(Linux 的 PCB 进程控制块)。
 
-![image-20220117211943753](https://www.mszlu.com/assets/image-20220117211943753.abbd09f5.png)
+![image-20220117211943753](goimg/image-20220117211943753.abbd09f5.png)
 
 我们再去细化去分类一下，内核线程依然叫 “线程 (thread)”，用户线程叫 “协程 (co-routine)”.
 
-![image-20220117212046043](https://www.mszlu.com/assets/image-20220117212046043-16424256466862.9fdd802b.png)
+![image-20220117212046043](goimg/image-20220117212046043-16424256466862.9fdd802b.png)
 
 既然一个协程 (co-routine) 可以绑定一个线程 (thread)，那么能不能多个协程 (co-routine) 绑定一个或者多个线程 (thread) 上呢。
 
@@ -7226,7 +7224,7 @@ atomic包提供了底层的原子级内存操作，对于同步算法的实现�
 	- 某个程序用不了硬件的多核加速能力
 	- 一旦某协程阻塞，造成线程阻塞，本进程的其他协程都无法执行了，根本就没有并发的能力了。
 
-	![image-20220117212220768](https://www.mszlu.com/assets/image-20220117212220768-16424257416353.9edcd1c8.png)
+	![image-20220117212220768](goimg/image-20220117212220768-16424257416353.9edcd1c8.png)
 
 2. 1:1 关系
 
@@ -7236,13 +7234,13 @@ atomic包提供了底层的原子级内存操作，对于同步算法的实现�
 
 	- 协程的创建、删除和切换的代价都由 CPU 完成，有点略显昂贵了。
 
-	![image-20220117212310553](https://www.mszlu.com/assets/image-20220117212310553.f18ea8e7.png)
+	![image-20220117212310553](goimg/image-20220117212310553.f18ea8e7.png)
 
 3. M:N 关系
 
 	M 个协程绑定 N 个线程，是 N:1 和 1:1 类型的结合，克服了以上 2 种模型的缺点，但实现起来最为复杂。
 
-	![image-20220117212351050](https://www.mszlu.com/assets/image-20220117212351050.8c83a20a.png)
+	![image-20220117212351050](goimg/image-20220117212351050.8c83a20a.png)
 
 	协程跟线程是有区别的，线程由 CPU 调度是抢占式的，协程由用户态调度是协作式的，一个协程让出 CPU 后，才执行下一个协程。
 
@@ -7261,11 +7259,11 @@ Goroutine 特点：
 
 Go 目前使用的调度器是 2012 年重新设计的，因为之前的调度器性能存在问题，所以使用 4 年就被废弃了，那么我们先来分析一下被废弃的调度器是如何运作的？
 
-![image-20220117212626926](https://www.mszlu.com/assets/image-20220117212626926.87532200.png)
+![image-20220117212626926](goimg/image-20220117212626926.87532200.png)
 
 来看看被废弃的 golang 调度器是如何实现的？
 
-![image-20220117212644414](https://www.mszlu.com/assets/image-20220117212644414.c4c8d70e.png)
+![image-20220117212644414](goimg/image-20220117212644414.c4c8d70e.png)
 
 M 想要执行、放回 G 都必须访问全局 G 队列，并且 M 有多个，即多线程访问同一资源需要加锁进行保证互斥 / 同步，所以全局 G 队列是有互斥锁进行保护的。
 
@@ -7279,7 +7277,7 @@ M 想要执行、放回 G 都必须访问全局 G 队列，并且 M 有多个，
 
 新调度器中，除了 M (thread) 和 G (goroutine)，又引进了 P (Processor)。
 
-![image-20220117212938198](https://www.mszlu.com/assets/image-20220117212938198.a5cbcebd.png)
+![image-20220117212938198](goimg/image-20220117212938198.a5cbcebd.png)
 
 Processor，它包含了运行 goroutine 的资源，如果线程想运行 goroutine，必须先获取 P，P 中还包含了可运行的 G 队列。
 
@@ -7287,7 +7285,7 @@ Processor，它包含了运行 goroutine 的资源，如果线程想运行 gorou
 
 在 Go 中，线程是运行 goroutine 的实体，调度器的功能是把可运行的 goroutine 分配到工作线程上。
 
-![image-20220117213038841](https://www.mszlu.com/assets/image-20220117213038841.1812b796.png)
+![image-20220117213038841](goimg/image-20220117213038841.1812b796.png)
 
 - 全局队列（Global Queue）：存放等待运行的 G。
 - P 的本地队列：同全局队列类似，存放的也是等待运行的 G，存的数量有限，不超过 256 个。新建 G’时，G’优先加入到 P 的本地队列，如果队列满了，则会把本地队列中一半的 G 移动到全局队列。
@@ -7335,7 +7333,7 @@ M 与 P 的数量没有绝对关系，一个 M 阻塞，P 就会去创建或者�
 
 **go func () 调度流程**
 
-![image-20220117213303500](https://www.mszlu.com/assets/image-20220117213303500.cec19e53.png)
+![image-20220117213303500](goimg/image-20220117213303500.cec19e53.png)
 
 从上图我们可以分析出几个结论：
 
@@ -7348,7 +7346,7 @@ M 与 P 的数量没有绝对关系，一个 M 阻塞，P 就会去创建或者�
 
 **调度器的生命周期**
 
-![image-20220117213542371](https://www.mszlu.com/assets/image-20220117213542371.0557f7c8.png)
+![image-20220117213542371](goimg/image-20220117213542371.0557f7c8.png)
 
 
 
@@ -7424,7 +7422,7 @@ func fetchAPI(ctx context.Context, url string, results chan string) {
 
 - `context.TODO()`: 和`context.Background()`一样，一般做为占位符存在。
 
-	![img](https://www.mszlu.com/assets/b42cfe76176debdf47d04a589f120f37.7b36351c.png)
+	![img](goimg/b42cfe76176debdf47d04a589f120f37.7b36351c.png)
 
 > 当一个context被取消后，其派生的context会同样被取消
 
@@ -7619,6 +7617,576 @@ func performTask(ctx context.Context, stop func() bool) {
 - `过度使用上下文：`上下文也并不是所有场景都使用，比如处理全局资源或者共享状态等，可能更使用使用锁或者channel
 - `上下文存储在结构体中`：应该将context显式的传递给需要的函数，否则可能会引起数据竞态，生命周期管理等问题
 
+# 反射
+
+## 1. 简单示例
+
+> 需求：给定一个结构体，判断其字段类型并进行修改
+
+```go
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+type MyInt int
+type User struct {
+	IdOrName any   `json:"idOrName"`
+	M        MyInt `json:"m"`
+}
+
+func main() {
+	str := 1
+	u := User{IdOrName: str, M: 20}
+	valueOf := reflect.ValueOf(&u).Elem()
+	elem := valueOf.FieldByName("IdOrName")
+	elem2 := valueOf.FieldByName("M")
+	fmt.Println(elem2.Type())
+	fmt.Println(elem2.Kind())
+	if elem.Kind() == reflect.Interface {
+		if elem.Elem().Kind() == reflect.String {
+			elem.Set(reflect.ValueOf("这是string类型，所以是名字"))
+		}
+		if elem.Elem().Kind() == reflect.Int ||
+			elem.Elem().Kind() == reflect.Int64 ||
+			elem.Elem().Kind() == reflect.Int32 {
+			elem.Set(reflect.ValueOf(1000))
+		}
+	}
+	fmt.Println(u)
+	//如果想要获取字段相关的信息，使用TypeOf
+	typeOf := reflect.TypeOf(u)
+	for i := 0; i < typeOf.NumField(); i++ {
+		field := typeOf.Field(i)
+		fmt.Println("name:", field.Name)
+		fmt.Println("type:", field.Type)
+		fmt.Println("kind:", field.Type.Kind())
+		fmt.Println("tag:", field.Tag)
+	}
+}
+```
+
+从上述案例中，我们可以了解一些基本的知识：
+
+- 获取值使用ValueOf
+- 获取元素使用Elem
+- 判断类型使用Kind或者Type，如果类型使用type定义，Kind返回的是底层类型
+- 设置值使用Set
+- 如果想修改值，必须为指针类型
+- 如果想要获取结构体信息或者类型，可以使用TypeOf
+
+## 2. 反射定义
+
+简单讲：反射就是在程序运行时，可以访问自身结构并且做出修改的一种能力（审视自身）。
+
+在golang中，反射是通过`reflect`包来实现。
+
+反射是建立在类型系统上的，以下是go中`空接口interface{}`的定义：
+
+```go
+//runtime/runtime2.go
+type eface struct {
+	_type *_type //类型信息
+	data  unsafe.Pointer//数据信息，指向数据指针
+}
+```
+
+这里面包含两个重要的变量：
+
+- 类型
+- 值
+
+对应到反射中，有两个方法：
+
+- `reflect.TypeOf`：获取类型信息，返回`Type`类型
+- `reflect.ValueOf()` 获取数据信息，返回 `Value` 类型。
+
+```go
+// ValueOf returns a new Value initialized to the concrete value
+// stored in the interface i. ValueOf(nil) returns the zero Value.
+func ValueOf(i any) Value {}
+// TypeOf returns the reflection Type that represents the dynamic type of i.
+// If i is a nil interface value, TypeOf returns nil.
+func TypeOf(i any) Type {}
+```
+
+> go反射中，都是通过将`interface{}`转换为Type或者Value类型，然后通过对Type和Value的操作，来实现相应的功能
+
+## 3. 反射三定律
+
+在2011年的官方一篇博客中，有描述反射的三个定律:
+
+地址：`https://go.dev/blog/laws-of-reflection`
+
+- 第一定律：反射从接口值转变为反射对象（Reflection goes from interface value to reflection object）
+- 第二定律：反射从反射对象转变为接口值（Reflection goes from reflection object to interface value）
+- 第三定律：要修改反射对象的值，其值必须可以设置（To modify a reflection object, the value must be settable）
+
+```go
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+func main() {
+	var x float64 = 3.14
+	//第一定律
+	fmt.Println("type:", reflect.TypeOf(x))
+	//第二定律
+	xValueOf := reflect.ValueOf(x)
+	y := xValueOf.Interface().(float64)
+	fmt.Println("y=", y)
+	//第三定律
+	//这个会报错
+	//xValueOf.SetFloat(7.1)
+	pointValueOf := reflect.ValueOf(&x)
+	elem := pointValueOf.Elem()
+	elem.SetFloat(7.1)
+	fmt.Println("x=", x)
+}
+```
+
+## 4. Kind
+
+在前面我们提到，Kind返回一个类型，返回的类型在reflect包有定义：
+
+```golang
+// A Kind represents the specific kind of type that a Type represents.
+// The zero Kind is not a valid kind.
+type Kind uint
+
+const (
+	Invalid Kind = iota
+	Bool
+	Int
+	Int8
+	Int16
+	Int32
+	Int64
+	Uint
+	Uint8
+	Uint16
+	Uint32
+	Uint64
+	Uintptr
+	Float32
+	Float64
+	Complex64
+	Complex128
+	Array
+	Chan
+	Func
+	Interface
+	Map
+	Pointer
+	Slice
+	String
+	Struct
+	UnsafePointer
+)
+```
+
+## 5. reflect.Type
+
+通过TypeOf获取到Type类型后，就可以获取类型相关的一些信息，比如Slice长度，struct成员信息，函数参数等
+
+### 5.1 Struct
+
+#### 5.1.1 获取成员变量信息
+
+```go
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+type User struct {
+	UserName string `json:"userName"`
+	Age      int    `json:"age"`
+	Gender   string `json:"gender"`
+}
+
+func main() {
+	var user = User{
+		UserName: "mszlu",
+		Age:      18,
+		Gender:   "男",
+	}
+	typeUser := reflect.TypeOf(user)
+	numField := typeUser.NumField()
+	for i := 0; i < numField; i++ {
+		field := typeUser.Field(i)
+		fmt.Printf("%d : name(变量名称)=%s offset(首地址偏移量)=%d \n"+
+			"anonymous(是否为匿名变量)=%t type(变量类型)=%s exported(是否可见)=%t tag=%s\n",
+			i, field.Name,
+			field.Offset,
+			field.Anonymous,
+			field.Type,
+			field.IsExported(),
+			field.Tag,
+		)
+	}
+	//除了上述方式，也可以使用变量名称获取字段
+	if un, ok := typeUser.FieldByName("UserName"); ok {
+		fmt.Printf("name(变量名称)=%s offset(首地址偏移量)=%d \n"+
+			"anonymous(是否为匿名变量)=%t type(变量类型)=%s exported(是否可见)=%t tag=%s\n",
+			un.Name,
+			un.Offset,
+			un.Anonymous,
+			un.Type,
+			un.IsExported(),
+			un.Tag,
+		)
+	}
+	//还可以根据索引获取
+	age := typeUser.FieldByIndex([]int{1})
+	fmt.Printf("name(变量名称)=%s offset(首地址偏移量)=%d \n"+
+		"anonymous(是否为匿名变量)=%t type(变量类型)=%s exported(是否可见)=%t tag=%s\n",
+		age.Name,
+		age.Offset,
+		age.Anonymous,
+		age.Type,
+		age.IsExported(),
+		age.Tag,
+	)
+}
+```
+
+#### 5.1.2 获取方法信息
+
+```go
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+type User struct {
+	UserName string `json:"userName"`
+	Age      int    `json:"age"`
+	Gender   string `json:"gender"`
+}
+
+func (u User) GetName() string {
+	return u.UserName
+}
+func (u *User) GetAge() int {
+	return u.Age
+}
+func main() {
+	var user = User{
+		UserName: "mszlu",
+		Age:      18,
+		Gender:   "男",
+	}
+	//指针的方法不包含
+	//typeUser := reflect.TypeOf(user)
+	//methodNum := typeUser.NumMethod()
+	//for i := 0; i < methodNum; i++ {
+	//	method := typeUser.Method(i)
+	//	fmt.Printf("method name:%s ,type:%s, exported:%t\n", method.Name, method.Type, method.IsExported())
+	//}
+	//指针或者值的方法都包含
+	typeUserPoint := reflect.TypeOf(&user)
+	methodNumPoint := typeUserPoint.NumMethod()
+	for i := 0; i < methodNumPoint; i++ {
+		method := typeUserPoint.Method(i)
+		fmt.Printf("method name:%s ,type:%s, exported:%t\n", method.Name, method.Type, method.IsExported())
+	}
+}
+```
+
+#### 5.1.3 获取函数的信息
+
+```go
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+type User struct {
+}
+
+func (*User) Add(a, b int) string {
+	return fmt.Sprintf("%d", a+b)
+}
+
+func main() {
+	u := &User{}
+	typeAdd := reflect.TypeOf(u.Add)
+	fmt.Printf("func kind is %s \n", typeAdd.Kind())
+	in := typeAdd.NumIn()   //输入参数的个数
+	out := typeAdd.NumOut() //输出参数的个数
+	for i := 0; i < in; i++ {
+		argType := typeAdd.In(i)
+		fmt.Printf("第%d个输入参数的类型:%s \n", i, argType)
+	}
+	for i := 0; i < out; i++ {
+		argType := typeAdd.Out(i)
+		fmt.Printf("第%d个输出参数的类型:%s \n", i, argType)
+	}
+}
+```
+
+#### 5.1.4 是否实现了接口
+
+```go
+package main
+
+import (
+	"fmt"
+	"reflect"
+)
+
+type People interface {
+	Color() string
+}
+type User struct {
+}
+
+func (*User) Color() string {
+	return "yellow"
+}
+
+type Dog struct {
+}
+
+func main() {
+	//我们想要知道Dog和User哪个实现了People接口呢？
+
+	//先获取接口类型 这原理是把nil强制转换为了*People
+	peopleType := reflect.TypeOf((*People)(nil)).Elem()
+	fmt.Println("people is interface? ", peopleType.Kind() == reflect.Interface)
+	valueUserType := reflect.TypeOf(User{})
+	pointUserType := reflect.TypeOf(&User{})
+	valueDogType := reflect.TypeOf(Dog{})
+	pointDogType := reflect.TypeOf(&Dog{})
+	fmt.Println("value user 是否实现people接口:", valueUserType.Implements(peopleType))
+	fmt.Println("point user 是否实现people接口:", pointUserType.Implements(peopleType))
+	fmt.Println("value dog 是否实现people接口:", valueDogType.Implements(peopleType))
+	fmt.Println("point dog 是否实现people接口:", pointDogType.Implements(peopleType))
+}
+```
+
+## 6. reflect.Value
+
+value就是用来做获取值，修改值等关于值的操作的。
+
+比如：
+
+```go
+type User struct {
+	Name string
+}
+
+func main() {
+	u := User{Name: "mszlu"}
+	//现在我们想要获取Name的值 mszlu 这时候就应该使用value去获取
+	valueOfUser := reflect.ValueOf(u)
+	fmt.Println("Name is ", valueOfUser.FieldByName("Name"))
+}
+```
+
+### 6.1 转Type
+
+```go
+type User struct {
+	Name string
+}
+
+func main() {
+	u := User{Name: "mszlu"}
+	//现在我们想要获取Name的值 mszlu 这时候就应该使用value去获取
+	valueOfUser := reflect.ValueOf(u)
+	typeOfUser := valueOfUser.Type()
+	name, _ := typeOfUser.FieldByName("Name")
+	fmt.Println("Name is ", valueOfUser.FieldByName("Name"))
+	fmt.Println("Name type is ", name.Type)
+}
+```
+
+### 6.2 指针Value互转
+
+```go
+type User struct {
+	Name string
+}
+
+func main() {
+	u := User{Name: "mszlu"}
+	//指针value 转 非指针value
+	point := reflect.ValueOf(&u)
+	noPoint := point.Elem()
+	fmt.Printf("point type: %s, noPoint type: %s \n", point.Type(), noPoint.Type())
+	fmt.Printf("point kind: %s, noPoint kind: %s \n", point.Kind(), noPoint.Kind())
+	//非指针转指针
+	newPoint := noPoint.Addr()
+	fmt.Printf("newPoint type: %s, newPoint kind: %s \n", newPoint.Type(), newPoint.Kind())
+}
+```
+
+### 6.3 获取原始类型
+
+```go
+type User struct {
+	Name string
+}
+
+func main() {
+	u := User{Name: "mszlu"}
+	//现在需要从value获取到user
+	v := reflect.ValueOf(u)
+	newUser := v.Interface().(User)
+	fmt.Println(newUser.Name)
+}
+```
+
+### 6.4 空value判断
+
+```go
+type User struct {
+	Name string
+}
+
+func main() {
+	var i interface{} //接口没有指向具体的值
+	v := reflect.ValueOf(i)
+	fmt.Printf("v持有值 %t, type of v is Invalid %t\n", v.IsValid(), v.Kind() == reflect.Invalid)
+
+	var user *User = nil
+	v = reflect.ValueOf(user) //Value指向一个nil
+	if v.IsValid() {
+		fmt.Printf("v持有的值是nil %t\n", v.IsNil()) //调用IsNil()前先确保IsValid()，否则会panic
+	}
+
+	var u User //只声明，里面的值都是0值
+	v = reflect.ValueOf(u)
+	if v.IsValid() {
+		fmt.Printf("v持有的值是对应类型的0值 %t\n", v.IsZero()) //调用IsZero()前先确保IsValid()，否则会panic
+	}
+}
+```
+
+### 6.5 修改值
+
+```go
+type User struct {
+	Name string
+	age  int
+}
+
+func main() {
+	var user = User{
+		Name: "mszlu",
+	}
+	//注意： 修改值 比如传指针
+	valueOf := reflect.ValueOf(&user)
+	valueOf.Elem().FieldByName("Name").SetString("new mszlu")
+	fmt.Println(user.Name)
+	ageValue := valueOf.Elem().FieldByName("age")
+	if ageValue.CanSet() {
+		ageValue.SetInt(18)
+	} else {
+		fmt.Println("私有成员不能修改值")
+	}
+}
+```
+
+### 6.6 调用方法
+
+```go
+type User struct {
+	Name string
+	age  int
+}
+
+func (u *User) GetName() string {
+	return u.Name
+}
+func main() {
+	var user = User{
+		Name: "mszlu",
+	}
+	//注意：调用方法时，使用指针，可以调用指针类型的方法和非指针类型的方法
+	valueOf := reflect.ValueOf(&user)
+	methodByName := valueOf.MethodByName("GetName")
+	//无参数传空切片
+	result := methodByName.Call([]reflect.Value{})
+	fmt.Println(result[0].Interface().(string))
+}
+```
+
+## 7. 其他
+
+### 7.1 创建
+
+```go
+type User struct {
+	Name string
+	age  int
+}
+
+func (u *User) GetName() string {
+	return u.Name
+}
+func main() {
+	//创建struct
+	userType := reflect.TypeOf(User{})
+	valueUser := reflect.New(userType) //这里new出来的是指针 相当于reflect.ValueOf(&User{})
+	valueUser.Elem().FieldByName("Name").SetString("mszlu")
+	fmt.Println(valueUser)
+	//创建切片
+	userSliceType := reflect.TypeOf([]User{})
+	userSliceValue := reflect.MakeSlice(userSliceType, 1, 3)
+	userSliceValue.Index(0).Set(reflect.ValueOf(User{Name: "mszlu"}))
+	users := userSliceValue.Interface().([]User)
+	fmt.Println(users[0].Name)
+	//其他还有MakeMap,MakeChan,MakeFunc等 可自行使用一下
+
+}
+```
+
+### 7.2 修改slice
+
+```go
+type User struct {
+	Name string
+	age  int
+}
+
+func (u *User) GetName() string {
+	return u.Name
+}
+func main() {
+	//创建切片
+	users := make([]*User, 1, 3)
+	users[0] = &User{
+		Name: "mszlu",
+	}
+	//修改切片 必须使用指针
+	userSliceValue := reflect.ValueOf(&users)
+	//我们可以改变切片的长度
+	//userSliceValue.Elem().Index(1).Set(reflect.ValueOf(&User{Name: "mszlu"})) //会报错 slice index out of range
+	userSliceValue.Elem().SetLen(2)
+	userSliceValue.Elem().Index(1).Set(reflect.ValueOf(&User{Name: "mszlu1"}))
+	fmt.Println(users[1].Name)
+
+	//也可以直接Append
+	userSliceValue = reflect.Append(userSliceValue.Elem(), reflect.ValueOf(&User{Name: "mszlu2"}))
+	users = userSliceValue.Interface().([]*User)
+	fmt.Println(users[2].Name)
+}
+```
+
 # 网络编程进程操作系统
 
 ##  1. 互联网协议介绍
@@ -7629,7 +8197,7 @@ func performTask(ctx context.Context, stop func() bool) {
 
 互联网的逻辑实现被分为好几层。每一层都有自己的功能，就像建筑物一样，每一层都靠下一层支持。用户接触到的只是最上面的那一层，根本不会感觉到下面的几层。要理解互联网就需要自下而上理解每一层的实现的功能。
 
-![image-20220116002821959](https://www.mszlu.com/assets/image-20220116002821959.dcbb4d51.png)
+![image-20220116002821959](goimg/image-20220116002821959.dcbb4d51.png)
 
 互联网按照不同的模型划分会有不用的分层，但是不论按照什么模型去划分，越往上的层越靠近用户，越往下的层越靠近硬件。
 
@@ -7683,7 +8251,7 @@ UDP协议的优点是比较简单，容易实现，但是缺点是可靠性较�
 
 如下图所示，发送方的HTTP数据经过互联网的传输过程中会依次添加各层协议的标头信息，接收方收到数据包之后再依次根据协议解包得到数据。
 
-![image-20220116003106034](https://www.mszlu.com/assets/image-20220116003106034.19968e6c.png)
+![image-20220116003106034](goimg/image-20220116003106034.19968e6c.png)
 
 ## 2. socket编程
 
@@ -7693,7 +8261,7 @@ Socket是BSD UNIX的进程通信机制，通常也称作”套接字”，用于
 
 Socket是应用层与TCP/IP协议族通信的中间软件抽象层。在设计模式中，Socket其实就是一个门面模式，它把复杂的TCP/IP协议族隐藏在Socket后面，对用户来说只需要调用Socket规定的相关函数，让Socket去组织符合指定的协议数据然后进行通信。
 
-![image-20220116004006489](https://www.mszlu.com/assets/image-20220116004006489.37318919.png)
+![image-20220116004006489](goimg/image-20220116004006489.37318919.png)
 
 - Socket又称“套接字”，应用程序通常通过“套接字”向网络发出请求或者应答网络请求
 - 常用的Socket类型有两种：流式Socket和数据报式Socket，流式是一种面向连接的Socket，针对于面向连接的TCP服务应用，数据报式Socket是一种无连接的Socket，针对于无连接的UDP服务应用
