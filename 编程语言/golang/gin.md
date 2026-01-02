@@ -1,4 +1,4 @@
-# 认识gin
+# ‘’认识gin
 
 框架是一系列工具的集合，能让开发变的便捷。
 
@@ -166,11 +166,11 @@ RESTful API 的规范建议我们使用特定的HTTP方法来对服务器上的�
 
 比如：
 
-1. GET，表示读取服务器上的资源
-2. POST，表示在服务器上创建资源
-3. PUT,表示更新或者替换服务器上的资源
-4. DELETE，表示删除服务器上的资源
-5. PATCH，表示更新/修改资源的一部分
+1. GET：表示读取服务器上的资源
+2. POST：表示在服务器上创建资源
+3. PUT：表示更新或者替换服务器上的资源
+4. DELETE：表示删除服务器上的资源
+5. PATCH：表示更新/修改资源的一部分
 
 ## 2. 请求方法
 
@@ -184,10 +184,10 @@ RESTful API 的规范建议我们使用特定的HTTP方法来对服务器上的�
 		ctx.JSON(200, "post")
 	})
 	r.DELETE("/delete", func(ctx *gin.Context) {
-		ctx.JSON(200, "delete")
+		ctx.JSON(http.StatusOK, "delete")
 	})
 	r.PUT("/put", func(ctx *gin.Context) {
-		ctx.JSON(200, "put")
+		ctx.JSON(http.StatusOK, "put")
 	})
 ```
 
@@ -265,24 +265,28 @@ type HandlerFunc func(*Context)
 比如
 
 ```go
-   ug := r.Group("/user")
-	{
-		ug.GET("find", func(ctx *gin.Context) {
-			ctx.JSON(200, "user find")
-		})
-		ug.POST("save", func(ctx *gin.Context) {
-			ctx.JSON(200, "user save")
-		})
-	}
-	gg := r.Group("/goods")
-	{
-		gg.GET("find", func(ctx *gin.Context) {
-			ctx.JSON(200, "goods find")
-		})
-		gg.POST("save", func(ctx *gin.Context) {
-			ctx.JSON(200, "goods save")
-		})
-	}
+ug := r.Group("/user")
+{
+  ug.GET("find", func(ctx *gin.Context) {
+    ctx.JSON(200, "user find")
+  })
+  ug.POST("save", func(ctx *gin.Context) {
+    ctx.JSON(200, "user save")
+  })
+}
+gg := r.Group("/goods")
+{
+  gg.GET("find", func(ctx *gin.Context) {
+    ctx.JSON(200, "goods find")
+  })
+  gg.POST("save", func(ctx *gin.Context) {
+    ctx.JSON(200, "goods save")
+  })
+}
+// 还可以使用链式调用的方式
+r.Group("/v1").
+		GET("user", func(c *gin.Context) {}).
+		POST("student", func(c *gin.Context) {})
 ```
 
 # 请求参数

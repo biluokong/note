@@ -68,7 +68,10 @@ Go 语言起源 2007 年，并于 2009 年正式对外发布。它从 2009 年 9
 
 资料中有提供windows的zip包
 
-下载地址：https://go.dev/dl/
+下载地址：
+
+- 中文网：[Go下载 - Go语言中文网 - Golang中文社区 (studygolang.com)](https://studygolang.com/dl)
+- github官网：[Tags · golang/go · GitHub](https://github.com/golang/go/tags)
 
 > 下载后，将压缩包解压
 
@@ -90,7 +93,7 @@ Go 语言起源 2007 年，并于 2009 年正式对外发布。它从 2009 年 9
 
 	![image-20240225230100040](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXgAAAAXCAYAAAABSFSdAAAE2ElEQVR4nO3dMWwaVxzH8S9VhaeDBdtITKmciMZy2J0pHSzhLPESEckzViecIVKR2i0SlTLEdKniqZUs1epiLwYpipqpKCtOXaFgNRMSdm4w3ATLdbjjDGeIDwe7jfX7SNbBu/fwewz/+/O/Zxw6OTmxcf308y/88F0OERH5/H05rLHVal31PEREZMKGBvhoNDrwPJSvYUdXCLV2dNRRRx11/EyOoUAlmh+/JtTamfC1RURELosdXeGLIB0V3EVEPi+h1k6wAG9HVy57LiIiMkHK4EVErill8FcizMbjJKXUiNPxGPXCDTbiVzopEbnmLpTBZ1eT2IUktj8opRLYj2MsnhntBDhnTBK7kCDr7xKPUS/09/EHPP9rDAuYbp9VY6D1dL6+n1WDkcE3HqPeN89gazYoKVCLyP9EqLUzfJukX2/LDakEL2gQyltOEHwU4/fnJhUMShlYy5tU+gfGY9RzMerbNULVXqNB6XGMv567fVMJ7EyYYrHGerN/XJJb2zWWvXEdisX3Tp94jHruBhtH7/vGRLhPh8P5CFksNt3mza2a+9igVIiwm2945yB8/uIDr9ni6esYv94Js97sBnlbHU2Tm3kzeH8RkQDGzuAXZ8OU31pOY7ND3T2fXU3Adn/gBAiz8cgJ7qdBGsBiuRfcMShlDMrbfYEanKC3bZHODMn23fPPDqa4f+c0QC/eMeCgwbMDgwejyiEXMM6aK/sWzEeGfIoREblaY9fgK0dd0gtuCSQVIf2hQ8XNcAeDOG5GbfLU394vFSF9PKJPtU2ZMLcDlTzCPJyHvf0um28t0t8MKxVdzFhrbrbZI8b3Qy8wBqVhJaaBcpBb5llKeP3qSwE+ZYiI+NjRlWAlGq8GX22wtpDELgBYrOWhVMA9JkkDHJvcfW5SmZ1ijs7pi7jlmjl6Y/0Zv1+Hd8dT3JoFmr5T8RhP5jvsvXJLIalpcljcbQLNNuVMjIdxk4p/3AjpTBI742+1xl8zXdb/sLAXDKhavt8RYS1fYxncslSCbHXYezBFbsYklG+471mCjX3fJxwRkXNcaBfN5laNUL7mBCC3TOEcnfa1DyMy2KbJTXdcOfAUO7w76j2eIpdzM+CcwV7xNOhlFwwOD9peLXzXV745T3m7tyb3p2hy2Hd+rDVX25TnI2dKS+X+ck71A8XjUaWkDsVXvZJQm73jwMsQEfF82j54r0wR5va0xa5brth8a3FzNuwEuhmDhx8rsVTblGdGXBBS0+RmuvztZa4disVeoO3PaA0ezMPcva+8ssaLeZi7Nz28fv8pzlsz4FxgDJ6otCIi/6FP2Afv7iDZsrznvWw0u2BQP+ri7CqBXO5jWwctnr7ukM74+sRj1DPGYNY7SipCGou1/gw836DMZG+2BluzY/OVeeZmq1fHBxaXEuRmTi8QIiKTNn4NHnD2jjvlCSf4dln/zaSec+vYBw1vS2Tl5XtC+86Wx/6vMDt8/Y8XuIf36Qxum/yI7IKze2bwQmCxewAvhtTCLyb4mgH3Zmti4D5AmQh2IeHN7/x7ECIiF6dvk7xEi0s3+HPGJLQ1iQuMiMh49F00l6jy0hx6s1VE5CqM/5esMgaL5byydxH5byiDFxG5pvRtkiIi19TIXTRn/un2t284uYoZiYjIRLR4w79z/ZSEwhuAzwAAAABJRU5ErkJggg==)
 
-3. `GOPROXY`：代理，由于go需要翻墙使用，需要配置代理，有好心人做了代理
+3. `GOPROXY`：代理，由于go需要翻墙使用，需要配置代理，有好心人做了代理，`https://goproxy.cn,direct`
 
 ![image-20240225230209876](goimg/image-20240225230209876.b008022e.png)
 
@@ -4517,7 +4520,8 @@ func (接收器变量 接收器类型) 方法名(参数列表) (返回参数) {
 }
 ```
 
-
+> 一致性原则
+> Go 中有一个重要的约定：如果结构体有任何方法使用指针接收者，那么所有方法都应该使用指针接收者
 
 - 接收器变量：接收器中的参数变量名在命名时，官方建议使用接收器类型名的第一个小写字母，而不是 self、this 之类的命名。例如，Socket 类型的接收器变量应该命名为 s，Connector 类型的接收器变量应该命名为 c 等。
 - 接收器类型：接收器类型和参数类似，可以是指针类型和非指针类型。
@@ -5006,7 +5010,20 @@ Go语言的接口实现是隐式的，无须让实现接口的类型写出实现
 
 ### 1.4 类型与接口的关系
 
-> 在Go语言中类型和接口之间有一对多和多对一的关系
+> 1. 在Go语言中类型和接口之间有一对多和多对一的关系
+> 2. 指针接口变量 `*interface` ：Go不支持将具体类型转换为指针接口类型，因为指针接口指向的是接口类型数据（结构如下），其内部的`data`才是指向具体类型数据的指针。
+>
+> ~~~go
+> // 简化的接口内部结构
+> type iface struct {
+>     tab  *itab  // 类型信息（包含方法表等）
+>     data unsafe.Pointer  // 指向实际数据的指针
+> }
+> ~~~
+>
+> 3. 接口变量：接收具体类型`T`变量规则如下，当通过指针调用值方法时，Go会自动解引用。
+>    - `T`使用值接收器实现接口时：可以接收值类型变量和指针类型变量。（使用指针类型变量go会自动解引用）
+>    - `T`使用指针接收器实现接口时：只可以接收指针类型变量
 
 **一个类型可以实现多个接口**
 
@@ -6207,6 +6224,16 @@ go 函数名( 参数列表 )
 
 **启动单个goroutine**
 
+> 注意，go关键字后面要跟函数，不要跟语句，不然程序可能出现难以预料的结果，例如出现死锁。
+>
+> ~~~go
+> go fmt.Println("阻塞队列出队元素：%v", queue.poll())
+> // 上面的代码实际是下面这样的
+> value := queue.poll	// 这里会阻塞住
+> go fmt.Println("阻塞队列出队元素：%v", value)
+> // 如果消费者先执行，会导致阻塞主线程，导致死锁
+> ~~~
+
 ```go
 func hello() {
     fmt.Println("Hello Goroutine!")
@@ -7000,6 +7027,12 @@ func main() {
 
 - **作用**：用于在goroutine之间进行等待和通知，常用于协调并发操作。
 - **使用场景**：当需要在多个goroutine之间进行复杂的同步操作时使用。
+- 核心方法
+
+> - Wait()：阻塞当前goroutine，等待条件满足
+> - Signal()：唤醒一个等待的goroutine
+> - Broadcast()：唤醒所有等待的goroutine
+
 - **示例**：
 
 ```go
